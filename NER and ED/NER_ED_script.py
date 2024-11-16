@@ -146,11 +146,12 @@ def calculate_entity_distribution(df: pd.DataFrame, dataset_name: str):
     sizes = [total_named_entity_words, total_non_entity_words]
     colors = ['sienna', 'khaki']
 
-    plt.figure(figsize=(6, 6))
+    plt.figure(figsize=(8, 6))
     plt.pie(sizes, labels=labels, colors=colors, autopct='%1.1f%%', explode=(0.2, 0), shadow=True,
             wedgeprops={'edgecolor': 'black'})
     plt.title(f'Words Distribution between Named Entities and Non-Entities ({dataset_name})')
     plt.axis('equal')
+    plt.savefig(f"Plots/entity_dist_{dataset_name}.png")
     plt.show()
 
 
@@ -169,6 +170,7 @@ def find_most_common_entity_types(df: pd.DataFrame, dataset_name: str):
     plt.xlabel('Entity Type')
     plt.ylabel('Frequency')
     plt.xticks(rotation=45)
+    plt.savefig(f"Plots/entity_types_{dataset_name}.png")
     plt.show()
 
 
@@ -200,6 +202,7 @@ def find_most_common_entities_per_type(df: pd.DataFrame, dataset_name: str, outp
             data['Count'].append(count)
 
     plt.tight_layout()
+    plt.savefig(f"Plots/most_common_entities_{dataset_name}.png")
     plt.show()
 
     df_top_words = pd.DataFrame(data)
