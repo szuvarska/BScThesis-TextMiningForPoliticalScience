@@ -1,0 +1,161 @@
+Entity Type,Word,Count
+ORG,EU,538
+ORG,NATO,399
+ORG,Global Times,241
+ORG,EU Commission,172
+ORG,UN,146
+ORG,BRICS,108
+ORG,EU Council,97
+ORG,Department of EU Studies,81
+ORG,Foreign Ministry,54
+ORG,Reuters,44
+ORG,G7,38
+ORG,Fed,37
+ORG,G20,33
+ORG,US House,30
+ORG,CPC Central Committee,29
+ORG,Communist Party of China,24
+ORG,Council,23
+ORG,EU Parliament,23
+ORG,CPC,22
+ORG,PLA,21
+ORG,Institute,20
+ORG,Xinhua,19
+ORG,Defense Ministry,18
+ORG,EU Railway Express,18
+ORG,Congress,18
+ORG,BRICS Business Forum,17
+ORG,Xinhua News Agency,16
+ORG,Türkiye,16
+ORG,EU NATO,16
+ORG,SCO,15
+ORG,BRICS International Forum,15
+ORG,Bloomberg,14
+ORG,China Institute of International Studies,14
+ORG,US Post,14
+ORG,BRI,14
+ORG,CEEC Cooperation,13
+ORG,Central Committee,12
+ORG,Department,12
+ORG,Kyodo News,12
+ORG,IHE,12
+PER,Joe Biden,151
+PER,Nancy Pelosi,112
+PER,Xi Jinping,86
+PER,Wang Yi,83
+PER,Volodymyr Zelensky,58
+PER,Vladimir Putin,51
+PER,Antony Blinken,41
+PER,Fumio Kishida,38
+PER,Boris Johnson,38
+PER,Zhao Lijian,37
+PER,Wang Wenbin,36
+PER,Antonio Guterres,28
+PER,Wei Fenghe,25
+PER,Yang Jiechi,23
+PER,Sergey Lavrov,23
+PER,Song Zhongping,22
+PER,Lloyd Austin,20
+PER,Wang,19
+PER,Hua Chunying,18
+PER,Donald Trump,16
+PER,Elizabeth Truss,15
+PER,Denys Shmyhal,15
+PER,Mario Draghi,15
+PER,Cui Hongjian,13
+PER,Jake Sullivan,13
+PER,Wendy Sherman,13
+PER,Yoon Suk,12
+PER,Emmanuel Macron,12
+PER,Qin Gang,11
+PER,Joko Widodo,11
+PER,Recep Tayyip Erdogan,11
+PER,Anthony Albanese,11
+PER,Oleksandr Kubrakov,10
+PER,Jens Stoltenberg,10
+PER,Shinzo Abe,10
+PER,Joe B,9
+PER,Xi Jin,8
+PER,Yu Jincui,8
+PER,Olaf Scholz,8
+PER,Nobuo Kishi,8
+LOC,China,2269
+LOC,US,1728
+LOC,Ukraine,1016
+LOC,Russia,956
+LOC,Japan,383
+LOC,Taiwan,331
+LOC,Taiwan Straits,270
+LOC,China Sea,195
+LOC,West,184
+LOC,Asia,173
+LOC,UK,170
+LOC,India,157
+LOC,Germany,122
+LOC,South Korea,111
+LOC,South Africa,105
+LOC,Pacific,95
+LOC,Turkey,94
+LOC,Australia,80
+LOC,Beijing,78
+LOC,Africa,57
+LOC,France,56
+LOC,Sri Lanka,50
+LOC,Italy,49
+LOC,Southwest China,49
+LOC,China US,47
+LOC,Hong Kong,46
+LOC,Central China,45
+LOC,Iran,45
+LOC,North China,45
+LOC,Latin US,41
+LOC,Kiev,40
+LOC,Northeast China,39
+LOC,Middle East,38
+LOC,Istanbul,36
+LOC,Moscow,36
+LOC,Sweden,36
+LOC,Afghanistan,34
+LOC,Kazakhstan,33
+LOC,Black Sea,30
+LOC,Canada,30
+MISC,West,138
+MISC,Cold War,58
+MISC,Russia,46
+MISC,COVID - 19,45
+MISC,BRICS Summit,39
+MISC,COD,37
+MISC,US,34
+MISC,19,33
+MISC,one,32
+MISC,BRI,28
+MISC,Indo - Pacific Strategy,23
+MISC,anti,20
+MISC,Shangri - La Dialogue,20
+MISC,COVID,18
+MISC,World War II,17
+MISC,G,17
+MISC,Europeans,16
+MISC,Afghan,16
+MISC,C,15
+MISC,BRICS,15
+MISC,NATO Summit,13
+MISC,Belt and Road Initiative,12
+MISC,Times,12
+MISC,Indo,12
+MISC,Ukrainian,12
+MISC,G20,11
+MISC,Brexit,11
+MISC,Nordic,11
+MISC,Charter,10
+MISC,Independence Day,10
+MISC,Democratic,10
+MISC,GM,10
+MISC,ASEAN,10
+MISC,CPI,9
+MISC,Indonesian,9
+MISC,Arab,8
+MISC,Korean,8
+MISC,Philippine,8
+MISC,Democrats,8
+MISC,Olympic,8

@@ -1,0 +1,161 @@
+Entity Type,Word,Count
+LOC,Russia,2628
+LOC,US,1694
+LOC,Ukraine,1562
+LOC,China,1430
+LOC,West,428
+LOC,Donetsk,364
+LOC,Lugansk,331
+LOC,UK,199
+LOC,Moscow,170
+LOC,Taiwan Straits,155
+LOC,Taiwan,152
+LOC,Kiev,142
+LOC,Germany,141
+LOC,Beijing,125
+LOC,DPR,122
+LOC,Taiwan Strait,120
+LOC,Kremlin,110
+LOC,U,91
+LOC,S,90
+LOC,Minsk,78
+LOC,White House,71
+LOC,France,68
+LOC,India,61
+LOC,Pacific,53
+LOC,Japan,51
+LOC,Lithuania,50
+LOC,North US,48
+LOC,Asia,48
+LOC,Kazakhstan,40
+LOC,Donbass,39
+LOC,Australia,39
+LOC,Crimea,37
+LOC,Soviet Union,34
+LOC,Estonia,33
+LOC,Berlin,32
+LOC,LPR,31
+LOC,New York,31
+LOC,Luhansk,30
+LOC,Latvia,30
+LOC,Victoria,29
+PER,Vladimir Putin,496
+PER,Joe Biden,297
+PER,Kissinger,174
+PER,Ma Xiaoguang,145
+PER,Boris Johnson,132
+PER,Volodymyr Zelensky,128
+PER,Richard Nixon,95
+PER,Wang Yi,68
+PER,Antony Blinken,68
+PER,Jens Stoltenberg,62
+PER,Sergey Larov,58
+PER,Donald Trump,40
+PER,António Guterres,30
+PER,Ursula von der Leyen,30
+PER,Wolfgang Ischinger,30
+PER,Xi Jinping,30
+PER,von der Leyen,29
+PER,Josep Borrell,29
+PER,Dmytro Ku,29
+PER,Antony Blink,29
+PER,John Mearsheimer,29
+PER,Lea,29
+PER,Obama,29
+PER,Russo,29
+PER,Mao Zedong,29
+PER,Wang Wenbin,16
+PER,Yang Jin,13
+PER,Zhao Lijian,12
+PER,Socrates,12
+PER,Qi Guangpu,11
+PER,Cristiano Ronaldo,11
+PER,Thomas Bach,10
+PER,Sergey Lavrov,10
+PER,Zhang Jun,9
+PER,Emmanuel Macron,9
+PER,Jake Sullivan,9
+PER,Carli Lloyd,9
+PER,Li Hao,9
+PER,Antoine Griezmann,8
+PER,Alec Baldwin,8
+ORG,EU,676
+ORG,NATO,596
+ORG,EU Commission,325
+ORG,NATO - Ukraine Commission,261
+ORG,LPR,224
+ORG,UN,155
+ORG,DPR,137
+ORG,DPP,122
+ORG,Global Times,97
+ORG,State Duma,59
+ORG,Federation Council,58
+ORG,B,37
+ORG,Council,36
+ORG,Department,31
+ORG,Armed Forces of,30
+ORG,State Council,30
+ORG,N,30
+ORG,House of Commons,29
+ORG,Response Force,29
+ORG,Policy,29
+ORG,Federal Assembly,29
+ORG,VEB,29
+ORG,Taiwan Affairs Office,29
+ORG,NBC News,29
+ORG,Munich Security Conference,29
+ORG,University of Chicago,29
+ORG,Foreign Ministry,25
+ORG,Old EU,20
+ORG,New EU,20
+ORG,EU Council,16
+ORG,Organization for Security and Cooperation in EU,15
+ORG,Motor Sich,14
+ORG,CNN,13
+ORG,Institute,10
+ORG,Bloomberg,10
+ORG,Manchester United,9
+ORG,Sina Weibo,8
+ORG,Huawei,8
+ORG,TASS,8
+ORG,Times,7
+MISC,Winter Olympic Games,114
+MISC,Charter,66
+MISC,Nord Stream 2,63
+MISC,G7,59
+MISC,Munich Security Report 2022,58
+MISC,Shanghai Communiqué,58
+MISC,19,53
+MISC,West,52
+MISC,COVID,47
+MISC,Cold War,45
+MISC,anti,39
+MISC,Beijing Winter Olympic Games,33
+MISC,Baltic,30
+MISC,Resolution,29
+MISC,Munich Security Conference 2022,29
+MISC,Munich Security Index 2022,29
+MISC,neo,29
+MISC,Georgian,29
+MISC,Shanghai Joint Communiqué,29
+MISC,China,19
+MISC,COD,14
+MISC,Olympics,13
+MISC,Soviet,10
+MISC,China New Year,10
+MISC,Summit for Democracy,10
+MISC,International Olympic Committee,9
+MISC,Bitco,7
+MISC,World Cup,7
+MISC,Indo - Pacific Strategy,6
+MISC,COVID - 19,6
+MISC,Winter Olympic Games Beijing 2022,6
+MISC,Greek,6
+MISC,Lithuanian,6
+MISC,BRI,6
+MISC,G,6
+MISC,Grand Slam,6
+MISC,Spring Festival,5
+MISC,Normandy,5
+MISC,Ukrainian,5
+MISC,Indo - Pacific Economic Framework,5
