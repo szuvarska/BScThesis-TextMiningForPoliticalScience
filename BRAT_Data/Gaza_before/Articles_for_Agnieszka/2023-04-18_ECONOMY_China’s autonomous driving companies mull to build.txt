@@ -1,0 +1,19 @@
+Published Time: 2023-04-18
+Title: China’s autonomous driving companies mull to build smarter cars
+Category 1: SOURCE; Category 2: ECONOMY
+Author: Global Times
+Author title: Author details not found
+Author description: Author details not found
+Text: 
+Baidu, a Chinese technology with strong internet foundations, recently released a series of new products covering intelligent driving, intelligent cabins and intelligent maps, striking deeper collaboration between smart driving solutions and smart chipsets, which will further accelerate the smart manufacturing of China's automotive industry.The Black Sesame Semiconductor will become the latest chip partner to Baidu Apollo Smart Driving, said Baidu.
+Additionally, Apollo Highway Driving Pro will be deployed on the Black Sesame's Huashan II A1000 chip computing platform, which will be officially released in the third quarter of this year.
+China's auto industry is experiencing radical changes.
+Baidu predicts that by 2026, the market penetration rate of models equipped with the L2+ advanced intelligent driving solution, valet parking highway navigation pilot and city navigation pilot will exceed 15 percent, ushering in a transition period in intelligent vehicle industry.
+In addition, Baidu Apollo has upgraded its autonomous parking solution, which has a success rate of 99 percent in the top five most commonly faced parking scenarios.
+Besides, it only takes 28 seconds to complete perpendicular parking, drastically reducing the difficulty of parking for novice drivers.Earlier on April 11, Zhang Kai, chairman of Haomo.AI, said that the HPilot 3.0 system, which can provide urban assisted driving systems, will be launched this year.Zhang said the system has been equipped with nearly 20 models.
+The user-assisted driving mileage has already exceeded 40 million kilometers, and the average daily mileage utilization rate of HPilot2.0 assisted driving was 12.6 percent.
+In terms of overseas usage, vehicles equipped with HPilot system have been exported to the EU and Israel.
+At the same time, the Mexican version and the Russian version will be mass-produced, and will be launched in the Middle East, South Africa and Australia, according to Zhang.
+For autonomous driving companies, in addition to technical upgrades, the mass production of autonomous driving pre-installation has also become the main direction for each major company.In 2022, the pre-installation rate of high-level assisted driving of passenger cars in the Chinese market reached 29.40 percent, and 5,859,900 vehicles will be delivered with pre-installed standard equipment, according to Haomo.AI.Zhang said that by 2025, the rate of high-level assisted driving will exceed 70 percent, which means that starting from this year, smart driving products will have entered a period of rapid growth.Chinese electric vehicle start-up Xpeng announced in September of last year that it has launched the pilot program of City Navigation Guided Pilot (NGP), making it the first Chinese auto company to launch such high-level Advanced Driver Assistance System functions for complex urban driving scenarios.When City NGP is activated with a set destination, the vehicle itself can perform the full range of driving tasks such as cruising with a safe distance from leading vehicles, changing lanes due to navigation or vehicle overtaking decision and maintaining an appropriate speed throughout the driving route.China's autonomous vehicles market is projected to reach $98.89 billion by 2030.
+Self-driving cars could lead China's automotive industry into a position of global strength.
+From automated cargo trucks to driverless taxis, autonomous vehicles will change the nature of on-road driving and, in the process, revolutionize the mobility and automotive industries, according to researchandmarkets.com.Global Times
