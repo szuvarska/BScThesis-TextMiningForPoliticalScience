@@ -1,4 +1,5 @@
 from NewsSentiment import TargetSentimentClassifier
+from NewsSentiment.customexceptions import TargetNotFoundException, TooLongTextException
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 import numpy as np
 import pandas as pd
@@ -10,6 +11,7 @@ import seaborn as sns
 
 
 def vader_sentiment(text: str) -> str:
+    vader_analyzer = SentimentIntensityAnalyzer()
     scores = vader_analyzer.polarity_scores(text)
     # define the thresholds to categorize it
     if scores['compound'] >= 0.05:
@@ -20,8 +22,15 @@ def vader_sentiment(text: str) -> str:
         return 'neutral'
 
 
-def perform_sentiment_analysis(file_name: str, target_entities: list, dataset_name: str) -> tuple(pd.DataFrame,
-                                                                                                  pd.DataFrame):
+# split each article into sentences
+def split_into_sentences(article):
+    nlp = spacy.load("en_core_web_sm")
+    doc = nlp(article)
+    return [sent.text for sent in doc.sents]
+
+
+def perform_sentiment_analysis(file_name: str, target_entities: list, dataset_name: str) -> tuple[pd.DataFrame,
+pd.DataFrame]:
     # load dataset
     df = pd.read_csv(file_name)
 
@@ -30,13 +39,14 @@ def perform_sentiment_analysis(file_name: str, target_entities: list, dataset_na
     df = df[~check_condition]
 
     tsc = TargetSentimentClassifier()
-    vader_analyzer = SentimentIntensityAnalyzer()
-    nlp = spacy.load("en_core_web_sm")
     # TODO: moving preprocessing to a different script (it recurs in NER)
 
     # initialize lists for comparison results
     vader_results = []
     tsc_results = []
+
+    # threshold max sentence length
+    MAX_SENTENCE_LENGTH = 100
 
     # process each article for both models
     for idx, row in df.iterrows():
@@ -44,21 +54,37 @@ def perform_sentiment_analysis(file_name: str, target_entities: list, dataset_na
         sentences = split_into_sentences(article_text)
 
         for sentence in sentences:
+            original_sentence = sentence
+            sentence = sentence.lower()
+
+            # skip sentences that exceed the maximum length threshold
+            if len(sentence.split()) > MAX_SENTENCE_LENGTH:
+                print(f"Skipping long sentence.")
+                continue
+
             # TSC Sentiment Analysis
             for target in target_entities:
-                if target in sentence:
-                    entity_start = sentence.find(target)
+                if target.lower() in sentence:
+                    entity_start = sentence.find(target.lower())
                     entity_end = entity_start + len(target)
                     left_context = sentence[:entity_start]
                     right_context = sentence[entity_end:]
 
-                    sentiment_tsc = tsc.infer_from_text(left_context, target, right_context)
+                    try:
+                        sentiment_tsc = tsc.infer_from_text(left_context, target, right_context)
+                    except TooLongTextException:
+                        print(f"TooLongTextException: {target} - Sentence too long for TSC")
+                        continue  # move on to the next target
+                    except TargetNotFoundException:
+                        print(f"TargetNotFoundException: {target} not found in {sentence}")
+                        continue  # move on to the next target
+
                     sentiment_label_tsc = sentiment_tsc[0]['class_label'].lower()
 
                     # store TSC result (with target)
                     tsc_results.append({
                         'Model': 'TSC',
-                        'Sentence': sentence,
+                        'Sentence': original_sentence,
                         'Target': target,
                         'Sentiment': sentiment_label_tsc,
                         'published_time': row['published_time']
@@ -67,10 +93,10 @@ def perform_sentiment_analysis(file_name: str, target_entities: list, dataset_na
             # VADER (general sentiment analysis for the entire sentence)
             sentiment_vader = vader_sentiment(sentence)
 
-            # store VADER result (doesn't target specific entities)
+            # store VADER result
             vader_results.append({
                 'Model': 'VADER',
-                'Sentence': sentence,
+                'Sentence': original_sentence,
                 'Sentiment': sentiment_vader,
                 'published_time': row['published_time']
             })
@@ -115,6 +141,7 @@ def calculate_sentiment_dist(tsc_results_df: pd.DataFrame, vader_results_df: pd.
 
 def calculate_sentiment_over_time(tsc_results_df: pd.DataFrame, vader_results_df: pd.DataFrame, dataset_name: str):
     # process TSC results by month
+    tsc_results_df['published_time'] = pd.to_datetime(tsc_results_df['published_time'], format='%Y-%m-%d')
     tsc_results_df['month'] = tsc_results_df['published_time'].dt.to_period('M')  # Convert date to monthly periods
     tsc_sentiment_counts = tsc_results_df.pivot_table(
         index=['month'],  # group by month
@@ -127,6 +154,7 @@ def calculate_sentiment_over_time(tsc_results_df: pd.DataFrame, vader_results_df
     tsc_sentiment_proportions = tsc_sentiment_counts.div(tsc_sentiment_counts.sum(axis=1), axis=0)
 
     # process VADER results by month
+    vader_results_df['published_time'] = pd.to_datetime(vader_results_df['published_time'], format='%Y-%m-%d')
     vader_results_df['month'] = vader_results_df['published_time'].dt.to_period('M')  # Convert date to monthly periods
     vader_sentiment_counts = vader_results_df.pivot_table(
         index=['month'],  # group by month
@@ -147,9 +175,6 @@ def calculate_sentiment_over_time(tsc_results_df: pd.DataFrame, vader_results_df
     plt.ylabel('Proportion of Sentiment')
     plt.legend(title='Sentiment', loc='center left', bbox_to_anchor=(1, 0.5))
     plt.xticks(rotation=60)
-    plt.tight_layout()
-    plt.savefig(f"Plots/sentiment_over_time_{dataset_name}.png")
-    plt.show()
 
     # Plot 2: VADER Sentiment Proportions Over Time (Monthly)
     plt.subplot(12, 6, 2)
@@ -159,48 +184,61 @@ def calculate_sentiment_over_time(tsc_results_df: pd.DataFrame, vader_results_df
     plt.ylabel('Proportion of Sentiment')
     plt.legend(title='Sentiment', loc='center left', bbox_to_anchor=(1, 0.5))
     plt.xticks(rotation=60)
+    # plt.tight_layout()
+    # plt.show()
+
     plt.tight_layout()
+    plt.savefig(f"Plots/sentiment_over_time_{dataset_name}.png")
     plt.show()
 
 
 # generate word cloud for VADER sentiment (positive, negative, neutral)
-def wc_vader(sentiment_label, df):
+def wc_vader(sentiment_label, df, dataset_name: str):
     sentences = " ".join(df[df['Sentiment'] == sentiment_label]['Sentence'])
 
     if sentences:
         wordcloud = WordCloud(width=800, height=400, background_color='white').generate(sentences)
-        plt.figure(figsize=(10, 5))
+        # plt.figure(figsize=(10, 5))
         plt.imshow(wordcloud, interpolation='bilinear')
         plt.axis('off')
-        plt.title(f'Word Cloud for {sentiment_label.capitalize()} Sentences (VADER) - Gaza Before Conflict')
-        plt.show()
+        plt.title(f'Word Cloud for {sentiment_label.capitalize()} Sentences (VADER) - {dataset_name}')
+        # plt.show()
 
 
 # generate word cloud for TSC sentiment (positive, negative, neutral)
-def wc_tsc(sentiment_label, df):
+def wc_tsc(sentiment_label, df, dataset_name: str):
     sentences = " ".join(df[df['Sentiment'] == sentiment_label]['Sentence'])
 
     if sentences:
         wordcloud = WordCloud(width=800, height=400, background_color='white').generate(sentences)
-        plt.figure(figsize=(10, 5))
+        # plt.figure(figsize=(10, 5))
         plt.imshow(wordcloud, interpolation='bilinear')
         plt.axis('off')
-        plt.title(f'Word Cloud for {sentiment_label.capitalize()} Sentences (TSC) - Gaza Before Conflict')
-        plt.show()
+        plt.title(f'Word Cloud for {sentiment_label.capitalize()} Sentences (TSC) - {dataset_name}')
+        # plt.show()
 
 
 def generate_word_clouds(tsc_results_df: pd.DataFrame, vader_results_df: pd.DataFrame, dataset_name: str):
-    wc_vader('positive', vader_results_df)
-    wc_vader('negative', vader_results_df)
-    wc_vader('neutral', vader_results_df)
+    plt.figure(figsize=(16, 14))
+    plt.subplot(3, 2, 1)
+    wc_vader('positive', vader_results_df, dataset_name)
+    plt.subplot(3, 2, 3)
+    wc_vader('negative', vader_results_df, dataset_name)
+    plt.subplot(3, 2, 5)
+    wc_vader('neutral', vader_results_df, dataset_name)
 
-    wc_tsc('positive', tsc_results_df)
-    wc_tsc('negative', tsc_results_df)
-    wc_tsc('neutral', tsc_results_df)
-    # TODO: save word clouds to files (also for NER)
+    plt.subplot(3, 2, 2)
+    wc_tsc('positive', tsc_results_df, dataset_name)
+    plt.subplot(3, 2, 4)
+    wc_tsc('negative', tsc_results_df, dataset_name)
+    plt.subplot(3, 2, 6)
+    wc_tsc('neutral', tsc_results_df, dataset_name)
+    plt.tight_layout()
+    plt.savefig(f"Plots/sentiment_wordclouds_{dataset_name}.png")
+    plt.show()
 
 
-def calculate_sentiment_dist_per_target(tsc_results_df: pd.DataFrame, dataset_name: str, output_file: str):
+def calculate_sentiment_dist_per_target(tsc_results_df: pd.DataFrame, dataset_name: str):
     # overall sentiment distribution per target
 
     # group by target and sentiment, count the occurrences
@@ -229,7 +267,7 @@ def calculate_sentiment_dist_per_target(tsc_results_df: pd.DataFrame, dataset_na
     plt.show()
 
 
-def calculate_sentiment_over_time_per_target(tsc_results_df: pd.DataFrame, dataset_name: str, output_file: str):
+def calculate_sentiment_over_time_per_target(tsc_results_df: pd.DataFrame, dataset_name: str):
     # sentiment over time by target - monthly
 
     tsc_results_df['published_time'] = pd.to_datetime(
@@ -261,7 +299,7 @@ def calculate_sentiment_over_time_per_target(tsc_results_df: pd.DataFrame, datas
         plt.show()
 
 
-def sentiment_dist_over_time_by_target(tsc_results_df: pd.DataFrame, dataset_name: str, output_file: str):
+def caluclate_sentiment_dist_over_time_by_target(tsc_results_df: pd.DataFrame, dataset_name: str):
     tsc_results_df['published_time'] = pd.to_datetime(tsc_results_df['published_time'])
     tsc_results_df['month'] = tsc_results_df['published_time'].dt.to_period('M')
 
@@ -275,12 +313,13 @@ def sentiment_dist_over_time_by_target(tsc_results_df: pd.DataFrame, dataset_nam
 
     # heatmap showing the proportion of positive sentiment by target over time (monthly)
     plt.figure(figsize=(12, 8))
-    sns.heatmap(heatmap_data_postive, cmap='Greens', annot=False, cbar=True)
+    sns.heatmap(heatmap_data_positive, cmap='Greens', annot=False, cbar=True)
     plt.title(f'Proportion of Positive Sentiment by Target Over Time (Monthly) - {dataset_name}')
     plt.xlabel('Month')
     plt.ylabel('Target')
     plt.xticks(rotation=45)
     plt.tight_layout()
+    plt.savefig(f"Plots/positive_sentiment_over_time_by_target_{dataset_name}.png")
     plt.show()
 
     # heatmap showing the proportion of negative sentiment by target over time (monthly)
@@ -291,23 +330,39 @@ def sentiment_dist_over_time_by_target(tsc_results_df: pd.DataFrame, dataset_nam
     plt.ylabel('Target')
     plt.xticks(rotation=45)
     plt.tight_layout()
+    plt.savefig(f"Plots/negative_sentiment_over_time_by_target_{dataset_name}.png")
     plt.show()
 
     # heatmap showing the proportion of neutral sentiment by target over time (monthly)
     plt.figure(figsize=(12, 8))
-    sns.heatmap(heatmap_data, cmap='Greys', annot=False, cbar=True)
+    sns.heatmap(heatmap_data_neutral, cmap='Greys', annot=False, cbar=True)
     plt.title(f'Proportion of Neutral Sentiment by Target Over Time (Monthly) - {dataset_name}')
     plt.xlabel('Month')
     plt.ylabel('Target')
     plt.xticks(rotation=45)
     plt.tight_layout()
+    plt.savefig(f"Plots/neutral_sentiment_over_time_by_target_{dataset_name}.png")
     plt.show()
-
-    #TODO: save those figures maybe as one with three subplots
 
 
 def main():
-    pass
+    file_name = "../Data/gaza_textcontain_after_new_preprocessed.csv"
+    dict_name = "dict_gaza.csv"
+    dataset_name = "Gaza during conflict"
+    target_entities = [
+        "Palestinian-Israeli Conflict", "Israel", "Gaza", "Palestine", "US",
+        "China", "West", "Saudi Arabia", "West Bank", "Middle East",
+        "Houthi", "Hamas", "Rafah", "UN", "Wang Yi",
+        "Joe Biden", "Antony Blinken", "Zhang Jun", "Xi Jinping", "Benjamin Netanyahu",
+        "Antonio Guterres", "EU", "EU Union"
+    ]
+    tsc_results_df = pd.read_csv(f'Results/tsc_{dataset_name}.csv')
+    vader_results_df = pd.read_csv(f'Results/vader_{dataset_name}.csv')
+    calculate_sentiment_dist(tsc_results_df, vader_results_df, dataset_name)
+    calculate_sentiment_over_time(tsc_results_df, vader_results_df, dataset_name)
+    generate_word_clouds(tsc_results_df, vader_results_df, dataset_name)
+    calculate_sentiment_dist_per_target(tsc_results_df, dataset_name)
+    caluclate_sentiment_dist_over_time_by_target(tsc_results_df, dataset_name)
 
 
 if __name__ == '__main__':
