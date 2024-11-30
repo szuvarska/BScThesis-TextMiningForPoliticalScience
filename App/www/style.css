@@ -1,0 +1,104 @@
+.footer {
+    height: 5%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: #f8f9fa;
+}
+
+.navbar-nav .nav-item .nav-link {
+    background-color: #007bff; /* Button background colour */
+    color: white; /* Text colour */
+    border-radius: 50px; /* More rounded corners for pill-shaped buttons */
+    margin: 5px; /* Space between buttons */
+    padding: 15px 30px; /* Increase padding for a larger button */
+    text-align: center; /* Centre-align text */
+    min-width: 120px; /* Ensure all buttons have the same minimum width */
+    display: inline-block; /* Ensure the buttons respect width and alignment */
+    font-weight: bold; /* Optional: Make text bold for better visibility */
+    transition: background-color 0.3s ease; /* Smooth hover transition */
+}
+
+.navbar-nav .nav-item .nav-link:hover {
+    background-color: #0056b3; /* Change background on hover */
+}
+
+.navbar-nav .nav-item .nav-link:not(.active) {
+    cursor: not-allowed; /* Change cursor to indicate that the button is not clickable */
+    opacity: 0.7; /* Optionally, reduce opacity for a more subtle effect */
+}
+
+.navbar-nav .nav-item .nav-link.active {
+    opacity: 1; /* Ensure active button has full opacity */
+}
+
+.main-container {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+    margin-bottom: 60px; /* Create space between main container and footer */
+}
+
+/* Left Container with a black border and no space between border and header */
+.main-left-container {
+    width: 60%;
+    border: 2px solid black; /* Black border */
+    margin: 0; /* No margin inside */
+    padding: 0; /* Remove padding */
+}
+
+/* Right Container with centred content */
+.main-right-container {
+    width: 35%;
+    border: 1px solid #ccc;
+    padding: 10px;
+    display: flex; /* Enable flexbox */
+    flex-direction: column; /* Stack items vertically */
+    align-items: center; /* Centre horizontally */
+    text-align: center; /* Centre-align text */
+}
+
+.text-content {
+    white-space: pre-wrap;
+    overflow: hidden;
+    /*margin-bottom: 5px;*/
+}
+
+/*.view-button {*/
+/*    margin-top: 10px;*/
+/*}*/
+
+#uploaded_text_content {
+    width: 100%; /* Ensure it takes the full width of its container */
+    word-wrap: break-word; /* Break long words to prevent horizontal scrolling */
+    white-space: pre-wrap; /* Preserve whitespace and wrap text to fit within the width */
+    overflow-x: hidden; /* Prevent horizontal scrolling */
+}
+
+#uploaded_text_header {
+    background-color: #007bff; /* Blue background for the header */
+    color: white; /* White text */
+    padding: 10px; /* Add padding for the header itself */
+    border-radius: 5px; /* Rounded corners */
+    text-align: center; /* Centre-align text */
+    font-weight: bold; /* Bold text */
+}
+
+/* "Upload a text file" input */
+#file_upload-label {
+    background-color: #007bff; /* Blue background */
+    color: white; /* White text for contrast */
+    border-radius: 25px; /* Rounded frame */
+    padding: 10px 20px; /* Adjust padding for a larger frame */
+    display: inline-block; /* Make the label behave like a button */
+    cursor: pointer; /* Change cursor to indicate clickability */
+    font-weight: bold; /* Bold text for better visibility */
+    transition: background-color 0.3s ease; /* Smooth hover effect */
+}
+
+#file_upload-label:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}
