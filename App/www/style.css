@@ -80,6 +80,10 @@ body .nav-underline {
     padding: 20px; /* Internal padding for content */
     /*margin-bottom: 20px; !* Space between content and plots *!*/
     background-color: var(--container-color); /* Apply container color */
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 4%;
 }
 .article-container {
     width: 100%; /* Take full width when right container is hidden */
@@ -87,6 +91,17 @@ body .nav-underline {
     padding: 10px; /* Internal padding for content */
     margin-bottom: 20px; /* Space between content and plots */
 }
+.main-left-container .article-container:first-child,
+.main-left-container .article-container:nth-child(2)  {
+    width: 48%;
+}
+
+/* For the single module */
+.single-module .article-container.single-article-container {
+
+    width: 100% !important; /* Full width */
+}
+
 
 /* Right container (initially visible) */
 .main-right-container {
@@ -106,18 +121,14 @@ body .nav-underline {
     margin-bottom: 20px;
 }
 
-/*.view-button {*/
-/*    margin-top: 10px;*/
-/*}*/
-
-#uploaded_text_content {
+#uploaded_text_content, #uploaded_text_content_1, #uploaded_text_content_2 {
     width: 100%; /* Ensure it takes the full width of its container */
     word-wrap: break-word; /* Break long words to prevent horizontal scrolling */
     white-space: pre-wrap; /* Preserve whitespace and wrap text to fit within the width */
     overflow-x: hidden; /* Prevent horizontal scrolling */
 }
 
-#uploaded_text_header {
+#uploaded_text_header, #uploaded_text_header_1, #uploaded_text_header_2 {
     background-color: var(--primary-color); /* Blue background for the header */
     color: var(--text-color); /* White text */
     padding: 20px; /* Add padding for the header itself */
@@ -129,7 +140,7 @@ body .nav-underline {
 }
 
 /* "Upload a text file" input */
-#file_upload-label {
+.control-label {
     background-color: var(--primary-color); /* Blue background */
     color: var(--text-color); /* White text for contrast */
     border-radius: 25px; /* Rounded frame */
@@ -138,10 +149,15 @@ body .nav-underline {
     cursor: pointer; /* Change cursor to indicate clickability */
     font-weight: bold; /* Bold text for better visibility */
     transition: background-color 0.3s ease; /* Smooth hover effect */
+    text-transform: uppercase;
 }
 
-#file_upload-label:hover {
+.control-label:hover {
     background-color: var(--secondary-color); /* Darker blue on hover */
+}
+
+#file_upload_2-label{
+    display: none;
 }
 
 .right-tab {
