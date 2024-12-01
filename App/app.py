@@ -37,6 +37,7 @@ def render_article_content(lines, view_full_text):
     return content
 
 
+
 def generate_histogram():
     data = np.random.randn(1000)  # Random data for the histogram
     plt.figure(figsize=(6, 4))
@@ -116,6 +117,8 @@ app_ui = ui.page_fluid(
 def server(input, output, session):
     view_full_text = reactive.Value(False)
     layout_state = reactive.Value(True)
+    view_full_text_1 = reactive.Value(False)
+    view_full_text_2 = reactive.Value(False)
 
     # Toggle full text view
     @reactive.Effect
@@ -124,6 +127,24 @@ def server(input, output, session):
         view_full_text.set(not view_full_text.get())
         new_label = "View less" if view_full_text.get() else "View more"
         session.send_input_message("view_full_text", {"label": new_label})
+
+    @reactive.Effect
+    @reactive.event(input.view_full_text_1)
+    def toggle_view_full_text_1():
+        # Toggle the full text view state for article 1
+        view_full_text_1.set(not view_full_text_1.get())
+        # Update the button label for article 1
+        new_label = "View less" if view_full_text_1.get() else "View more"
+        session.send_input_message("view_full_text_1", {"label": new_label})
+
+    @reactive.Effect
+    @reactive.event(input.view_full_text_2)
+    def toggle_view_full_text_2():
+        # Toggle the full text view state for article 2
+        view_full_text_2.set(not view_full_text_2.get())
+        # Update the button label for article 2
+        new_label = "View less" if view_full_text_2.get() else "View more"
+        session.send_input_message("view_full_text_2", {"label": new_label})
 
     # File handling and content display for single article
     @output
@@ -155,9 +176,7 @@ def server(input, output, session):
     @render.text
     def uploaded_text_content_1():
         _, lines = handle_file_upload(input.file_upload_1)
-        if lines:
-            return render_article_content(lines, view_full_text)
-        return "No file uploaded"
+        return render_article_content(lines, view_full_text_1) if lines else "No file uploaded"
 
     # File handling and content display for the second article in double mode
     @output
@@ -172,9 +191,7 @@ def server(input, output, session):
     @render.text
     def uploaded_text_content_2():
         _, lines = handle_file_upload(input.file_upload_2)
-        if lines:
-            return render_article_content(lines, view_full_text)
-        return "No file uploaded"
+        return render_article_content(lines, view_full_text_2) if lines else "No file uploaded"
 
     # Plot generation
     @output
