@@ -1,25 +1,25 @@
 :root {
-    --primary-color: #0096b1;  /* Custom primary color */
-    --secondary-color: #0056b3;  /* Custom secondary color */
-    --background-color: #d7d7d7;  /* Custom background color */
-    --container-color: #fdfdfd;  /* Custom container color */
+    --primary-color: #0096b1;
+    --secondary-color: #0056b3;
+    --background-color: #d7d7d7;
+    --container-color: #fdfdfd;
     --app-title-color: #535353;
-    --text-color: #000000;  /* Custom text color */
+    --text-color: #000000;
 }
 
 body {
-    background-color: var(--background-color) !important;  /* Apply background color */
-    color: var(--text-color);  /* Apply text color */
+    background-color: var(--background-color) !important;
+    color: var(--text-color);
 }
 
 body .navbar.navbar-default {
-    background-color: var(--background-color) !important;  /* Apply background color */
-    border-color: var(--background-color);  /* Apply border color */
+    background-color: var(--background-color) !important;
+    border-color: var(--background-color);
 }
 
 body .nav-underline {
-    --bs-nav-underline-gap: 0.5rem;  /* Decrease the gap to 0.5rem */
-    gap: var(--bs-nav-underline-gap) !important;  /* Ensure gap is applied */
+    --bs-nav-underline-gap: 0.5rem;
+    gap: var(--bs-nav-underline-gap) !important;
 }
 
 .footer {
@@ -34,76 +34,71 @@ body .nav-underline {
 }
 
 .navbar .navbar-brand {
-    color: var(--app-title-color) !important;  /* Set the desired color (e.g., red-orange) */
-    font-weight: bold;  /* Make the title bold */
+    color: var(--app-title-color) !important;
+    font-weight: bold;
     font-size: 35px;
     background-color: var(--background-color);
 }
 
 .navbar-nav .nav-item .nav-link {
-    background-color: var(--primary-color); /* Button background colour */
-    color: var(--text-color); /* Text colour */
-    border-radius: 50px; /* More rounded corners for pill-shaped buttons */
+    background-color: var(--primary-color);
+    color: var(--text-color);
+    border-radius: 50px;
     border: 0;
-    margin: 1px; /* Space between buttons */
-    padding: 10px 50px; /* Increase padding for a larger button */
-    text-align: center; /* Centre-align text */
-    min-width: 170px; /* Ensure all buttons have the same minimum width */
-    display: inline-block; /* Ensure the buttons respect width and alignment */
-    font-weight: bold; /* Optional: Make text bold for better visibility */
-    transition: background-color 0.3s ease; /* Smooth hover transition */
+    margin: 1px;
+    padding: 10px 50px;
+    text-align: center;
+    min-width: 170px;
+    display: inline-block;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
     font-size: 22px;
 }
 
 .navbar-nav .nav-item .nav-link:hover {
-    background-color: var(--secondary-color); /* Change background on hover */
+    background-color: var(--secondary-color);
 }
 
 .navbar-nav .nav-item .nav-link:not(.active) {
-    opacity: 0.7; /* Optionally, reduce opacity for a more subtle effect */
+    opacity: 0.7;
 }
 
 .navbar-nav .nav-item .nav-link.active {
-    opacity: 1; /* Ensure active button has full opacity */
+    opacity: 1;
 }
 
 .main-container {
     display: flex;
     justify-content: space-between;
-    transition: all 0.3s ease; /* Smooth transition */
-    margin-bottom: 60px; /* Space between main container and footer */
+    transition: all 0.3s ease;
+    margin-bottom: 60px;
 }
 
-/* Left container (expands when right container is hidden) */
 .main-left-container {
-    width: 100%; /* Take full width when right container is hidden */
-    padding: 20px; /* Internal padding for content */
-    /*margin-bottom: 20px; !* Space between content and plots *!*/
-    background-color: var(--container-color); /* Apply container color */
+    width: 100%;
+    padding: 20px;
+    background-color: var(--container-color);
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     gap: 4%;
 }
 .article-container {
-    width: 100%; /* Take full width when right container is hidden */
-    border: 2px solid black; /* Black border */
-    padding: 10px; /* Internal padding for content */
-    margin-bottom: 20px; /* Space between content and plots */
+    width: 100%;
+    border: 2px solid black;
+    padding: 10px;
+    margin-bottom: 20px;
 }
 .main-left-container .article-container:first-child,
 .main-left-container .article-container:nth-child(2)  {
     width: 48%;
 }
 
-/* For the single module */
 .single-module .article-container.single-article-container {
 
-    width: 100% !important; /* Full width */
+    width: 100% !important;
 }
 
-
-/* Right container (initially visible) */
 .main-right-container {
     width: 20%;
     border: 1px solid #ccc;
@@ -112,7 +107,7 @@ body .nav-underline {
     flex-direction: column;
     align-items: center;
     text-align: center;
-    transition: all 0.3s ease; /* Smooth transition */
+    transition: all 0.3s ease;
 }
 
 .text-content {
@@ -122,38 +117,37 @@ body .nav-underline {
 }
 
 #uploaded_text_content, #uploaded_text_content_1, #uploaded_text_content_2 {
-    width: 100%; /* Ensure it takes the full width of its container */
-    word-wrap: break-word; /* Break long words to prevent horizontal scrolling */
-    white-space: pre-wrap; /* Preserve whitespace and wrap text to fit within the width */
-    overflow-x: hidden; /* Prevent horizontal scrolling */
+    width: 100%;
+    word-wrap: break-word;
+    white-space: pre-wrap;
+    overflow-x: hidden;
 }
 
 #uploaded_text_header, #uploaded_text_header_1, #uploaded_text_header_2 {
-    background-color: var(--primary-color); /* Blue background for the header */
-    color: var(--text-color); /* White text */
-    padding: 20px; /* Add padding for the header itself */
-    border-radius: 5px; /* Rounded corners */
-    text-align: center; /* Centre-align text */
-    font-weight: 600; /* Bold text */
+    background-color: var(--primary-color);
+    color: var(--text-color);
+    padding: 20px;
+    border-radius: 5px;
+    text-align: center;
+    font-weight: 600;
     font-size: 20px;
     text-transform: uppercase;
 }
 
-/* "Upload a text file" input */
 .control-label {
-    background-color: var(--primary-color); /* Blue background */
-    color: var(--text-color); /* White text for contrast */
-    border-radius: 25px; /* Rounded frame */
-    padding: 12px 30px; /* Adjust padding for a larger frame */
-    display: inline-block; /* Make the label behave like a button */
-    cursor: pointer; /* Change cursor to indicate clickability */
-    font-weight: bold; /* Bold text for better visibility */
-    transition: background-color 0.3s ease; /* Smooth hover effect */
+    background-color: var(--primary-color);
+    color: var(--text-color);
+    border-radius: 25px;
+    padding: 12px 30px;
+    display: inline-block;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
     text-transform: uppercase;
 }
 
 .control-label:hover {
-    background-color: var(--secondary-color); /* Darker blue on hover */
+    background-color: var(--secondary-color);
 }
 
 #file_upload_2-label{
@@ -163,32 +157,31 @@ body .nav-underline {
 .right-tab {
     position: fixed;
     top: 50%;
-    right: -10px; /* Position the tab outside of the screen */
+    right: -10px;
     transform: translateY(-50%);
     background-color: var(--primary-color);
     color: var(--text-color);
     padding: 10px;
     border-radius: 5px 5px 0 0;
     cursor: pointer;
-    display: none; /* Initially hidden */
+    display: none;
 }
 
-/* Show the tab when right container is hidden */
 .right-tab.show {
     display: block;
 }
 
 .plots-container {
-    display: flex;  /* Flexbox layout */
-    gap: 4%; /* Add space between the plots */
-    margin-top: 20px; /* Space above the plots */
+    display: flex;
+    gap: 4%;
+    margin-top: 20px;
 }
 
 .plot-image {
-    width: 48%; /* Each plot takes 48% of the width, leaving space between them */
-    border: 2px solid black; /* Black border for the plots */
-    padding: 10px; /* Padding inside the image container */
-    box-sizing: border-box; /* Ensure padding is included in width calculation */
+    width: 48%;
+    border: 2px solid black;
+    padding: 10px;
+    box-sizing: border-box;
 }
 
 .container-fluid{

@@ -9,7 +9,6 @@ here = Path(__file__).parent
 
 
 def handle_file_upload(file_input):
-    """Handle file upload and return the file content."""
     file_info = file_input()
     if file_info is None or len(file_info) == 0:
         return None, None
@@ -26,7 +25,6 @@ def handle_file_upload(file_input):
 
 
 def render_article_content(lines, view_full_text):
-    """Render the content of the article based on the view state."""
     if len(lines) < 8:
         return "Invalid file format"
     if view_full_text.get():
@@ -35,7 +33,6 @@ def render_article_content(lines, view_full_text):
         first_five_sentences = lines[7:12]
         content = "\n".join(line.strip() for line in first_five_sentences)
     return content
-
 
 
 def generate_histogram():
@@ -56,7 +53,7 @@ single_module = ui.tags.div(
             ui.input_action_button("view_full_text", "View more", class_="btn btn-primary view-button"),
             class_="article-container single-article-container"
         ),
-        ui.output_ui("single_mode_plots"),  # Include the plots here
+        ui.output_ui("single_mode_plots"),
         class_="main-left-container single-module"
     ),
     ui.tags.div(
@@ -68,23 +65,23 @@ single_module = ui.tags.div(
 )
 
 double_module = ui.tags.div(
-    ui.tags.div(  # Left container
-        ui.tags.div(  # Article 1
+    ui.tags.div(
+        ui.tags.div(
             ui.tags.h3(ui.output_text("uploaded_text_header_1")),
             ui.tags.div(ui.output_text_verbatim("uploaded_text_content_1"), class_="text-content"),
             ui.input_action_button("view_full_text_1", "View more", class_="btn btn-primary view-button"),
             class_="article-container"
         ),
-        ui.tags.div(  # Article 2
+        ui.tags.div(
             ui.tags.h3(ui.output_text("uploaded_text_header_2")),
             ui.tags.div(ui.output_text_verbatim("uploaded_text_content_2"), class_="text-content"),
             ui.input_action_button("view_full_text_2", "View more", class_="btn btn-primary view-button"),
             class_="article-container"
         ),
-        ui.output_ui("double_mode_plots"),  # Include the plots here
+        ui.output_ui("double_mode_plots"),
         class_="main-left-container"
     ),
-    ui.tags.div(  # Right container
+    ui.tags.div(
         ui.input_file("file_upload_1", "Upload article"),
         ui.input_file("file_upload_2", "Upload the second article"),
         class_="main-right-container"
@@ -97,7 +94,7 @@ page_dependencies = ui.tags.head(
 )
 
 page_layout = ui.page_navbar(
-    ui.nav_spacer(),  # Push the navbar items to the right
+    ui.nav_spacer(),
     ui.nav_panel("SINGLE", single_module),
     ui.nav_panel("DOUBLE", double_module),
     ui.nav_panel("ALL", "This is the third 'page'."),
@@ -120,7 +117,6 @@ def server(input, output, session):
     view_full_text_1 = reactive.Value(False)
     view_full_text_2 = reactive.Value(False)
 
-    # Toggle full text view
     @reactive.Effect
     @reactive.event(input.view_full_text)
     def toggle_view_full_text():
@@ -131,22 +127,17 @@ def server(input, output, session):
     @reactive.Effect
     @reactive.event(input.view_full_text_1)
     def toggle_view_full_text_1():
-        # Toggle the full text view state for article 1
         view_full_text_1.set(not view_full_text_1.get())
-        # Update the button label for article 1
         new_label = "View less" if view_full_text_1.get() else "View more"
         session.send_input_message("view_full_text_1", {"label": new_label})
 
     @reactive.Effect
     @reactive.event(input.view_full_text_2)
     def toggle_view_full_text_2():
-        # Toggle the full text view state for article 2
         view_full_text_2.set(not view_full_text_2.get())
-        # Update the button label for article 2
         new_label = "View less" if view_full_text_2.get() else "View more"
         session.send_input_message("view_full_text_2", {"label": new_label})
 
-    # File handling and content display for single article
     @output
     @render.text
     def uploaded_text_header():
@@ -163,7 +154,6 @@ def server(input, output, session):
             return render_article_content(lines, view_full_text)
         return "No file uploaded"
 
-    # File handling and content display for the first article in double mode
     @output
     @render.text
     def uploaded_text_header_1():
@@ -178,7 +168,6 @@ def server(input, output, session):
         _, lines = handle_file_upload(input.file_upload_1)
         return render_article_content(lines, view_full_text_1) if lines else "No file uploaded"
 
-    # File handling and content display for the second article in double mode
     @output
     @render.text
     def uploaded_text_header_2():
@@ -193,7 +182,6 @@ def server(input, output, session):
         _, lines = handle_file_upload(input.file_upload_2)
         return render_article_content(lines, view_full_text_2) if lines else "No file uploaded"
 
-    # Plot generation
     @output
     @render.ui
     def single_mode_plots():
@@ -212,7 +200,6 @@ def server(input, output, session):
             class_="plots-container"
         )
 
-    # Toggle right container visibility based on file upload
     @reactive.Effect
     def update_layout():
         file_info = input.file_upload()
