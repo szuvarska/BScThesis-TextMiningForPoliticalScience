@@ -1,3 +1,27 @@
+:root {
+    --primary-color: #0096b1;  /* Custom primary color */
+    --secondary-color: #0056b3;  /* Custom secondary color */
+    --background-color: #d7d7d7;  /* Custom background color */
+    --container-color: #fdfdfd;  /* Custom container color */
+    --app-title-color: #535353;
+    --text-color: #000000;  /* Custom text color */
+}
+
+body {
+    background-color: var(--background-color) !important;  /* Apply background color */
+    color: var(--text-color);  /* Apply text color */
+}
+
+body .navbar.navbar-default {
+    background-color: var(--background-color) !important;  /* Apply background color */
+    border-color: var(--background-color);  /* Apply border color */
+}
+
+body .nav-underline {
+    --bs-nav-underline-gap: 0.5rem;  /* Decrease the gap to 0.5rem */
+    gap: var(--bs-nav-underline-gap) !important;  /* Ensure gap is applied */
+}
+
 .footer {
     height: 5%;
     display: flex;
@@ -6,28 +30,36 @@
     position: fixed;
     bottom: 0;
     width: 100%;
-    background-color: #f8f9fa;
+    background-color: var(--background-color);
+}
+
+.navbar .navbar-brand {
+    color: var(--app-title-color) !important;  /* Set the desired color (e.g., red-orange) */
+    font-weight: bold;  /* Make the title bold */
+    font-size: 35px;
+    background-color: var(--background-color);
 }
 
 .navbar-nav .nav-item .nav-link {
-    background-color: #007bff; /* Button background colour */
-    color: white; /* Text colour */
+    background-color: var(--primary-color); /* Button background colour */
+    color: var(--text-color); /* Text colour */
     border-radius: 50px; /* More rounded corners for pill-shaped buttons */
-    margin: 5px; /* Space between buttons */
-    padding: 15px 30px; /* Increase padding for a larger button */
+    border: 0;
+    margin: 1px; /* Space between buttons */
+    padding: 10px 50px; /* Increase padding for a larger button */
     text-align: center; /* Centre-align text */
-    min-width: 120px; /* Ensure all buttons have the same minimum width */
+    min-width: 170px; /* Ensure all buttons have the same minimum width */
     display: inline-block; /* Ensure the buttons respect width and alignment */
     font-weight: bold; /* Optional: Make text bold for better visibility */
     transition: background-color 0.3s ease; /* Smooth hover transition */
+    font-size: 22px;
 }
 
 .navbar-nav .nav-item .nav-link:hover {
-    background-color: #0056b3; /* Change background on hover */
+    background-color: var(--secondary-color); /* Change background on hover */
 }
 
 .navbar-nav .nav-item .nav-link:not(.active) {
-    cursor: not-allowed; /* Change cursor to indicate that the button is not clickable */
     opacity: 0.7; /* Optionally, reduce opacity for a more subtle effect */
 }
 
@@ -38,33 +70,40 @@
 .main-container {
     display: flex;
     justify-content: space-between;
-    padding: 20px;
-    margin-bottom: 60px; /* Create space between main container and footer */
+    transition: all 0.3s ease; /* Smooth transition */
+    margin-bottom: 60px; /* Space between main container and footer */
 }
 
-/* Left Container with a black border and no space between border and header */
+/* Left container (expands when right container is hidden) */
 .main-left-container {
-    width: 60%;
+    width: 100%; /* Take full width when right container is hidden */
+    padding: 20px; /* Internal padding for content */
+    /*margin-bottom: 20px; !* Space between content and plots *!*/
+    background-color: var(--container-color); /* Apply container color */
+}
+.article-container {
+    width: 100%; /* Take full width when right container is hidden */
     border: 2px solid black; /* Black border */
-    margin: 0; /* No margin inside */
-    padding: 0; /* Remove padding */
+    padding: 10px; /* Internal padding for content */
+    margin-bottom: 20px; /* Space between content and plots */
 }
 
-/* Right Container with centred content */
+/* Right container (initially visible) */
 .main-right-container {
-    width: 35%;
+    width: 20%;
     border: 1px solid #ccc;
     padding: 10px;
-    display: flex; /* Enable flexbox */
-    flex-direction: column; /* Stack items vertically */
-    align-items: center; /* Centre horizontally */
-    text-align: center; /* Centre-align text */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    transition: all 0.3s ease; /* Smooth transition */
 }
 
 .text-content {
     white-space: pre-wrap;
     overflow: hidden;
-    /*margin-bottom: 5px;*/
+    margin-bottom: 20px;
 }
 
 /*.view-button {*/
@@ -79,20 +118,22 @@
 }
 
 #uploaded_text_header {
-    background-color: #007bff; /* Blue background for the header */
-    color: white; /* White text */
-    padding: 10px; /* Add padding for the header itself */
+    background-color: var(--primary-color); /* Blue background for the header */
+    color: var(--text-color); /* White text */
+    padding: 20px; /* Add padding for the header itself */
     border-radius: 5px; /* Rounded corners */
     text-align: center; /* Centre-align text */
-    font-weight: bold; /* Bold text */
+    font-weight: 600; /* Bold text */
+    font-size: 20px;
+    text-transform: uppercase;
 }
 
 /* "Upload a text file" input */
 #file_upload-label {
-    background-color: #007bff; /* Blue background */
-    color: white; /* White text for contrast */
+    background-color: var(--primary-color); /* Blue background */
+    color: var(--text-color); /* White text for contrast */
     border-radius: 25px; /* Rounded frame */
-    padding: 10px 20px; /* Adjust padding for a larger frame */
+    padding: 12px 30px; /* Adjust padding for a larger frame */
     display: inline-block; /* Make the label behave like a button */
     cursor: pointer; /* Change cursor to indicate clickability */
     font-weight: bold; /* Bold text for better visibility */
@@ -100,5 +141,40 @@
 }
 
 #file_upload-label:hover {
-    background-color: #0056b3; /* Darker blue on hover */
+    background-color: var(--secondary-color); /* Darker blue on hover */
+}
+
+.right-tab {
+    position: fixed;
+    top: 50%;
+    right: -10px; /* Position the tab outside of the screen */
+    transform: translateY(-50%);
+    background-color: var(--primary-color);
+    color: var(--text-color);
+    padding: 10px;
+    border-radius: 5px 5px 0 0;
+    cursor: pointer;
+    display: none; /* Initially hidden */
+}
+
+/* Show the tab when right container is hidden */
+.right-tab.show {
+    display: block;
+}
+
+.plots-container {
+    display: flex;  /* Flexbox layout */
+    gap: 4%; /* Add space between the plots */
+    margin-top: 20px; /* Space above the plots */
+}
+
+.plot-image {
+    width: 48%; /* Each plot takes 48% of the width, leaving space between them */
+    border: 2px solid black; /* Black border for the plots */
+    padding: 10px; /* Padding inside the image container */
+    box-sizing: border-box; /* Ensure padding is included in width calculation */
+}
+
+.container-fluid{
+    padding: 0;
 }
