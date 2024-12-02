@@ -6,7 +6,7 @@ import pandas as pd
 import spacy
 from collections import defaultdict
 import matplotlib.pyplot as plt
-from wordcloud import WordCloud
+from wordcloud import WordCloud, STOPWORDS
 import seaborn as sns
 
 
@@ -192,30 +192,32 @@ def calculate_sentiment_over_time(tsc_results_df: pd.DataFrame, vader_results_df
     plt.show()
 
 
+def clean_sentences(df, sentiment_label):
+    sentences = df[df['Sentiment'] == sentiment_label]['Sentence']
+    sentences = " ".join(sentences)
+    sentences = re.sub(r'\b[a-zA-Z]\b', '', sentences)
+    sentences = re.sub(r'\s+', ' ', sentences).strip()
+    return sentences
+
+
 # generate word cloud for VADER sentiment (positive, negative, neutral)
 def wc_vader(sentiment_label, df, dataset_name: str):
-    sentences = " ".join(df[df['Sentiment'] == sentiment_label]['Sentence'])
-
+    sentences = clean_sentences(df, sentiment_label)
     if sentences:
         wordcloud = WordCloud(width=800, height=400, background_color='white').generate(sentences)
-        # plt.figure(figsize=(10, 5))
         plt.imshow(wordcloud, interpolation='bilinear')
         plt.axis('off')
         plt.title(f'Word Cloud for {sentiment_label.capitalize()} Sentences (VADER) - {dataset_name}')
-        # plt.show()
 
 
 # generate word cloud for TSC sentiment (positive, negative, neutral)
 def wc_tsc(sentiment_label, df, dataset_name: str):
-    sentences = " ".join(df[df['Sentiment'] == sentiment_label]['Sentence'])
-
+    sentences = clean_sentences(df, sentiment_label)
     if sentences:
         wordcloud = WordCloud(width=800, height=400, background_color='white').generate(sentences)
-        # plt.figure(figsize=(10, 5))
         plt.imshow(wordcloud, interpolation='bilinear')
         plt.axis('off')
         plt.title(f'Word Cloud for {sentiment_label.capitalize()} Sentences (TSC) - {dataset_name}')
-        # plt.show()
 
 
 def generate_word_clouds(tsc_results_df: pd.DataFrame, vader_results_df: pd.DataFrame, dataset_name: str):
