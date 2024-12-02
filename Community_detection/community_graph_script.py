@@ -3,6 +3,22 @@ import networkx as nx
 import matplotlib.pyplot as plt
 from collections import defaultdict
 from community import community_louvain
+from tqdm import tqdm
+from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
+
+#from Sentiment.sentiment_script import vader_sentiment
+
+def vader_sentiment(text: str) -> str:
+    vader_analyzer = SentimentIntensityAnalyzer()
+    scores = vader_analyzer.polarity_scores(text)
+    # define the thresholds to categorize it
+    if scores['compound'] >= 0.05:
+        return 'positive'
+    elif scores['compound'] <= -0.05:
+        return 'negative'
+    else:
+        return 'neutral'
+
 
 
 def plot_community_graph(df_ner: pd.DataFrame, df_entities: pd.DataFrame, suptitle: str, title: str,
@@ -10,17 +26,27 @@ def plot_community_graph(df_ner: pd.DataFrame, df_entities: pd.DataFrame, suptit
     df_entities.sort_values(by='Count', ascending=False, inplace=True)
     entities = df_entities.Word.tolist()
     co_occurrence = defaultdict(int)
+    co_sentiment = defaultdict(int)
 
     # iterate through the articles and process with SpaCy to get sentences
-    for article in df_ner['article_text']:
+    for article in tqdm(df_ner['article_text']):
         sentences = article.split('.')
         # iterate through each sentence in the article
         for sentence in sentences:
             present_entities = [entity for entity in entities if entity in sentence]
+            vader_sentiment_score = vader_sentiment(sentence)
             # print(present_entities)
             for i in range(len(present_entities)):
                 for j in range(i + 1, len(present_entities)):
                     co_occurrence[(present_entities[i], present_entities[j])] += 1
+                    if vader_sentiment_score == 'positive':
+                        co_sentiment[(present_entities[i], present_entities[j])] += 1
+                    elif vader_sentiment_score == 'negative':
+                        co_sentiment[(present_entities[i], present_entities[j])] -= 1
+
+    #standarize sentiment
+    for (entity1, entity2), sentiment in co_sentiment.items():
+        co_sentiment[(entity1, entity2)] = sentiment / co_occurrence[(entity1, entity2)]
 
     # creata a graph
     G = nx.Graph()
@@ -45,6 +71,11 @@ def plot_community_graph(df_ner: pd.DataFrame, df_entities: pd.DataFrame, suptit
     partition = community_louvain.best_partition(G, weight='weight')
     for node, community in partition.items():
         G.nodes[node]['community'] = community
+
+    #add sentiment to the edges
+    for (entity1, entity2), sentiment in co_sentiment.items():
+        if entity1 in G.nodes and entity2 in G.nodes and G.has_edge(entity1, entity2):
+            G[entity1][entity2]['sentiment'] = sentiment
 
     # draw the graph
     plt.figure(figsize=(15, 15))
@@ -82,8 +113,22 @@ def plot_community_graph(df_ner: pd.DataFrame, df_entities: pd.DataFrame, suptit
 
     # draw nodes with community colors and egdes with weights
     nx.draw_networkx_nodes(G, pos, node_size=node_sizes, cmap=plt.cm.rainbow, node_color=node_colors)
-    nx.draw_networkx_edges(G, pos, edgelist=edges, width=weights_to_plot, edge_color='gray')
+    #add efges with sentiment as color
+    edge_colors = []
+    for edge in edges:
+        if len(edge[2]) < 2:
+            edge_colors.append(0)
+        else:
+            edge_colors.append(edge[2]['sentiment'])
+
+    # edge_colors = [edge[2]['sentiment'] if edge[2]['sentiment'] is not None else 0 for edge in edges]
+    nx.draw_networkx_edges(G, pos, edgelist=edges, width=weights_to_plot, edge_color=edge_colors, edge_cmap=plt.cm.RdYlGn)
     nx.draw_networkx_labels(G, pos, font_size=10, font_weight='bold')
+    #add legend for the sentiment
+    sm = plt.cm.ScalarMappable(cmap=plt.cm.RdYlGn, norm=plt.Normalize(vmin=-1, vmax=1))
+    sm.set_array([])
+    plt.colorbar(sm, label='Sentiment')
+
 
     # labels = nx.get_edge_attributes(G, 'weight')
     # nx.draw_networkx_edge_labels(G, pos, edge_labels=labels, font_size=8)
