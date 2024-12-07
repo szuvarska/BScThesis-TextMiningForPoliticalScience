@@ -36,9 +36,9 @@ def render_article_content(lines, view_full_text):
 
 
 def generate_histogram():
-    data = np.random.randn(1000)  # Random data for the histogram
+    data = np.random.randn(1000)
     plt.figure(figsize=(6, 4))
-    sns.histplot(data, color="blue", kde=True)  # Use blue color palette
+    sns.histplot(data, color="blue", kde=True)
     plt.xlabel('Value')
     plt.ylabel('Frequency')
     plt.title('Example Histogram')
@@ -237,7 +237,7 @@ def server(input, output, session):
     def right_container_double():
         if right_container_visible_double.get():
             return ui.div(
-                ui.input_file("file_upload_1", "Upload article"),
+                ui.input_file("file_upload_1", "Upload the first article"),
                 ui.input_file("file_upload_2", "Upload the second article"),
                 ui.input_action_button("hide_container_button_double", "Hide Menu", class_="btn btn-secondary"),
                 class_="main-right-container",
