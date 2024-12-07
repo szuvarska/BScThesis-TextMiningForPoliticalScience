@@ -56,11 +56,7 @@ single_module = ui.tags.div(
         ui.output_ui("single_mode_plots"),
         class_="main-left-container single-module"
     ),
-    ui.tags.div(
-        ui.input_file("file_upload", "UPLOAD ARTICLE"),
-        class_="main-right-container",
-        id="main-right-container"
-    ),
+    ui.output_ui("right_container_single"),
     class_="main-container",
 )
 
@@ -81,11 +77,7 @@ double_module = ui.tags.div(
         ui.output_ui("double_mode_plots"),
         class_="main-left-container"
     ),
-    ui.tags.div(
-        ui.input_file("file_upload_1", "Upload article"),
-        ui.input_file("file_upload_2", "Upload the second article"),
-        class_="main-right-container"
-    ),
+    ui.output_ui("right_container_double"),
     class_="main-container"
 )
 
@@ -113,9 +105,11 @@ app_ui = ui.page_fluid(
 
 def server(input, output, session):
     view_full_text = reactive.Value(False)
-    layout_state = reactive.Value(True)
     view_full_text_1 = reactive.Value(False)
     view_full_text_2 = reactive.Value(False)
+    right_container_visible_single = reactive.Value(True)
+    right_container_visible_double = reactive.Value(True)
+    right_container_visible_all = reactive.Value(True)
 
     @reactive.Effect
     @reactive.event(input.view_full_text)
@@ -201,20 +195,59 @@ def server(input, output, session):
         )
 
     @reactive.Effect
-    def update_layout():
-        file_info = input.file_upload()
-        if file_info and len(file_info) > 0:
-            layout_state.set(False)
-        else:
-            layout_state.set(True)
+    @reactive.event(input.hide_container_button_single)
+    def toggle_container_visibility_single():
+        right_container_visible_single.set(not right_container_visible_single.get())
+
+    @reactive.Effect
+    @reactive.event(input.hide_container_button_double)
+    def toggle_container_visibility_double():
+        right_container_visible_double.set(not right_container_visible_double.get())
+
+    @reactive.Effect
+    @reactive.event(input.file_upload)
+    def auto_hide_container_single():
+        right_container_visible_single.set(False)
+
+    @reactive.Effect
+    @reactive.event(input.file_upload_1, input.file_upload_2)
+    def auto_hide_container_double():
+        if input.file_upload_1() and input.file_upload_2():
+            right_container_visible_double.set(False)
 
     @output
     @render.ui
-    def right_container():
-        if layout_state.get():
+    def right_container_single():
+        if right_container_visible_single.get():
             return ui.div(
                 ui.input_file("file_upload", "UPLOAD ARTICLE"),
-                class_="main-right-container"
+                ui.input_action_button("hide_container_button_single", "Hide Menu", class_="btn btn-secondary"),
+                class_="main-right-container",
+                id="main-right-container-single"
+            )
+        else:
+            return ui.div(
+                ui.input_action_button("hide_container_button_single", "Show Menu", class_="show-container-tab"),
+                class_="main-right-container hidden",
+                id="main-right-container-single"
+            )
+
+    @output
+    @render.ui
+    def right_container_double():
+        if right_container_visible_double.get():
+            return ui.div(
+                ui.input_file("file_upload_1", "Upload article"),
+                ui.input_file("file_upload_2", "Upload the second article"),
+                ui.input_action_button("hide_container_button_double", "Hide Menu", class_="btn btn-secondary"),
+                class_="main-right-container",
+                id="main-right-container-double"
+            )
+        else:
+            return ui.div(
+                ui.input_action_button("hide_container_button_double", "Show Menu", class_="show-container-tab"),
+                class_="main-right-container hidden",
+                id="main-right-container-double"
             )
 
 

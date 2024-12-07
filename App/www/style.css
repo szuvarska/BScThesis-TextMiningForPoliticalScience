@@ -187,3 +187,31 @@ body .nav-underline {
 .container-fluid{
     padding: 0;
 }
+
+.main-right-container.hidden {
+    width: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.show-container-tab {
+    position: fixed;
+    top: 30%;
+    right: -10px;
+    transform: translateY(-50%);
+    background-color: var(--primary-color);
+    color: var(--text-color);
+    padding: 10px;
+    border-radius: 5px 5px 0 0;
+    cursor: pointer;
+    display: block;
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+}
+
+.main-container.full-width .main-left-container {
+    width: 100%;
+}
