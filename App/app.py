@@ -36,9 +36,9 @@ def render_article_content(lines, view_full_text):
 
 
 def generate_histogram():
-    data = np.random.randn(1000)  # Random data for the histogram
+    data = np.random.randn(1000)
     plt.figure(figsize=(6, 4))
-    sns.histplot(data, color="blue", kde=True)  # Use blue color palette
+    sns.histplot(data, color="blue", kde=True)
     plt.xlabel('Value')
     plt.ylabel('Frequency')
     plt.title('Example Histogram')
@@ -81,6 +81,15 @@ double_module = ui.tags.div(
     class_="main-container"
 )
 
+all_module = ui.tags.div(
+    ui.tags.div(
+        ui.output_ui("all_mode_plots"),
+        class_="main-left-container"
+    ),
+    ui.output_ui("right_container_all"),
+    class_="main-container"
+)
+
 page_dependencies = ui.tags.head(
     ui.tags.link(rel="stylesheet", type="text/css", href="style.css")
 )
@@ -89,7 +98,7 @@ page_layout = ui.page_navbar(
     ui.nav_spacer(),
     ui.nav_panel("SINGLE", single_module),
     ui.nav_panel("DOUBLE", double_module),
-    ui.nav_panel("ALL", "This is the third 'page'."),
+    ui.nav_panel("ALL", all_module),
     title="PRESS ARTICLES EXPLORATION",
     footer=ui.tags.div(
         ui.tags.div("Łukasz Grabarski & Marta Szuwarska", class_="footer")
@@ -194,6 +203,45 @@ def server(input, output, session):
             class_="plots-container"
         )
 
+    # @output
+    # @render.ui
+    # def all_mode_plots():
+    #     dataset_name = input.dataset_filter()
+    #     sentiment = input.sentiment_filter()
+    #     entity_types_img_src = f'NER/entity_types_{dataset_name}.png'
+    #     most_common_entities_img_src = f'NER/most_common_entities_{dataset_name}.png'
+    #     sentiment_over_time_by_target = f'Sentiment/{sentiment}_sentiment_over_time_by_target_{dataset_name}.png'
+    #     return ui.div(
+    #         ui.img(src=entity_types_img_src,
+    #                class_="plot-image") if entity_types_img_src else "Entity types image not available",
+    #         ui.img(src=most_common_entities_img_src,
+    #               class_="plot-image") if most_common_entities_img_src else "Most common entities image not available",
+    #         ui.img(src=sentiment_over_time_by_target,
+    #                class_="plot-image") if sentiment_over_time_by_target else "Sentiment over time image not available",
+    #         class_="plots-container"
+    #     )
+    @output
+    @render.ui
+    def all_mode_plots():
+        dataset_name = input.dataset_filter()
+        sentiment = input.sentiment_filter().lower()
+        entity_types_img_src = f'NER/entity_types_{dataset_name}.png'
+        most_common_entities_img_src = f'NER/most_common_entities_{dataset_name}.png'
+        sentiment_over_time_by_target = f'Sentiment/{sentiment}_sentiment_over_time_by_target_{dataset_name}.png'
+        return ui.div(
+            ui.div(
+                # ui.img(src=entity_types_img_src,
+                #        class_="plot-image entity-types-plot") if entity_types_img_src else "Entity types image not available",
+                ui.img(src=entity_types_img_src, class_="plot-image entity-types-plot"),
+                ui.img(src=most_common_entities_img_src,
+                       class_="plot-image common-entities-plot") if most_common_entities_img_src else "Most common entities image not available",
+                ui.img(src=sentiment_over_time_by_target,
+                       class_="plot-image sentiment-plot") if sentiment_over_time_by_target else "Sentiment over time image not available",
+                class_="plots-row"
+            ),
+            class_="plots-container"
+        )
+
     @reactive.Effect
     @reactive.event(input.hide_container_button_single)
     def toggle_container_visibility_single():
@@ -237,7 +285,7 @@ def server(input, output, session):
     def right_container_double():
         if right_container_visible_double.get():
             return ui.div(
-                ui.input_file("file_upload_1", "Upload article"),
+                ui.input_file("file_upload_1", "Upload the first article"),
                 ui.input_file("file_upload_2", "Upload the second article"),
                 ui.input_action_button("hide_container_button_double", "Hide Menu", class_="btn btn-secondary"),
                 class_="main-right-container",
@@ -249,6 +297,32 @@ def server(input, output, session):
                 class_="main-right-container hidden",
                 id="main-right-container-double"
             )
+
+    @output
+    @render.ui
+    def right_container_all():
+        if right_container_visible_all.get():
+            return ui.div(
+                ui.input_select("dataset_filter", "Select Dataset", choices=[
+                    "Gaza before conflict", "Gaza during conflict",
+                    "Ukraine before conflict", "Ukraine during conflict"
+                ]),
+                ui.input_select("sentiment_filter", "Select Sentiment", choices=["Positive", "Negative", "Neutral"]),
+                ui.input_action_button("hide_container_button_all", "Hide Menu", class_="btn btn-secondary"),
+                class_="main-right-container",
+                id="main-right-container-all"
+            )
+        else:
+            return ui.div(
+                ui.input_action_button("hide_container_button_all", "Show Menu", class_="show-container-tab"),
+                class_="main-right-container hidden",
+                id="main-right-container-all"
+            )
+
+    @reactive.Effect
+    @reactive.event(input.hide_container_button_all)
+    def toggle_container_visibility_all():
+        right_container_visible_all.set(not right_container_visible_all.get())
 
 
 www_dir = Path(__file__).parent / "www"
