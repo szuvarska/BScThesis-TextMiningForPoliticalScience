@@ -191,6 +191,8 @@ def server(input, output, session):
         return ui.div(
             ui.img(src=f"plot1.png", class_="plot-image"),
             ui.img(src=f"plot2.png", class_="plot-image"),
+            ui.img(src=f"plot1.png", class_="plot-image"),
+            ui.img(src=f"plot2.png", class_="plot-image"),
             class_="plots-container"
         )
 
@@ -203,23 +205,6 @@ def server(input, output, session):
             class_="plots-container"
         )
 
-    # @output
-    # @render.ui
-    # def all_mode_plots():
-    #     dataset_name = input.dataset_filter()
-    #     sentiment = input.sentiment_filter()
-    #     entity_types_img_src = f'NER/entity_types_{dataset_name}.png'
-    #     most_common_entities_img_src = f'NER/most_common_entities_{dataset_name}.png'
-    #     sentiment_over_time_by_target = f'Sentiment/{sentiment}_sentiment_over_time_by_target_{dataset_name}.png'
-    #     return ui.div(
-    #         ui.img(src=entity_types_img_src,
-    #                class_="plot-image") if entity_types_img_src else "Entity types image not available",
-    #         ui.img(src=most_common_entities_img_src,
-    #               class_="plot-image") if most_common_entities_img_src else "Most common entities image not available",
-    #         ui.img(src=sentiment_over_time_by_target,
-    #                class_="plot-image") if sentiment_over_time_by_target else "Sentiment over time image not available",
-    #         class_="plots-container"
-    #     )
     @output
     @render.ui
     def all_mode_plots():
@@ -230,9 +215,8 @@ def server(input, output, session):
         sentiment_over_time_by_target = f'Sentiment/{sentiment}_sentiment_over_time_by_target_{dataset_name}.png'
         return ui.div(
             ui.div(
-                # ui.img(src=entity_types_img_src,
-                #        class_="plot-image entity-types-plot") if entity_types_img_src else "Entity types image not available",
-                ui.img(src=entity_types_img_src, class_="plot-image entity-types-plot"),
+                ui.img(src=entity_types_img_src,
+                       class_="plot-image entity-types-plot") if entity_types_img_src else "Entity types image not available",
                 ui.img(src=most_common_entities_img_src,
                        class_="plot-image common-entities-plot") if most_common_entities_img_src else "Most common entities image not available",
                 ui.img(src=sentiment_over_time_by_target,
