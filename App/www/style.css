@@ -170,8 +170,21 @@ body .nav-underline {
 
 .plots-container {
     display: flex;
+    flex-wrap: wrap;
     gap: 4%;
     margin-top: 20px;
+}
+
+img.entity-types-plot {
+    width: 70%;
+}
+
+img.common-entities-plot {
+    width: 100%;
+}
+
+img.sentiment-plot {
+    width: 70%;
 }
 
 .plot-image {
@@ -179,6 +192,13 @@ body .nav-underline {
     border: 2px solid black;
     padding: 10px;
     box-sizing: border-box;
+    margin: 10px;
+    flex: 1 1 30%;
+}
+
+.plots-row .plot-image {
+    display: block;
+    margin: 0 auto 30px;
 }
 
 .container-fluid {
