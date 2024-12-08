@@ -18,8 +18,10 @@ def generate_entity_types_plot(dataset_name: str):
     return find_most_common_entity_types(ner_df, dataset_name, for_shiny=True)
 
 
-def generate_most_common_entities_plot(dataset_name: str, entity_type: str = 'ORG'):
+def generate_most_common_entities_plot(dataset_name: str, entity_type: str):
+    entity_type_mapping = {"Person": "PER", "Organisation": "ORG", "Location": "LOC", "Miscellaneous": "MISC"}
+    entity_type_short = entity_type_mapping.get(entity_type, entity_type)
     dataset_name = dataset_name.replace(' ', '_')[:-9]
     dataset_name = dataset_name.replace('during', 'after')
     ner_df_path = f"../NER_and_ED/Results/{dataset_name}_top_40_entities.csv"
-    return find_most_common_entities_per_type_for_shiny(dataset_name, ner_df_path, entity_type)
+    return find_most_common_entities_per_type_for_shiny(dataset_name, ner_df_path, entity_type, entity_type_short)

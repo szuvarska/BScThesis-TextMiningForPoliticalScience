@@ -11,6 +11,7 @@ import seaborn as sns
 import plotly.express as px
 import plotly.graph_objects as go
 
+
 def standardize_text(text: str, word_dict: dict):
     lower_word_dict = {key.lower(): value for key, value in word_dict.items()}
     sorted_keys = sorted(lower_word_dict.keys(), key=len, reverse=True)
@@ -163,15 +164,12 @@ def calculate_entity_distribution(df: pd.DataFrame, dataset_name: str):
 
     print(df.head())
 
-
     total_words = df['total_words'].sum()
     total_named_entity_words = df['Named_Entity_Words'].sum()
     total_non_entity_words = total_words - total_named_entity_words
 
-
     average_words_per_article = total_words / len(df)
     percentage_named_entity_words = (total_named_entity_words / total_words) * 100
-
 
     print("Total Words: ", total_words)
     print("Total Named Entity Words: ", total_named_entity_words)
@@ -207,8 +205,6 @@ def calculate_entity_distribution(df: pd.DataFrame, dataset_name: str):
     # Save the chart as an HTML file and show it
     fig.write_image(f"Plots/entity_dist_{dataset_name}.png")  # Save to file
     fig.show()  # Display the chart
-
-
 
 
 def count_entity_types(text: str):
@@ -256,7 +252,6 @@ def find_most_common_entity_types(df: pd.DataFrame, dataset_name: str, for_shiny
         # Save the chart as an image and display it
         fig.write_image(f"Plots/entity_types_{dataset_name}.png")  # Save as PNG
         fig.show()  # Show the chart
-
 
 
 def find_most_common_entities_per_type(df: pd.DataFrame, dataset_name: str, output_file: str, for_shiny: bool = False):
@@ -339,7 +334,9 @@ def find_most_common_entities_per_type(df: pd.DataFrame, dataset_name: str, outp
 
     print(f"Visualizations for the top words per entity type have been displayed.")
 
-def find_most_common_entities_per_type_for_shiny(dataset_name: str, output_file: str, entity_type: str):
+
+def find_most_common_entities_per_type_for_shiny(dataset_name: str, output_file: str, entity_type_name: str,
+                                                 entity_type: str):
     # Read the pre-generated data from CSV
     df_top_words = pd.read_csv(output_file)
 
@@ -350,7 +347,7 @@ def find_most_common_entities_per_type_for_shiny(dataset_name: str, output_file:
         x='Count',  # Horizontal bars
         y='Word',
         orientation='h',
-        title=f'Top 15 Words for {entity_type} ({dataset_name})',
+        title=f'Top 15 Words for {entity_type_name} ({dataset_name})',
         labels={'Word': 'Word', 'Count': 'Frequency'},
         color='Count',
         color_continuous_scale='Viridis',
@@ -372,7 +369,6 @@ def find_most_common_entities_per_type_for_shiny(dataset_name: str, output_file:
     )
 
     return fig
-
 
 
 def main():

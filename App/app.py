@@ -220,7 +220,8 @@ def server(input, output, session):
     @render_widget
     def most_common_entities_plot():
         dataset_name = input.dataset_filter()
-        plot = generate_most_common_entities_plot(dataset_name)
+        entity_type = input.entity_type_filter()
+        plot = generate_most_common_entities_plot(dataset_name, entity_type)
         return plot
 
     @output
@@ -310,6 +311,8 @@ def server(input, output, session):
                     "Ukraine before conflict", "Ukraine during conflict"
                 ]),
                 ui.input_select("sentiment_filter", "Select Sentiment", choices=["Positive", "Negative", "Neutral"]),
+                ui.input_select("entity_type_filter", "Select Entity Type",
+                                choices=["Person", "Organisation", "Location", "Miscellaneous"]),
                 ui.input_action_button("hide_container_button_all", "Hide Menu", class_="btn btn-secondary"),
                 class_="main-right-container",
                 id="main-right-container-all"
