@@ -1,9 +1,12 @@
 from pathlib import Path
+import sys
+import pandas as pd
 import seaborn as sns
 from shiny import App, render, ui, reactive
 from htmltools import tags, Tag
 import numpy as np
 import matplotlib.pyplot as plt
+from plots import generate_entity_types_plot
 
 here = Path(__file__).parent
 
@@ -206,17 +209,25 @@ def server(input, output, session):
         )
 
     @output
+    @render.plot
+    def entity_types_plot():
+        dataset_name = input.dataset_filter()
+        plot = generate_entity_types_plot(dataset_name)
+        return plot
+
+    @output
     @render.ui
     def all_mode_plots():
         dataset_name = input.dataset_filter()
         sentiment = input.sentiment_filter().lower()
-        entity_types_img_src = f'NER/entity_types_{dataset_name}.png'
+        # entity_types_img_src = f'NER/entity_types_{dataset_name}.png'
         most_common_entities_img_src = f'NER/most_common_entities_{dataset_name}.png'
         sentiment_over_time_by_target = f'Sentiment/{sentiment}_sentiment_over_time_by_target_{dataset_name}.png'
         return ui.div(
             ui.div(
-                ui.img(src=entity_types_img_src,
-                       class_="plot-image entity-types-plot") if entity_types_img_src else "Entity types image not available",
+                # ui.img(src=entity_types_img_src,
+                #        class_="plot-image entity-types-plot") if entity_types_img_src else "Entity types image not available",
+                ui.output_plot("entity_types_plot"),
                 ui.img(src=most_common_entities_img_src,
                        class_="plot-image common-entities-plot") if most_common_entities_img_src else "Most common entities image not available",
                 ui.img(src=sentiment_over_time_by_target,

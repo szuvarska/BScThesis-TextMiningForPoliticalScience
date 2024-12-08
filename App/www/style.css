@@ -192,6 +192,10 @@ img.entity-types-plot {
     width: 70%;
 }
 
+#entity_types_plot {
+    width: 70%;
+}
+
 img.common-entities-plot {
     width: 100%;
 }
