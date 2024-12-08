@@ -6,6 +6,8 @@ from nltk.probability import FreqDist
 import matplotlib.pyplot as plt
 import seaborn as sns
 from wordcloud import WordCloud
+import plotly.express as px
+import plotly.graph_objects as go
 
 stop_words = stopwords.words('english')
 for w in stopwords.words('english'):
@@ -28,26 +30,122 @@ def perpare_df_for_eda(df: pd.DataFrame) -> [pd.DataFrame, pd.DataFrame]:
     return df, df_pos
 
 def plot_word_cout_distribution(df: pd.DataFrame, df_name: str):
-    plt.figure(figsize=(12, 10))
-    sns.histplot(df.loc[(df['article_category_one'] != "PHOTO") & (df['word_count'] < 2000), 'word_count'], bins=25, kde=True)
-    #plt.xlim(0, 2000)
-    # mean line
-    plt.axvline(df['word_count'].mean(), color='red', linestyle='dashed', linewidth=2, label='Mean')
-    plt.legend()
-    plt.title(f'{df_name} word count distribution')
-    plt.show()
+    # plt.figure(figsize=(12, 10))
+    # sns.histplot(df.loc[(df['article_category_one'] != "PHOTO") & (df['word_count'] < 2000), 'word_count'], bins=25, kde=True)
+    # #plt.xlim(0, 2000)
+    # # mean line
+    # plt.axvline(df['word_count'].mean(), color='red', linestyle='dashed', linewidth=2, label='Mean')
+    # plt.legend()
+    # plt.title(f'{df_name} word count distribution')
+    # plt.show()
     #plt.savefig(f"EDA_plots/{df_name}_word_count_dist_.png")
+    # Filtr danych
+    filtered_data = df.loc[(df['article_category_one'] != "PHOTO") & (df['word_count'] < 2000), 'word_count']
+
+    # Histogram z Plotly Express
+    fig = px.histogram(
+        filtered_data,
+        nbins=25,
+        title=f'{df_name} Word Count Distribution',
+        labels={'value': 'Word Count'},
+    )
+
+    # Dodanie linii średniej
+    mean_value = filtered_data.mean()
+    fig.add_shape(
+        type="line",
+        x0=mean_value, x1=mean_value,
+        y0=0, y1=1,
+        xref='x', yref='paper',
+        line=dict(color="red", dash="dash"),
+        name="Mean"
+    )
+
+    # Dodanie legendy dla średniej
+    fig.add_trace(go.Scatter(
+        x=[mean_value],
+        y=[0],
+        mode="markers",
+        marker=dict(color="red"),
+        name="Mean"
+    ))
+
+    # Aktualizacja układu wykresu
+    fig.update_layout(
+        xaxis_title="Word Count",
+        yaxis_title="Frequency",
+        showlegend=True,
+        legend=dict(
+            orientation="h",
+            yanchor="bottom",
+            y=1.02,
+            xanchor="right",
+            x=1
+        )
+    )
+
+    fig.show()
+
 
 def sentance_count_distribution(df: pd.DataFrame, df_name: str):
-    plt.figure(figsize=(12, 10))
-    sns.histplot(df.loc[(df['article_category_one'] != "PHOTO") & (df['word_count'] < 2000), 'sentence_count'], bins=20, kde=True)
-    #plt.xlim(0, 100)
-    # mean line
-    plt.axvline(df['sentence_count'].mean(), color='red', linestyle='dashed', linewidth=2, label='Mean')
-    plt.legend()
-    plt.title(f'{df_name} sentence count distribution')
-    plt.show()
+    # plt.figure(figsize=(12, 10))
+    # sns.histplot(df.loc[(df['article_category_one'] != "PHOTO") & (df['word_count'] < 2000), 'sentence_count'], bins=20, kde=True)
+    # #plt.xlim(0, 100)
+    # # mean line
+    # plt.axvline(df['sentence_count'].mean(), color='red', linestyle='dashed', linewidth=2, label='Mean')
+    # plt.legend()
+    # plt.title(f'{df_name} sentence count distribution')
+    # plt.show()
     #plt.savefig(f"EDA_plots/{df_name}_sentace_count_dist_.png")
+
+    # Filtr danych
+    filtered_data = df.loc[(df['article_category_one'] != "PHOTO") & (df['word_count'] < 2000), 'sentence_count']
+
+    # Histogram z Plotly Express
+    fig = px.histogram(
+        filtered_data,
+        nbins=20,
+        title=f'{df_name} Sentence Count Distribution',
+        labels={'value': 'Sentence Count'},
+    )
+
+    # Obliczenie średniej
+    mean_value = filtered_data.mean()
+
+    # Dodanie linii średniej
+    fig.add_shape(
+        type="line",
+        x0=mean_value, x1=mean_value,
+        y0=0, y1=1,
+        xref='x', yref='paper',
+        line=dict(color="red", dash="dash"),
+        name="Mean"
+    )
+
+    # Dodanie legendy dla średniej
+    fig.add_trace(go.Scatter(
+        x=[mean_value],
+        y=[0],
+        mode="markers",
+        marker=dict(color="red"),
+        name="Mean"
+    ))
+
+    # Aktualizacja układu wykresu
+    fig.update_layout(
+        xaxis_title="Sentence Count",
+        yaxis_title="Frequency",
+        showlegend=True,
+        legend=dict(
+            orientation="h",
+            yanchor="bottom",
+            y=1.02,
+            xanchor="right",
+            x=1
+        )
+    )
+
+    fig.show()
 
 
 def plot_top_N_common_words(df: pd.DataFrame, df_name: str, N = 100):
@@ -63,12 +161,33 @@ def plot_top_N_common_words(df: pd.DataFrame, df_name: str, N = 100):
     plt.show()
 
 def plot_top_N_common_pos(df_pos: pd.DataFrame, df_name: str, N = 10):
-    plt.figure(figsize=(12, 10))
-    df_pos.drop(columns=['sentence_count', 'word_count']).sum().sort_values(ascending=False).head(N).plot(kind='bar')
-    plt.title(f'{df_name} Top {N} Most Common Part of Speech')
-    # turn x labels
-    plt.xticks(rotation=45)
-    plt.show()
+    # plt.figure(figsize=(12, 10))
+    # df_pos.drop(columns=['sentence_count', 'word_count']).sum().sort_values(ascending=False).head(N).plot(kind='bar')
+    # plt.title(f'{df_name} Top {N} Most Common Part of Speech')
+    # # turn x labels
+    # plt.xticks(rotation=45)
+    # plt.show()
+
+    # Obliczenie sum dla każdej kolumny (bez sentence_count i word_count)
+    pos_counts = df_pos.drop(columns=['sentence_count', 'word_count']).sum().sort_values(ascending=False).head(N)
+
+    # Utworzenie wykresu słupkowego za pomocą Plotly
+    fig = px.bar(
+        x=pos_counts.index,
+        y=pos_counts.values,
+        title=f'{df_name} Top {N} Most Common Part of Speech',
+        labels={'x': 'Part of Speech', 'y': 'Count'},
+    )
+
+    # Aktualizacja układu wykresu
+    fig.update_layout(
+        xaxis=dict(title="Part of Speech", tickangle=45),
+        yaxis_title="Count",
+        title=dict(x=0.5),  # Wyśrodkowanie tytułu
+        showlegend=False  # Usunięcie legendy, bo nie jest potrzebna
+    )
+
+    fig.show()
 
 def plot_pos_wordclouds(df: pd.DataFrame, df_name: str, N = 100):
     #if we want to comate eg diffrents categories, jutro put a piltered df as input
