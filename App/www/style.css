@@ -200,6 +200,10 @@ img.common-entities-plot {
     width: 100%;
 }
 
+#most_common_entities_plot {
+    width: 100%;
+}
+
 img.sentiment-plot {
     width: 70%;
 }
@@ -212,6 +216,15 @@ img.sentiment-plot {
     margin: 10px 10px 30px;
     flex: 1 1 30%;
     display: block;
+}
+
+.shiny-ipywidget-output {
+  overflow: hidden;
+  width: 45%;
+  border: 2px solid black;
+  padding: 10px;
+  box-sizing: border-box;
+  margin: 10px auto 30px;
 }
 
 .plots-row .plot-image {

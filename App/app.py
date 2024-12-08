@@ -6,7 +6,8 @@ from shiny import App, render, ui, reactive
 from htmltools import tags, Tag
 import numpy as np
 import matplotlib.pyplot as plt
-from plots import generate_entity_types_plot
+from plots import generate_entity_types_plot, generate_most_common_entities_plot
+from shinywidgets import output_widget, render_widget
 
 here = Path(__file__).parent
 
@@ -209,10 +210,17 @@ def server(input, output, session):
         )
 
     @output
-    @render.plot
+    @render_widget
     def entity_types_plot():
         dataset_name = input.dataset_filter()
         plot = generate_entity_types_plot(dataset_name)
+        return plot
+
+    @output
+    @render_widget
+    def most_common_entities_plot():
+        dataset_name = input.dataset_filter()
+        plot = generate_most_common_entities_plot(dataset_name)
         return plot
 
     @output
@@ -225,11 +233,10 @@ def server(input, output, session):
         sentiment_over_time_by_target = f'Sentiment/{sentiment}_sentiment_over_time_by_target_{dataset_name}.png'
         return ui.div(
             ui.div(
-                # ui.img(src=entity_types_img_src,
-                #        class_="plot-image entity-types-plot") if entity_types_img_src else "Entity types image not available",
-                ui.output_plot("entity_types_plot"),
-                ui.img(src=most_common_entities_img_src,
-                       class_="plot-image common-entities-plot") if most_common_entities_img_src else "Most common entities image not available",
+                output_widget("entity_types_plot"),
+                # ui.img(src=most_common_entities_img_src,
+                #        class_="plot-image common-entities-plot") if most_common_entities_img_src else "Most common entities image not available",
+                output_widget("most_common_entities_plot"),
                 ui.img(src=sentiment_over_time_by_target,
                        class_="plot-image sentiment-plot") if sentiment_over_time_by_target else "Sentiment over time image not available",
                 class_="plots-row"

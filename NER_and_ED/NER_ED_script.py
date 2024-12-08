@@ -216,7 +216,7 @@ def count_entity_types(text: str):
     return entity_types
 
 
-def find_most_common_entity_types(df: pd.DataFrame, dataset_name: str):
+def find_most_common_entity_types(df: pd.DataFrame, dataset_name: str, for_shiny: bool = False):
     # entity_types = df['NER'].apply(count_entity_types).explode().value_counts()
     # colors = sns.color_palette('viridis', len(entity_types))
     #
@@ -250,13 +250,16 @@ def find_most_common_entity_types(df: pd.DataFrame, dataset_name: str):
         title=dict(x=0.5),  # Center-align the title
         coloraxis_showscale=False,  # Hide the color scale legend
     )
+    if for_shiny:
+        return fig
+    else:
+        # Save the chart as an image and display it
+        fig.write_image(f"Plots/entity_types_{dataset_name}.png")  # Save as PNG
+        fig.show()  # Show the chart
 
-    # Save the chart as an image and display it
-    fig.write_image(f"Plots/entity_types_{dataset_name}.png")  # Save as PNG
-    fig.show()  # Show the chart
 
 
-def find_most_common_entities_per_type(df: pd.DataFrame, dataset_name: str, output_file: str):
+def find_most_common_entities_per_type(df: pd.DataFrame, dataset_name: str, output_file: str, for_shiny: bool = False):
     # entity_words_dict = defaultdict(Counter)
     #
     # for ner_dict in df['NER']:
@@ -335,6 +338,41 @@ def find_most_common_entities_per_type(df: pd.DataFrame, dataset_name: str, outp
         fig.show()
 
     print(f"Visualizations for the top words per entity type have been displayed.")
+
+def find_most_common_entities_per_type_for_shiny(dataset_name: str, output_file: str, entity_type: str):
+    # Read the pre-generated data from CSV
+    df_top_words = pd.read_csv(output_file)
+
+    entity_data = df_top_words[df_top_words['Entity Type'] == entity_type].nlargest(15, 'Count')
+
+    fig = px.bar(
+        entity_data,
+        x='Count',  # Horizontal bars
+        y='Word',
+        orientation='h',
+        title=f'Top 15 Words for {entity_type} ({dataset_name})',
+        labels={'Word': 'Word', 'Count': 'Frequency'},
+        color='Count',
+        color_continuous_scale='Viridis',
+    )
+
+    fig.update_layout(
+        xaxis=dict(title='Frequency'),
+        yaxis=dict(
+            title='Word',
+            ticklabelposition='outside',
+            ticks='outside',
+            tickcolor='#fdfdfd',
+            ticklen=10,
+            automargin=True,
+        ),
+        # margin=dict(l=150),
+        title=dict(x=0.5),  # Center-align the title
+        coloraxis_showscale=False,  # Hide the color scale
+    )
+
+    return fig
+
 
 
 def main():
