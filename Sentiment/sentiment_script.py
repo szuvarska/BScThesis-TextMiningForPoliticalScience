@@ -8,7 +8,8 @@ from collections import defaultdict
 import matplotlib.pyplot as plt
 from wordcloud import WordCloud, STOPWORDS
 import seaborn as sns
-
+import plotly.graph_objects as go
+import re
 
 def vader_sentiment(text: str) -> str:
     vader_analyzer = SentimentIntensityAnalyzer()
@@ -112,35 +113,96 @@ pd.DataFrame]:
     return tsc_results_df, vader_results_df
 
 
-def calculate_sentiment_dist(tsc_results_df: pd.DataFrame, vader_results_df: pd.DataFrame, dataset_name: str):
+def calculate_sentiment_dist(tsc_results_df: pd.DataFrame, vader_results_df: pd.DataFrame, dataset_name: str, for_shiny = False):
     # aggregate sentiment counts for TSC
     tsc_sentiment_counts = tsc_results_df['Sentiment'].value_counts()
 
     # aggregate sentiment counts for VADER
     vader_sentiment_counts = vader_results_df['Sentiment'].value_counts()
 
-    # comparison between TSC and VADER
+    #comparison between TSC and VADER
     sentiment_comparison = pd.DataFrame({
         'Negative': [tsc_sentiment_counts.get('negative', 0), vader_sentiment_counts.get('negative', 0)],
         'Neutral': [tsc_sentiment_counts.get('neutral', 0), vader_sentiment_counts.get('neutral', 0)],
         'Positive': [tsc_sentiment_counts.get('positive', 0), vader_sentiment_counts.get('positive', 0)]
     }, index=['TSC', 'VADER'])
-
     print(sentiment_comparison)
+    #
+    # sentiment_comparison.plot(kind='bar', color=['red', 'gray', 'green'], figsize=(10, 6))
+    # plt.title(f'Comparison of Overall Sentiment Distribution (TSC vs VADER) - {dataset_name}')
+    # plt.xlabel('Model')
+    # plt.ylabel('Count')
+    # plt.xticks(rotation=0)
+    # plt.legend(title='Sentiment', labels=['Negative', 'Neutral', 'Positive'])
+    # plt.tight_layout()
+    # plt.savefig(f"Plots/sentiment_dist_{dataset_name}.png")
+    # plt.show()
 
-    sentiment_comparison.plot(kind='bar', color=['red', 'gray', 'green'], figsize=(10, 6))
-    plt.title(f'Comparison of Overall Sentiment Distribution (TSC vs VADER) - {dataset_name}')
-    plt.xlabel('Model')
-    plt.ylabel('Count')
-    plt.xticks(rotation=0)
-    plt.legend(title='Sentiment', labels=['Negative', 'Neutral', 'Positive'])
-    plt.tight_layout()
-    plt.savefig(f"Plots/sentiment_dist_{dataset_name}.png")
-    plt.show()
+    fig = go.Figure()
+    sentiments = ['Negative', 'Neutral', 'Positive']
+    colors = ['red', 'gray', 'green']
+
+    for sentiment, color in zip(sentiments, colors):
+        print("dupa")
+        fig.add_trace(
+            go.Bar(
+                name=sentiment,
+                x=sentiment_comparison.index,
+                y=sentiment_comparison[sentiment],
+                marker_color=color
+            )
+        )
+    # Update layout
+    fig.update_layout(
+        barmode='group',  # Group bars side by side
+        title=f'Comparison of Overall Sentiment Distribution (TSC vs VADER) - {dataset_name}',
+        xaxis_title='Model',
+        yaxis_title='Count',
+        xaxis=dict(tickangle=0),  # Keep x-axis labels horizontal
+        legend_title='Sentiment',
+        height=600,
+        width=800
+    )
+
+    # Save the plot as an image
+
+    if for_shiny:
+        return fig
+    else:
+        #fig.write_image(f"Plots/sentiment_dist_{dataset_name}.png")
+        fig.show()
 
 
-def calculate_sentiment_over_time(tsc_results_df: pd.DataFrame, vader_results_df: pd.DataFrame, dataset_name: str):
-    # process TSC results by month
+
+def calculate_sentiment_over_time(tsc_results_df: pd.DataFrame, vader_results_df: pd.DataFrame, dataset_name: str,
+                                  for_shiny = False, is_tsc = True):
+    # # process TSC results by month
+    # tsc_results_df['published_time'] = pd.to_datetime(tsc_results_df['published_time'], format='%Y-%m-%d')
+    # tsc_results_df['month'] = tsc_results_df['published_time'].dt.to_period('M')  # Convert date to monthly periods
+    # tsc_sentiment_counts = tsc_results_df.pivot_table(
+    #     index=['month'],  # group by month
+    #     columns='Sentiment',
+    #     aggfunc='size',
+    #     fill_value=0
+    # )
+    #
+    # # normalize TSC sentiment proportions
+    # tsc_sentiment_proportions = tsc_sentiment_counts.div(tsc_sentiment_counts.sum(axis=1), axis=0)
+    #
+    # # process VADER results by month
+    # vader_results_df['published_time'] = pd.to_datetime(vader_results_df['published_time'], format='%Y-%m-%d')
+    # vader_results_df['month'] = vader_results_df['published_time'].dt.to_period('M')  # Convert date to monthly periods
+    # vader_sentiment_counts = vader_results_df.pivot_table(
+    #     index=['month'],  # group by month
+    #     columns='Sentiment',
+    #     aggfunc='size',
+    #     fill_value=0
+    # )
+    #
+    # # normalize VADER sentiment proportions
+    # vader_sentiment_proportions = vader_sentiment_counts.div(vader_sentiment_counts.sum(axis=1), axis=0)
+
+    # Process TSC results by month
     tsc_results_df['published_time'] = pd.to_datetime(tsc_results_df['published_time'], format='%Y-%m-%d')
     tsc_results_df['month'] = tsc_results_df['published_time'].dt.to_period('M')  # Convert date to monthly periods
     tsc_sentiment_counts = tsc_results_df.pivot_table(
@@ -150,10 +212,10 @@ def calculate_sentiment_over_time(tsc_results_df: pd.DataFrame, vader_results_df
         fill_value=0
     )
 
-    # normalize TSC sentiment proportions
+    # Normalize TSC sentiment proportions
     tsc_sentiment_proportions = tsc_sentiment_counts.div(tsc_sentiment_counts.sum(axis=1), axis=0)
 
-    # process VADER results by month
+    # Process VADER results by month
     vader_results_df['published_time'] = pd.to_datetime(vader_results_df['published_time'], format='%Y-%m-%d')
     vader_results_df['month'] = vader_results_df['published_time'].dt.to_period('M')  # Convert date to monthly periods
     vader_sentiment_counts = vader_results_df.pivot_table(
@@ -163,34 +225,82 @@ def calculate_sentiment_over_time(tsc_results_df: pd.DataFrame, vader_results_df
         fill_value=0
     )
 
-    # normalize VADER sentiment proportions
+    # Normalize VADER sentiment proportions
     vader_sentiment_proportions = vader_sentiment_counts.div(vader_sentiment_counts.sum(axis=1), axis=0)
 
-    # Plot 1: TSC Sentiment Proportions Over Time (Monthly)
-    plt.figure(figsize=(12, 12))
-    plt.subplot(12, 6, 1)
-    tsc_sentiment_proportions.plot(kind='bar', stacked=True, color=['red', 'gray', 'green'])
-    plt.title(f'TSC Sentiment Proportions Over Time (Monthly) - {dataset_name}')
-    plt.xlabel('Month')
-    plt.ylabel('Proportion of Sentiment')
-    plt.legend(title='Sentiment', loc='center left', bbox_to_anchor=(1, 0.5))
-    plt.xticks(rotation=60)
+    # Plot TSC Sentiment Proportions
+    tsc_fig = go.Figure()
+    months = tsc_sentiment_proportions.index.astype(str)
 
-    # Plot 2: VADER Sentiment Proportions Over Time (Monthly)
-    plt.subplot(12, 6, 2)
-    vader_sentiment_proportions.plot(kind='bar', stacked=True, color=['red', 'gray', 'green'])  # TODO: fix plots
-    plt.title(f'VADER Sentiment Proportions Over Time (Monthly) - {dataset_name}')
-    plt.xlabel('Month')
-    plt.ylabel('Proportion of Sentiment')
-    plt.legend(title='Sentiment', loc='center left', bbox_to_anchor=(1, 0.5))
-    plt.xticks(rotation=60)
-    # plt.tight_layout()
-    # plt.show()
+    for sentiment, color in zip(['positive', 'neutral', 'negative'], ['green', 'gray', 'red']):
+        tsc_fig.add_trace(
+            go.Bar(
+                name=sentiment.capitalize(),
+                x=months,
+                y=tsc_sentiment_proportions[sentiment],
+                marker_color=color
+            )
+        )
 
-    plt.tight_layout()
-    plt.savefig(f"Plots/sentiment_over_time_{dataset_name}.png")
-    plt.show()
+    tsc_fig.update_layout(
+        barmode='stack',
+        title=f'TSC Sentiment Proportions Over Time (Monthly) - {dataset_name}',
+        xaxis=dict(
+            title='Month',
+            tickmode='array',
+            tickvals=months,  # Place one label per month
+            ticktext=months,  # Show month labels under the grouped bars
+            tickangle=60
+        ),
+        yaxis=dict(title='Proportion of Sentiment'),
+        legend_title='Sentiment',
+        height=600,
+        width=1000
+    )
 
+    #tsc_fig.write_image(f"Plots/tsc_sentiment_over_time_{dataset_name}.png")
+    tsc_fig.show()
+
+    # Plot VADER Sentiment Proportions
+    vader_fig = go.Figure()
+    months = vader_sentiment_proportions.index.astype(str)
+
+    for sentiment, color in zip(['positive', 'neutral', 'negative'], ['green', 'gray', 'red']):
+        vader_fig.add_trace(
+            go.Bar(
+                name=sentiment.capitalize(),
+                x=months,
+                y=vader_sentiment_proportions[sentiment],
+                marker_color=color
+            )
+        )
+
+    vader_fig.update_layout(
+        barmode='stack',
+        title=f'VADER Sentiment Proportions Over Time (Monthly) - {dataset_name}',
+        xaxis=dict(
+            title='Month',
+            tickmode='array',
+            tickvals=months,  # Place one label per month
+            ticktext=months,  # Show month labels under the grouped bars
+            tickangle=60
+        ),
+        yaxis=dict(title='Proportion of Sentiment'),
+        legend_title='Sentiment',
+        height=600,
+        width=1000
+    )
+
+    #vader_fig.write_image(f"Plots/vader_sentiment_over_time_{dataset_name}.png")
+    #vader_fig.show()
+    if for_shiny:
+        if is_tsc:
+            return tsc_fig
+        else:
+            return vader_fig
+    else:
+        tsc_fig.show()
+        vader_fig.show()
 
 def clean_sentences(df, sentiment_label):
     sentences = df[df['Sentiment'] == sentiment_label]['Sentence']
@@ -211,101 +321,210 @@ def wc_vader(sentiment_label, df, dataset_name: str):
 
 
 # generate word cloud for TSC sentiment (positive, negative, neutral)
-def wc_tsc(sentiment_label, df, dataset_name: str):
+def wc_tsc(sentiment_label, df, dataset_name: str) -> plt:
     sentences = clean_sentences(df, sentiment_label)
     if sentences:
         wordcloud = WordCloud(width=800, height=400, background_color='white').generate(sentences)
         plt.imshow(wordcloud, interpolation='bilinear')
         plt.axis('off')
         plt.title(f'Word Cloud for {sentiment_label.capitalize()} Sentences (TSC) - {dataset_name}')
+    return plt
 
 
-def generate_word_clouds(tsc_results_df: pd.DataFrame, vader_results_df: pd.DataFrame, dataset_name: str):
-    plt.figure(figsize=(16, 14))
-    plt.subplot(3, 2, 1)
-    wc_vader('positive', vader_results_df, dataset_name)
-    plt.subplot(3, 2, 3)
-    wc_vader('negative', vader_results_df, dataset_name)
-    plt.subplot(3, 2, 5)
-    wc_vader('neutral', vader_results_df, dataset_name)
+def generate_word_clouds(tsc_results_df: pd.DataFrame, vader_results_df: pd.DataFrame, dataset_name: str,
+                         for_shiny = False, is_tsc = True, sentiment = 'positive'):
 
-    plt.subplot(3, 2, 2)
-    wc_tsc('positive', tsc_results_df, dataset_name)
-    plt.subplot(3, 2, 4)
-    wc_tsc('negative', tsc_results_df, dataset_name)
-    plt.subplot(3, 2, 6)
-    wc_tsc('neutral', tsc_results_df, dataset_name)
-    plt.tight_layout()
-    plt.savefig(f"Plots/sentiment_wordclouds_{dataset_name}.png")
-    plt.show()
+    sentiment_to_use = sentiment if sentiment in ['positive', 'negative', 'neutral'] else 'positive'
+    plot = None
+
+    if is_tsc:
+        if sentiment_to_use == 'positive':
+            plot = wc_tsc('positive', tsc_results_df, dataset_name)
+        elif sentiment_to_use == 'negative':
+            plot = wc_tsc('negative', tsc_results_df, dataset_name)
+        else:
+            plot = wc_tsc('neutral', tsc_results_df, dataset_name)
+    else:
+        if sentiment_to_use == 'positive':
+            plot = wc_vader('positive', vader_results_df, dataset_name)
+        elif sentiment_to_use == 'negative':
+            plot = wc_vader('negative', vader_results_df, dataset_name)
+        else:
+            plot = wc_vader('neutral', vader_results_df, dataset_name)
+    if for_shiny:
+        return plot
+    else:
+        plt.show()
+    #plt.savefig(f"Plots/sentiment_wordclouds_{dataset_name}.png")
 
 
-def calculate_sentiment_dist_per_target(tsc_results_df: pd.DataFrame, dataset_name: str):
-    # overall sentiment distribution per target
-
-    # group by target and sentiment, count the occurrences
+def calculate_sentiment_dist_per_target(tsc_results_df: pd.DataFrame, dataset_name: str, for_shiny = False):
+    # # overall sentiment distribution per target
+    #
+    # # group by target and sentiment, count the occurrences
+    # overall_sentiment_per_target = tsc_results_df.groupby(['Target', 'Sentiment']).size().unstack(fill_value=0)
+    # print(overall_sentiment_per_target)
+    #
+    # # calculate sentiment proportions per target
+    # overall_sentiment_per_target_proportion = overall_sentiment_per_target.div(overall_sentiment_per_target.sum(axis=1),
+    #                                                                            axis=0)
+    # overall_sentiment_per_target_proportion['Overall Sentiment'] = overall_sentiment_per_target_proportion[
+    #     ['positive', 'negative', 'neutral']].idxmax(axis=1)
+    # print(overall_sentiment_per_target_proportion)
+    #
+    # overall_sentiment_per_target_proportion.to_csv(f'Results/overall_sentiment_per_target_{dataset_name}.csv')
+    #
+    # # plot stacked bar chart for overall sentiment distribution per target
+    # plt.figure(figsize=(12, 8))
+    # overall_sentiment_per_target_proportion.plot(kind='bar', stacked=True, color=['red', 'gray', 'green'])
+    # plt.title(f'Overall Sentiment Distribution per Target (TSC) - {dataset_name}\n')
+    # plt.xlabel('Target')
+    # plt.ylabel('Proportion of Sentiment')
+    # plt.xticks(rotation=75)
+    # plt.legend(loc='upper center', bbox_to_anchor=(0.5, 1.13), ncol=3, fontsize=8)
+    # plt.tight_layout()
+    # plt.savefig(f"Plots/sentiment_dist_per_target_{dataset_name}.png")
+    # plt.show()
+    # Overall sentiment distribution per target
     overall_sentiment_per_target = tsc_results_df.groupby(['Target', 'Sentiment']).size().unstack(fill_value=0)
     print(overall_sentiment_per_target)
 
-    # calculate sentiment proportions per target
-    overall_sentiment_per_target_proportion = overall_sentiment_per_target.div(overall_sentiment_per_target.sum(axis=1),
-                                                                               axis=0)
+    # Calculate sentiment proportions per target
+    overall_sentiment_per_target_proportion = overall_sentiment_per_target.div(
+        overall_sentiment_per_target.sum(axis=1),
+        axis=0)
     overall_sentiment_per_target_proportion['Overall Sentiment'] = overall_sentiment_per_target_proportion[
         ['positive', 'negative', 'neutral']].idxmax(axis=1)
     print(overall_sentiment_per_target_proportion)
 
+    # Save results to a CSV file
     overall_sentiment_per_target_proportion.to_csv(f'Results/overall_sentiment_per_target_{dataset_name}.csv')
 
-    # plot stacked bar chart for overall sentiment distribution per target
-    plt.figure(figsize=(12, 8))
-    overall_sentiment_per_target_proportion.plot(kind='bar', stacked=True, color=['red', 'gray', 'green'])
-    plt.title(f'Overall Sentiment Distribution per Target (TSC) - {dataset_name}\n')
-    plt.xlabel('Target')
-    plt.ylabel('Proportion of Sentiment')
-    plt.xticks(rotation=75)
-    plt.legend(loc='upper center', bbox_to_anchor=(0.5, 1.13), ncol=3, fontsize=8)
-    plt.tight_layout()
-    plt.savefig(f"Plots/sentiment_dist_per_target_{dataset_name}.png")
-    plt.show()
+    # Plot horizontal stacked bar chart
+    fig = go.Figure()
+
+    # Add traces for each sentiment
+    sentiments = ['positive', 'neutral', 'negative',]
+    colors = ['green', 'gray','red']
+
+    for sentiment, color in zip(sentiments, colors):
+        fig.add_trace(
+            go.Bar(
+                name=sentiment.capitalize(),
+                y=overall_sentiment_per_target_proportion.index,  # Targets
+                x=overall_sentiment_per_target_proportion[sentiment],  # Proportions
+                orientation='h',  # Horizontal bars
+                marker_color=color
+            )
+        )
+
+    # Update layout
+    fig.update_layout(
+        barmode='stack',  # Stacked bars
+        title=f'Overall Sentiment Distribution per Target (TSC) - {dataset_name}',
+        xaxis_title='Proportion of Sentiment',
+        yaxis_title='Target',
+        legend_title='Sentiment',
+        height=800,
+        width=1000
+    )
+
+    # Save and display the plot
+    if for_shiny:
+        return fig
+    else:
+        #fig.write_image(f"Plots/sentiment_dist_per_target_{dataset_name}.png")
+        fig.show()
 
 
-def calculate_sentiment_over_time_per_target(tsc_results_df: pd.DataFrame, dataset_name: str):
-    # sentiment over time by target - monthly
 
-    tsc_results_df['published_time'] = pd.to_datetime(
-        tsc_results_df['published_time'])  # TODO: check if time loads correctly
-    # convert date to monthly periods
+def calculate_sentiment_over_time_per_target(tsc_results_df: pd.DataFrame, dataset_name: str, for_shiny = False):
+    # # sentiment over time by target - monthly
+    #
+    # tsc_results_df['published_time'] = pd.to_datetime(
+    #     tsc_results_df['published_time'])  # TODO: check if time loads correctly
+    # # convert date to monthly periods
+    # tsc_results_df['month'] = tsc_results_df['published_time'].dt.to_period('M')
+    #
+    # # group by month and target, count sentiment occurrences
+    # sentiment_over_time = tsc_results_df.groupby(['month', 'Target', 'Sentiment']).size().unstack(fill_value=0)
+    #
+    # # normalize to get sentiment proportions over time
+    # sentiment_over_time_proportion = sentiment_over_time.div(sentiment_over_time.sum(axis=1), axis=0)
+    #
+    # # plot sentiment over time for each target (monthly) using stacked bar chart
+    # for target in sentiment_over_time_proportion.index.get_level_values('Target').unique():
+    #     target_data = sentiment_over_time_proportion.xs(target, level='Target')
+    #
+    #     # convert PeriodIndex to string for plotting
+    #     months = target_data.index.astype(str)
+    #
+    #     target_data.plot(kind='bar', stacked=True, color=['red', 'gray', 'green'], figsize=(10, 6))
+    #     plt.title(f'Sentiment Over Time for {target} (Monthly) - {dataset_name}\n')
+    #     plt.xlabel('Month')
+    #     plt.ylabel('Proportion of Sentiment')
+    #     plt.xticks(rotation=45)
+    #     plt.legend(loc='upper center', bbox_to_anchor=(0.5, 1.065), ncol=3, fontsize=8)
+    #     plt.tight_layout()
+    #     plt.savefig(f"Plots/sentiment_over_time_per_target_{target}_{dataset_name}.png")
+    #     plt.show()
+
+    # Ensure published_time is in datetime format
+    tsc_results_df['published_time'] = pd.to_datetime(tsc_results_df['published_time'])
     tsc_results_df['month'] = tsc_results_df['published_time'].dt.to_period('M')
-
-    # group by month and target, count sentiment occurrences
     sentiment_over_time = tsc_results_df.groupby(['month', 'Target', 'Sentiment']).size().unstack(fill_value=0)
 
-    # normalize to get sentiment proportions over time
+    # Normalize to get sentiment proportions over time
     sentiment_over_time_proportion = sentiment_over_time.div(sentiment_over_time.sum(axis=1), axis=0)
 
-    # plot sentiment over time for each target (monthly) using stacked bar chart
+    # Plot sentiment over time for each target
     for target in sentiment_over_time_proportion.index.get_level_values('Target').unique():
         target_data = sentiment_over_time_proportion.xs(target, level='Target')
 
-        # convert PeriodIndex to string for plotting
+        # Convert PeriodIndex to string for plotting
         months = target_data.index.astype(str)
 
-        target_data.plot(kind='bar', stacked=True, color=['red', 'gray', 'green'], figsize=(10, 6))
-        plt.title(f'Sentiment Over Time for {target} (Monthly) - {dataset_name}\n')
-        plt.xlabel('Month')
-        plt.ylabel('Proportion of Sentiment')
-        plt.xticks(rotation=45)
-        plt.legend(loc='upper center', bbox_to_anchor=(0.5, 1.065), ncol=3, fontsize=8)
-        plt.tight_layout()
-        plt.savefig(f"Plots/sentiment_over_time_per_target_{target}_{dataset_name}.png")
-        plt.show()
+        # Create a Plotly figure for the target
+        fig = go.Figure()
 
+        # Add traces for each sentiment
+        sentiments = ['positive', 'negative', 'neutral']
+        colors = ['green', 'red', 'gray']
+
+        for sentiment, color in zip(sentiments, colors):
+            fig.add_trace(
+                go.Bar(
+                    name=sentiment.capitalize(),
+                    x=months,  # Months
+                    y=target_data[sentiment],  # Proportions
+                    marker_color=color
+                )
+            )
+
+        # Update layout for the chart
+        fig.update_layout(
+            barmode='stack',  # Stacked bars
+            title=f'Sentiment Over Time for {target} (Monthly) - {dataset_name}',
+            xaxis_title='Month',
+            yaxis_title='Proportion of Sentiment',
+            xaxis=dict(tickangle=45),
+            legend_title='Sentiment',
+            height=600,
+            width=1000
+        )
+
+        if for_shiny:
+            return fig
+        # Save and display the chart
+            #fig.write_image(f"Plots/sentiment_over_time_per_target_{target}_{dataset_name}.png")
+            fig.show()
 
 def caluclate_sentiment_dist_over_time_by_target(tsc_results_df: pd.DataFrame, dataset_name: str):
+    # Convert 'published_time' to datetime and extract 'month' in YYYY-MM format
     tsc_results_df['published_time'] = pd.to_datetime(tsc_results_df['published_time'])
-    tsc_results_df['month'] = tsc_results_df['published_time'].dt.to_period('M')
+    tsc_results_df['month'] = tsc_results_df['published_time'].dt.to_period('M').astype(str)  # Format as YYYY-MM
 
-    # heatmap (target vs. month)
+    # Create heatmaps for different sentiment types (positive, negative, neutral)
     heatmap_data_positive = tsc_results_df.pivot_table(index='Target', columns='month', values='Sentiment',
                                                        aggfunc=lambda x: (x == 'positive').mean())
     heatmap_data_negative = tsc_results_df.pivot_table(index='Target', columns='month', values='Sentiment',
@@ -313,38 +532,83 @@ def caluclate_sentiment_dist_over_time_by_target(tsc_results_df: pd.DataFrame, d
     heatmap_data_neutral = tsc_results_df.pivot_table(index='Target', columns='month', values='Sentiment',
                                                       aggfunc=lambda x: (x == 'neutral').mean())
 
-    # heatmap showing the proportion of positive sentiment by target over time (monthly)
-    plt.figure(figsize=(12, 8))
-    sns.heatmap(heatmap_data_positive, cmap='Greens', annot=False, cbar=True)
-    plt.title(f'Proportion of Positive Sentiment by Target Over Time (Monthly) - {dataset_name}')
-    plt.xlabel('Month')
-    plt.ylabel('Target')
-    plt.xticks(rotation=45)
-    plt.tight_layout()
-    plt.savefig(f"Plots/positive_sentiment_over_time_by_target_{dataset_name}.png")
-    plt.show()
+    # Create Plotly Heatmap for Positive Sentiment Proportion
+    fig_positive = go.Figure(data=go.Heatmap(
+        z=heatmap_data_positive.values,
+        x=heatmap_data_positive.columns,  # Use formatted month labels
+        y=heatmap_data_positive.index,
+        colorscale='Greens',
+        colorbar=dict(title="Proportion"),
+    ))
 
-    # heatmap showing the proportion of negative sentiment by target over time (monthly)
-    plt.figure(figsize=(12, 8))
-    sns.heatmap(heatmap_data_negative, cmap='Reds', annot=False, cbar=True)
-    plt.title(f'Proportion of Negative Sentiment by Target Over Time (Monthly) - {dataset_name}')
-    plt.xlabel('Month')
-    plt.ylabel('Target')
-    plt.xticks(rotation=45)
-    plt.tight_layout()
-    plt.savefig(f"Plots/negative_sentiment_over_time_by_target_{dataset_name}.png")
-    plt.show()
+    fig_positive.update_layout(
+        title=f'Proportion of Positive Sentiment by Target Over Time (Monthly) - {dataset_name}',
+        xaxis_title='Month',
+        yaxis_title='Target',
+        xaxis=dict(
+            tickmode='array',
+            tickvals=list(range(len(heatmap_data_positive.columns))),
+            ticktext=heatmap_data_positive.columns,  # Use formatted month labels
+            tickangle=45,
+        ),
+        height=600,
+        width=1000
+    )
 
-    # heatmap showing the proportion of neutral sentiment by target over time (monthly)
-    plt.figure(figsize=(12, 8))
-    sns.heatmap(heatmap_data_neutral, cmap='Greys', annot=False, cbar=True)
-    plt.title(f'Proportion of Neutral Sentiment by Target Over Time (Monthly) - {dataset_name}')
-    plt.xlabel('Month')
-    plt.ylabel('Target')
-    plt.xticks(rotation=45)
-    plt.tight_layout()
-    plt.savefig(f"Plots/neutral_sentiment_over_time_by_target_{dataset_name}.png")
-    plt.show()
+    #fig_positive.write_image(f"Plots/positive_sentiment_over_time_by_target_{dataset_name}.png")
+    fig_positive.show()
+
+    # Create Plotly Heatmap for Negative Sentiment Proportion
+    fig_negative = go.Figure(data=go.Heatmap(
+        z=heatmap_data_negative.values,
+        x=heatmap_data_negative.columns,  # Use formatted month labels
+        y=heatmap_data_negative.index,
+        colorscale='Reds',
+        colorbar=dict(title="Proportion"),
+    ))
+
+    fig_negative.update_layout(
+        title=f'Proportion of Negative Sentiment by Target Over Time (Monthly) - {dataset_name}',
+        xaxis_title='Month',
+        yaxis_title='Target',
+        xaxis=dict(
+            tickmode='array',
+            tickvals=list(range(len(heatmap_data_negative.columns))),
+            ticktext=heatmap_data_negative.columns,  # Use formatted month labels
+            tickangle=45,
+        ),
+        height=600,
+        width=1000
+    )
+
+    #fig_negative.write_image(f"Plots/negative_sentiment_over_time_by_target_{dataset_name}.png")
+    fig_negative.show()
+
+    # Create Plotly Heatmap for Neutral Sentiment Proportion
+    fig_neutral = go.Figure(data=go.Heatmap(
+        z=heatmap_data_neutral.values,
+        x=heatmap_data_neutral.columns,  # Use formatted month labels
+        y=heatmap_data_neutral.index,
+        colorscale='Greys',
+        colorbar=dict(title="Proportion"),
+    ))
+
+    fig_neutral.update_layout(
+        title=f'Proportion of Neutral Sentiment by Target Over Time (Monthly) - {dataset_name}',
+        xaxis_title='Month',
+        yaxis_title='Target',
+        xaxis=dict(
+            tickmode='array',
+            tickvals=list(range(len(heatmap_data_neutral.columns))),
+            ticktext=heatmap_data_neutral.columns,  # Use formatted month labels
+            tickangle=45,
+        ),
+        height=600,
+        width=1000
+    )
+
+    #fig_neutral.write_image(f"Plots/neutral_sentiment_over_time_by_target_{dataset_name}.png")
+    fig_neutral.show()
 
 
 def main():
