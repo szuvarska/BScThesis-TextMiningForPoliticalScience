@@ -49,6 +49,18 @@ def generate_histogram():
     return plt
 
 
+def collapsible_section(header, button_id, plot_id):
+    return ui.div(
+        ui.div(
+            ui.tags.h3(header, style="display: inline;"),
+            ui.input_action_button(button_id, "⯆", class_="toggle-button", style="font-size: 20px; display: inline; margin-left: 10px;"),
+            style="display: flex; align-items: center; margin-bottom: 10px;"
+        ),
+        ui.output_ui(plot_id),
+        class_="collapsible-section"
+    )
+
+
 single_module = ui.tags.div(
     ui.tags.div(
         ui.tags.div(
@@ -123,6 +135,8 @@ def server(input, output, session):
     right_container_visible_single = reactive.Value(True)
     right_container_visible_double = reactive.Value(True)
     right_container_visible_all = reactive.Value(True)
+    ner_visible = reactive.Value(True)
+    sentiment_visible = reactive.Value(True)
 
     @reactive.Effect
     @reactive.event(input.view_full_text)
@@ -226,21 +240,31 @@ def server(input, output, session):
 
     @output
     @render.ui
+    # def all_mode_plots():
+    #     dataset_name = input.dataset_filter()
+    #     sentiment = input.sentiment_filter().lower()
+    #     sentiment_over_time_by_target = f'Sentiment/{sentiment}_sentiment_over_time_by_target_{dataset_name}.png'
+    #     return ui.div(
+    #         ui.div(
+    #             output_widget("entity_types_plot"),
+    #             output_widget("most_common_entities_plot"),
+    #             ui.img(src=sentiment_over_time_by_target,
+    #                    class_="plot-image sentiment-plot") if sentiment_over_time_by_target else "Sentiment over time image not available",
+    #             class_="plots-row"
+    #         ),
+    #         class_="plots-container"
+    #     )
     def all_mode_plots():
-        dataset_name = input.dataset_filter()
-        sentiment = input.sentiment_filter().lower()
-        # entity_types_img_src = f'NER/entity_types_{dataset_name}.png'
-        most_common_entities_img_src = f'NER/most_common_entities_{dataset_name}.png'
-        sentiment_over_time_by_target = f'Sentiment/{sentiment}_sentiment_over_time_by_target_{dataset_name}.png'
         return ui.div(
-            ui.div(
-                output_widget("entity_types_plot"),
-                # ui.img(src=most_common_entities_img_src,
-                #        class_="plot-image common-entities-plot") if most_common_entities_img_src else "Most common entities image not available",
-                output_widget("most_common_entities_plot"),
-                ui.img(src=sentiment_over_time_by_target,
-                       class_="plot-image sentiment-plot") if sentiment_over_time_by_target else "Sentiment over time image not available",
-                class_="plots-row"
+            collapsible_section(
+                "Named Entity Recognition",
+                "toggle_ner_button",
+                "ner_plots"
+            ),
+            collapsible_section(
+                "Sentiment",
+                "toggle_sentiment_button",
+                "sentiment_plot"
             ),
             class_="plots-container"
         )
@@ -328,6 +352,43 @@ def server(input, output, session):
     @reactive.event(input.hide_container_button_all)
     def toggle_container_visibility_all():
         right_container_visible_all.set(not right_container_visible_all.get())
+
+    @reactive.Effect
+    @reactive.event(input.toggle_ner_button)
+    def toggle_ner_visibility():
+        ner_visible.set(not ner_visible.get())
+        session.send_input_message("toggle_ner_button", {"label": "⯆" if ner_visible.get() else "⯈"})
+
+    @reactive.Effect
+    @reactive.event(input.toggle_sentiment_button)
+    def toggle_sentiment_visibility():
+        sentiment_visible.set(not sentiment_visible.get())
+        session.send_input_message("toggle_sentiment_button", {"label": "⯆" if sentiment_visible.get() else "⯈"})
+
+    # Render the plots based on visibility
+    @output
+    @render.ui
+    def ner_plots():
+        if ner_visible.get():
+            return ui.div(
+                output_widget("entity_types_plot"),
+                output_widget("most_common_entities_plot"),
+                class_="plots-row"
+            )
+        return ui.div()  # Return empty div if hidden
+
+    @output
+    @render.ui
+    def sentiment_plot():
+        if sentiment_visible.get():
+            dataset_name = input.dataset_filter()
+            sentiment = input.sentiment_filter().lower()
+            sentiment_over_time_by_target = f'Sentiment/{sentiment}_sentiment_over_time_by_target_{dataset_name}.png'
+            return ui.div(
+                ui.img(src=sentiment_over_time_by_target, class_="plot-image sentiment-plot"),
+                class_="plots-row"
+            )
+        return ui.div()
 
 
 www_dir = Path(__file__).parent / "www"

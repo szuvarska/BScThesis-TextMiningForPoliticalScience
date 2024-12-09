@@ -193,7 +193,7 @@ img.entity-types-plot {
 }
 
 #entity_types_plot {
-    width: 70%;
+    width: 80%;
 }
 
 img.common-entities-plot {
@@ -227,7 +227,7 @@ img.sentiment-plot {
   margin: 10px auto 30px;
 }
 
-.plots-row .plot-image {
+.plots-row .plot-image, .plots-row .shiny-ipywidget-output {
     display: block;
     margin: 0 auto 30px;
 }
@@ -262,4 +262,38 @@ img.sentiment-plot {
 
 .main-container.full-width .main-left-container {
     width: 100%;
+}
+
+.collapsible-section {
+    margin-bottom: 20px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.hidden {
+    display: none;
+}
+
+.toggle-button {
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    font-size: 20px;
+    transition: transform 0.3s ease;
+    padding: 0;
+}
+
+.toggle-button.collapsed {
+    transform: rotate(-90deg);  /* Rotate to show right arrow */
+}
+
+.collapsible-section h3 {
+    margin: 0;
+    font-size: 18px;
+}
+
+.collapsible-section .toggle-button {
+    margin-left: 10px;
 }
