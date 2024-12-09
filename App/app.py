@@ -7,7 +7,9 @@ from shiny import App, render, ui, reactive
 from htmltools import tags, Tag
 import numpy as np
 import matplotlib.pyplot as plt
-from plots import generate_entity_types_plot, generate_most_common_entities_plot
+from plots import generate_entity_types_plot, generate_most_common_entities_plot, generate_sentiment_dist_plot, \
+    generate_sentiment_over_time_plot, generate_sentiment_word_cloud_plot, generate_sentiment_dist_per_target_plot, \
+    generate_sentiment_over_time_per_target_plot
 from shinywidgets import output_widget, render_widget
 
 here = Path(__file__).parent
@@ -242,6 +244,52 @@ def server(input, output, session):
         return plot
 
     @output
+    @render_widget
+    def sentiment_dist_plot():
+        dataset_name = input.dataset_filter()
+        plot = generate_sentiment_dist_plot(dataset_name)
+        return plot
+
+    @output
+    @render_widget
+    def sentiment_over_time_plot():
+        dataset_name = input.dataset_filter()
+        model_name = input.sentiment_model_filter().lower()
+        plot = generate_sentiment_over_time_plot(dataset_name, model_name)
+        return plot
+
+    @output
+    @render.plot
+    def sentiment_word_cloud_plot():
+        dataset_name = input.dataset_filter()
+        model_name = input.sentiment_model_filter().lower()
+        sentiment = input.sentiment_filter()
+        plot = generate_sentiment_word_cloud_plot(dataset_name, model_name, sentiment)
+        return plot
+
+    @output
+    @render_widget
+    def sentiment_dist_per_target_plot():
+        dataset_name = input.dataset_filter()
+        plot = generate_sentiment_dist_per_target_plot(dataset_name)
+        return plot
+
+    @output
+    @render_widget
+    def sentiment_over_time_per_target_plot():
+        dataset_name = input.dataset_filter()
+        plot = generate_sentiment_over_time_per_target_plot(dataset_name)
+        return plot
+
+    # @output
+    # @render_widget
+    # def sentiment_dist_over_time_by_target_plot():
+    #     dataset_name = input.dataset_filter()
+    #     sentiment = input.sentiment_filter()
+    #     plot = generate_sentiment_dist_over_time_by_target_plot(dataset_name, sentiment)
+    #     return plot
+
+    @output
     @render.ui
     def all_mode_plots():
         return ui.div(
@@ -258,7 +306,7 @@ def server(input, output, session):
             collapsible_section(
                 "Sentiment",
                 "toggle_sentiment_button",
-                "sentiment_plot"
+                "sentiment_plots"
             ),
             class_="plots-container"
         )
@@ -331,6 +379,7 @@ def server(input, output, session):
                 ui.input_select("sentiment_filter", "Select Sentiment", choices=["Positive", "Negative", "Neutral"]),
                 ui.input_select("entity_type_filter", "Select Entity Type",
                                 choices=["Person", "Organisation", "Location", "Miscellaneous"]),
+                ui.input_select("sentiment_model_filter", "Select Sentiment Model", choices=["TSC", "VADER"]),
                 ui.input_action_button("hide_container_button_all", "Hide Menu", class_="btn btn-secondary"),
                 class_="main-right-container",
                 id="main-right-container-all"
@@ -388,13 +437,22 @@ def server(input, output, session):
 
     @output
     @render.ui
-    def sentiment_plot():
+    def sentiment_plots():
         if sentiment_visible.get():
-            dataset_name = input.dataset_filter()
-            sentiment = input.sentiment_filter().lower()
-            sentiment_over_time_by_target = f'Sentiment/{sentiment}_sentiment_over_time_by_target_{dataset_name}.png'
+            # dataset_name = input.dataset_filter()
+            # sentiment = input.sentiment_filter().lower()
+            # sentiment_over_time_by_target = f'Sentiment/{sentiment}_sentiment_over_time_by_target_{dataset_name}.png'
+            # return ui.div(
+            #     ui.img(src=sentiment_over_time_by_target, class_="plot-image sentiment-plot"),
+            #     class_="plots-row"
+            # )
             return ui.div(
-                ui.img(src=sentiment_over_time_by_target, class_="plot-image sentiment-plot"),
+                output_widget("sentiment_dist_plot"),
+                output_widget("sentiment_over_time_plot"),
+                ui.output_plot("sentiment_word_cloud_plot"),
+                output_widget("sentiment_dist_per_target_plot"),
+                output_widget("sentiment_over_time_per_target_plot"),
+                # output_widget("sentiment_dist_over_time_by_target_plot"),
                 class_="plots-row"
             )
         return ui.div()
