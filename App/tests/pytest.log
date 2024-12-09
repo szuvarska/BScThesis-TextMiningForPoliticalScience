@@ -1,0 +1,53 @@
+INFO     test_app:test_app.py:22 App loaded successfully
+INFO     test_app:test_app.py:24 Title is correct
+INFO     test_app:test_app.py:29 Starting file upload test
+INFO     test_app:test_app.py:35 File upload test passed
+INFO     test_app:test_app.py:40 Testing toggle view full text functionality
+INFO     test_app:test_app.py:46 Toggle view full text test passed
+INFO     test_app:test_app.py:51 Testing single module file upload
+INFO     test_app:test_app.py:71 Single module file upload test passed
+INFO     test_app:test_app.py:76 Testing toggle buttons
+INFO     test_app:test_app.py:110 Toggle buttons test passed
+INFO     test_app:test_app.py:115 Testing interactive plot
+INFO     test_app:test_app.py:137 Interactive plot test passed
+WARNING  root:_run.py:359 Application output:
+2024-12-09 20:27:22.883019: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2024-12-09 20:27:23.538067: W tensorflow/compiler/tf2tensorrt/utils/py_utils.cc:38] TF-TRT Warning: Could not find TensorRT
+2024-12-09 20:27:25.369074: I external/local_xla/xla/stream_executor/cuda/cuda_executor.cc:998] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero. See more at https://github.com/torvalds/linux/blob/v6.0/Documentation/ABI/testing/sysfs-bus-pci#L344-L355
+2024-12-09 20:27:25.370133: W tensorflow/core/common_runtime/gpu/gpu_device.cc:2251] Cannot dlopen some GPU libraries. Please make sure the missing libraries mentioned above are installed properly if you would like to use GPU. Follow the guide at https://www.tensorflow.org/install/gpu for how to download and setup the required libraries for your platform.
+Skipping registering GPU devices...
+INFO:     Started server process [39858]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:3870 (Press CTRL+C to quit)
+INFO:     ('127.0.0.1', 48186) - "WebSocket /websocket/" [accepted]
+INFO:     connection open
+INFO:     connection closed
+INFO:     ('127.0.0.1', 48226) - "WebSocket /websocket/" [accepted]
+INFO:     connection open
+INFO:     connection closed
+INFO:     ('127.0.0.1', 48284) - "WebSocket /websocket/" [accepted]
+INFO:     connection open
+INFO:     connection closed
+INFO:     ('127.0.0.1', 48348) - "WebSocket /websocket/" [accepted]
+INFO:     connection open
+INFO:     connection closed
+INFO:     ('127.0.0.1', 48424) - "WebSocket /websocket/" [accepted]
+INFO:     connection open
+/home/marta/.local/lib/python3.10/site-packages/shiny/render/_try_render_plot.py:197: UserWarning:
+
+Tight layout not applied. The left and right margins cannot be made large enough to accommodate all axes decorations.
+
+INFO:     connection closed
+INFO:     ('127.0.0.1', 34642) - "WebSocket /websocket/" [accepted]
+INFO:     connection open
+/home/marta/.local/lib/python3.10/site-packages/shiny/render/_try_render_plot.py:197: UserWarning:
+
+Tight layout not applied. The left and right margins cannot be made large enough to accommodate all axes decorations.
+
+/home/marta/.local/lib/python3.10/site-packages/shiny/render/_try_render_plot.py:197: UserWarning:
+
+Tight layout not applied. The left and right margins cannot be made large enough to accommodate all axes decorations.
+
+
