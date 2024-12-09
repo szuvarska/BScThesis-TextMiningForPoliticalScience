@@ -143,7 +143,6 @@ def calculate_sentiment_dist(tsc_results_df: pd.DataFrame, vader_results_df: pd.
     colors = ['red', 'gray', 'green']
 
     for sentiment, color in zip(sentiments, colors):
-        print("dupa")
         fig.add_trace(
             go.Bar(
                 name=sentiment,
@@ -519,7 +518,7 @@ def calculate_sentiment_over_time_per_target(tsc_results_df: pd.DataFrame, datas
             #fig.write_image(f"Plots/sentiment_over_time_per_target_{target}_{dataset_name}.png")
             fig.show()
 
-def caluclate_sentiment_dist_over_time_by_target(tsc_results_df: pd.DataFrame, dataset_name: str):
+def caluclate_sentiment_dist_over_time_by_target(tsc_results_df: pd.DataFrame, dataset_name: str, for_shiny = False, sentiment = 'positive'):
     # Convert 'published_time' to datetime and extract 'month' in YYYY-MM format
     tsc_results_df['published_time'] = pd.to_datetime(tsc_results_df['published_time'])
     tsc_results_df['month'] = tsc_results_df['published_time'].dt.to_period('M').astype(str)  # Format as YYYY-MM
@@ -532,31 +531,36 @@ def caluclate_sentiment_dist_over_time_by_target(tsc_results_df: pd.DataFrame, d
     heatmap_data_neutral = tsc_results_df.pivot_table(index='Target', columns='month', values='Sentiment',
                                                       aggfunc=lambda x: (x == 'neutral').mean())
 
+    sentiment = sentiment if sentiment in ['positive', 'negative', 'neutral'] else 'positive'
+
     # Create Plotly Heatmap for Positive Sentiment Proportion
     fig_positive = go.Figure(data=go.Heatmap(
         z=heatmap_data_positive.values,
-        x=heatmap_data_positive.columns,  # Use formatted month labels
+        x=heatmap_data_positive.columns.tolist(),  # Use formatted month labels directly
         y=heatmap_data_positive.index,
         colorscale='Greens',
         colorbar=dict(title="Proportion"),
     ))
 
+    # Update layout to ensure date labels are correctly displayed
+    print(heatmap_data_positive.columns)
     fig_positive.update_layout(
         title=f'Proportion of Positive Sentiment by Target Over Time (Monthly) - {dataset_name}',
         xaxis_title='Month',
         yaxis_title='Target',
         xaxis=dict(
             tickmode='array',
-            tickvals=list(range(len(heatmap_data_positive.columns))),
-            ticktext=heatmap_data_positive.columns,  # Use formatted month labels
-            tickangle=45,
+            tickvals=heatmap_data_positive.columns.values.tolist(),
+            ticktext=heatmap_data_positive.columns.values.tolist(),
+            tickangle=45,  # Tilt labels for better readability
+            showgrid=False  # Hide gridlines on x-axis
+        ),
+        yaxis=dict(
+            showgrid=False  # Hide gridlines on y-axis
         ),
         height=600,
         width=1000
     )
-
-    #fig_positive.write_image(f"Plots/positive_sentiment_over_time_by_target_{dataset_name}.png")
-    fig_positive.show()
 
     # Create Plotly Heatmap for Negative Sentiment Proportion
     fig_negative = go.Figure(data=go.Heatmap(
@@ -573,17 +577,13 @@ def caluclate_sentiment_dist_over_time_by_target(tsc_results_df: pd.DataFrame, d
         yaxis_title='Target',
         xaxis=dict(
             tickmode='array',
-            tickvals=list(range(len(heatmap_data_negative.columns))),
-            ticktext=heatmap_data_negative.columns,  # Use formatted month labels
+            tickvals=heatmap_data_negative.columns.values.tolist(),
+            ticktext=heatmap_data_negative.columns.values.tolist(),  # Use formatted month labels
             tickangle=45,
         ),
         height=600,
         width=1000
     )
-
-    #fig_negative.write_image(f"Plots/negative_sentiment_over_time_by_target_{dataset_name}.png")
-    fig_negative.show()
-
     # Create Plotly Heatmap for Neutral Sentiment Proportion
     fig_neutral = go.Figure(data=go.Heatmap(
         z=heatmap_data_neutral.values,
@@ -599,16 +599,26 @@ def caluclate_sentiment_dist_over_time_by_target(tsc_results_df: pd.DataFrame, d
         yaxis_title='Target',
         xaxis=dict(
             tickmode='array',
-            tickvals=list(range(len(heatmap_data_neutral.columns))),
-            ticktext=heatmap_data_neutral.columns,  # Use formatted month labels
+            tickvals=heatmap_data_neutral.columns.values.tolist(),
+            ticktext=heatmap_data_neutral.columns.values.tolist(),  # Use formatted month labels
             tickangle=45,
         ),
         height=600,
         width=1000
     )
 
-    #fig_neutral.write_image(f"Plots/neutral_sentiment_over_time_by_target_{dataset_name}.png")
-    fig_neutral.show()
+    if for_shiny:
+        if sentiment == 'positive':
+            return fig_positive
+        elif sentiment == 'negative':
+            return fig_negative
+        else:
+            return fig_neutral
+    else:
+        fig_positive.show()
+        fig_negative.show()
+        fig_neutral.show()
+
 
 
 def main():
