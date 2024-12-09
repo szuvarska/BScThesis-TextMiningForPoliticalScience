@@ -196,16 +196,32 @@ img.entity-types-plot {
     width: 80%;
 }
 
-img.common-entities-plot {
-    width: 100%;
-}
-
 #most_common_entities_plot {
     width: 100%;
 }
 
-img.sentiment-plot {
-    width: 70%;
+#sentiment_dist_plot {
+    width: 80%;
+}
+
+#sentiment_over_time_plot {
+    width: 75%;
+}
+
+#sentiment_word_cloud_plot {
+    width: 67% !important;
+    display: block;
+    margin: 0 auto 30px;
+    border: 2px solid black;
+    padding: 1px;
+}
+
+#sentiment_dist_per_target_plot {
+    width: 100%;
+}
+
+#sentiment_over_time_per_target_plot {
+    width: 90%;
 }
 
 .plot-image {

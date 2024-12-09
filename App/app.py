@@ -1,3 +1,4 @@
+import time
 from pathlib import Path
 import sys
 import pandas as pd
@@ -6,11 +7,12 @@ from shiny import App, render, ui, reactive
 from htmltools import tags, Tag
 import numpy as np
 import matplotlib.pyplot as plt
-from plots import generate_entity_types_plot, generate_most_common_entities_plot
+from plots import generate_entity_types_plot, generate_most_common_entities_plot, generate_sentiment_dist_plot, \
+    generate_sentiment_over_time_plot, generate_sentiment_word_cloud_plot, generate_sentiment_dist_per_target_plot, \
+    generate_sentiment_over_time_per_target_plot
 from shinywidgets import output_widget, render_widget
 
 here = Path(__file__).parent
-
 
 def handle_file_upload(file_input):
     file_info = file_input()
@@ -53,10 +55,12 @@ def collapsible_section(header, button_id, plot_id):
     return ui.div(
         ui.div(
             ui.tags.h3(header, style="display: inline;"),
-            ui.input_action_button(button_id, "⯆", class_="toggle-button", style="font-size: 20px; display: inline; margin-left: 10px;"),
+            ui.input_action_button(button_id, "⯆", class_="toggle-button",
+                                   style="font-size: 20px; display: inline; margin-left: 10px;"),
             style="display: flex; align-items: center; margin-bottom: 10px;"
         ),
         ui.output_ui(plot_id),
+        ui.busy_indicators.options(spinner_type="bars3"),
         class_="collapsible-section"
     )
 
@@ -135,6 +139,7 @@ def server(input, output, session):
     right_container_visible_single = reactive.Value(True)
     right_container_visible_double = reactive.Value(True)
     right_container_visible_all = reactive.Value(True)
+    eda_visible = reactive.Value(True)
     ner_visible = reactive.Value(True)
     sentiment_visible = reactive.Value(True)
 
@@ -239,23 +244,60 @@ def server(input, output, session):
         return plot
 
     @output
-    @render.ui
-    # def all_mode_plots():
+    @render_widget
+    def sentiment_dist_plot():
+        dataset_name = input.dataset_filter()
+        plot = generate_sentiment_dist_plot(dataset_name)
+        return plot
+
+    @output
+    @render_widget
+    def sentiment_over_time_plot():
+        dataset_name = input.dataset_filter()
+        model_name = input.sentiment_model_filter().lower()
+        plot = generate_sentiment_over_time_plot(dataset_name, model_name)
+        return plot
+
+    @output
+    @render.plot
+    def sentiment_word_cloud_plot():
+        dataset_name = input.dataset_filter()
+        model_name = input.sentiment_model_filter().lower()
+        sentiment = input.sentiment_filter()
+        plot = generate_sentiment_word_cloud_plot(dataset_name, model_name, sentiment)
+        return plot
+
+    @output
+    @render_widget
+    def sentiment_dist_per_target_plot():
+        dataset_name = input.dataset_filter()
+        plot = generate_sentiment_dist_per_target_plot(dataset_name)
+        return plot
+
+    @output
+    @render_widget
+    def sentiment_over_time_per_target_plot():
+        dataset_name = input.dataset_filter()
+        plot = generate_sentiment_over_time_per_target_plot(dataset_name)
+        return plot
+
+    # @output
+    # @render_widget
+    # def sentiment_dist_over_time_by_target_plot():
     #     dataset_name = input.dataset_filter()
-    #     sentiment = input.sentiment_filter().lower()
-    #     sentiment_over_time_by_target = f'Sentiment/{sentiment}_sentiment_over_time_by_target_{dataset_name}.png'
-    #     return ui.div(
-    #         ui.div(
-    #             output_widget("entity_types_plot"),
-    #             output_widget("most_common_entities_plot"),
-    #             ui.img(src=sentiment_over_time_by_target,
-    #                    class_="plot-image sentiment-plot") if sentiment_over_time_by_target else "Sentiment over time image not available",
-    #             class_="plots-row"
-    #         ),
-    #         class_="plots-container"
-    #     )
+    #     sentiment = input.sentiment_filter()
+    #     plot = generate_sentiment_dist_over_time_by_target_plot(dataset_name, sentiment)
+    #     return plot
+
+    @output
+    @render.ui
     def all_mode_plots():
         return ui.div(
+            collapsible_section(
+                "Exploratory Data Analysis",
+                "toggle_eda_button",
+                "eda_plots"
+            ),
             collapsible_section(
                 "Named Entity Recognition",
                 "toggle_ner_button",
@@ -264,7 +306,7 @@ def server(input, output, session):
             collapsible_section(
                 "Sentiment",
                 "toggle_sentiment_button",
-                "sentiment_plot"
+                "sentiment_plots"
             ),
             class_="plots-container"
         )
@@ -337,6 +379,7 @@ def server(input, output, session):
                 ui.input_select("sentiment_filter", "Select Sentiment", choices=["Positive", "Negative", "Neutral"]),
                 ui.input_select("entity_type_filter", "Select Entity Type",
                                 choices=["Person", "Organisation", "Location", "Miscellaneous"]),
+                ui.input_select("sentiment_model_filter", "Select Sentiment Model", choices=["TSC", "VADER"]),
                 ui.input_action_button("hide_container_button_all", "Hide Menu", class_="btn btn-secondary"),
                 class_="main-right-container",
                 id="main-right-container-all"
@@ -365,7 +408,22 @@ def server(input, output, session):
         sentiment_visible.set(not sentiment_visible.get())
         session.send_input_message("toggle_sentiment_button", {"label": "⯆" if sentiment_visible.get() else "⯈"})
 
-    # Render the plots based on visibility
+    @reactive.Effect
+    @reactive.event(input.toggle_eda_button)
+    def toggle_eda_visibility():
+        eda_visible.set(not eda_visible.get())
+        session.send_input_message("toggle_eda_button", {"label": "⯆" if eda_visible.get() else "⯈"})
+
+    @output
+    @render.ui
+    def eda_plots():
+        if eda_visible.get():
+            return ui.div(
+                ui.img(src='plot1.png', class_="plot-image eda-plot"),
+                class_="plots-row"
+            )
+        return ui.div()
+
     @output
     @render.ui
     def ner_plots():
@@ -379,13 +437,22 @@ def server(input, output, session):
 
     @output
     @render.ui
-    def sentiment_plot():
+    def sentiment_plots():
         if sentiment_visible.get():
-            dataset_name = input.dataset_filter()
-            sentiment = input.sentiment_filter().lower()
-            sentiment_over_time_by_target = f'Sentiment/{sentiment}_sentiment_over_time_by_target_{dataset_name}.png'
+            # dataset_name = input.dataset_filter()
+            # sentiment = input.sentiment_filter().lower()
+            # sentiment_over_time_by_target = f'Sentiment/{sentiment}_sentiment_over_time_by_target_{dataset_name}.png'
+            # return ui.div(
+            #     ui.img(src=sentiment_over_time_by_target, class_="plot-image sentiment-plot"),
+            #     class_="plots-row"
+            # )
             return ui.div(
-                ui.img(src=sentiment_over_time_by_target, class_="plot-image sentiment-plot"),
+                output_widget("sentiment_dist_plot"),
+                output_widget("sentiment_over_time_plot"),
+                ui.output_plot("sentiment_word_cloud_plot"),
+                output_widget("sentiment_dist_per_target_plot"),
+                output_widget("sentiment_over_time_per_target_plot"),
+                # output_widget("sentiment_dist_over_time_by_target_plot"),
                 class_="plots-row"
             )
         return ui.div()

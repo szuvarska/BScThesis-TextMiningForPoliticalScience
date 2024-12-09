@@ -1,0 +1,3 @@
+Invalid Content
+This file does not have the required format.
+It is missing the necessary headers and structure.
