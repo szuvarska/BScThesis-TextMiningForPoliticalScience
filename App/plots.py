@@ -6,8 +6,9 @@ import pandas as pd
 sys.path.append(str(Path(__file__).resolve().parent.parent))
 from NER_and_ED.NER_ED_script import find_most_common_entity_types, find_most_common_entities_per_type_for_shiny
 
-# from Preparations.EDA_script import plot_word_cout_distribution
-sys.path.append(str(Path(__file__).resolve().parent.parent))
+from Preparations.EDA_scritpt import plot_word_cout_distribution, sentance_count_distribution, plot_top_N_common_words, \
+    plot_top_N_common_pos, plot_pos_wordclouds
+
 from Sentiment.sentiment_script import calculate_sentiment_dist, calculate_sentiment_over_time, \
     generate_word_clouds, calculate_sentiment_dist_per_target, calculate_sentiment_over_time_per_target, \
     caluclate_sentiment_dist_over_time_by_target
@@ -58,3 +59,23 @@ def generate_sentiment_over_time_per_target_plot(dataset_name: str):
 # def generate_sentiment_dist_over_time_by_target_plot(dataset_name: str, sentiment: str):
 #     tsc_results_df = pd.read_csv(f"../Sentiment/Results/tsc_{dataset_name}.csv")
 #     return caluclate_sentiment_dist_over_time_by_target(tsc_results_df, dataset_name, for_shiny=True)
+
+# def generate_word_cout_distribution_plot(dataset_name: str):
+#     df = pd.read_csv(f"../Preparations/Results/{dataset_name}.csv")
+#     return plot_word_cout_distribution(df, dataset_name, for_shiny=True)
+#
+# def generate_sentance_count_distribution_plot(dataset_name: str):
+#     df = pd.read_csv(f"../Preparations/Results/{dataset_name}.csv")
+#     return sentance_count_distribution(df, dataset_name, for_shiny=True)
+#
+# def generate_top_N_common_words_plot(dataset_name: str, N: int):
+#     df = pd.read_csv(f"../Preparations/Results/{dataset_name}.csv")
+#     return plot_top_N_common_words(df, dataset_name, N, for_shiny=True)
+#
+# def generate_top_N_common_pos_plot(dataset_name: str, N: int):
+#     df = pd.read_csv(f"../Preparations/Results/{dataset_name}.csv")
+#     return plot_top_N_common_pos(df, dataset_name, N, for_shiny=True)
+#
+# def generate_pos_wordclouds_plot(dataset_name: str, N: int):
+#     df = pd.read_csv(f"../Preparations/Results/{dataset_name}.csv")
+#     return plot_pos_wordclouds(df, dataset_name, N, for_shiny=True)
