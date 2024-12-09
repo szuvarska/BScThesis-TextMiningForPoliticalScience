@@ -2,12 +2,10 @@ from pathlib import Path
 import sys
 import ast
 import pandas as pd
-import mpld3
-from io import BytesIO
-import base64
 
 sys.path.append(str(Path(__file__).resolve().parent.parent))
 from NER_and_ED.NER_ED_script import find_most_common_entity_types, find_most_common_entities_per_type_for_shiny
+# from Preparations.EDA_script import plot_word_cout_distribution
 
 
 def generate_entity_types_plot(dataset_name: str):
