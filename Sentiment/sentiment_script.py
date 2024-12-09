@@ -300,6 +300,7 @@ def wc_tsc(sentiment_label, df, dataset_name: str) -> plt:
 
 
 def generate_word_clouds(results_df: pd.DataFrame, dataset_name: str, for_shiny=False, model_name='tsc', sentiment='positive'):
+    sentiment = sentiment.lower()
     sentiment_to_use = sentiment if sentiment in ['positive', 'negative', 'neutral'] else 'positive'
     if model_name == 'tsc':
         plot = wc_tsc(sentiment_to_use, results_df, dataset_name)
