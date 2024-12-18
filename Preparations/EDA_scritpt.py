@@ -84,7 +84,7 @@ def plot_word_cout_distribution(df: pd.DataFrame, df_name: str):
         )
     )
 
-    fig.show()
+    return fig
 
 
 def sentance_count_distribution(df: pd.DataFrame, df_name: str):
@@ -145,7 +145,7 @@ def sentance_count_distribution(df: pd.DataFrame, df_name: str):
         )
     )
 
-    fig.show()
+    return fig
 
 
 def plot_top_N_common_words(df: pd.DataFrame, df_name: str, N = 100):
@@ -187,7 +187,7 @@ def plot_top_N_common_pos(df_pos: pd.DataFrame, df_name: str, N = 10):
         showlegend=False  # Usunięcie legendy, bo nie jest potrzebna
     )
 
-    fig.show()
+    return fig
 
 def plot_pos_wordclouds(df: pd.DataFrame, df_name: str, N = 100):
     #if we want to comate eg diffrents categories, jutro put a piltered df as input
@@ -247,6 +247,6 @@ def plot_pos_wordclouds(df: pd.DataFrame, df_name: str, N = 100):
     plt.imshow(wordcloud)
     plt.axis('off')
     plt.title(f'{df_name} Top {N} Most Common Adverbs')
-    plt.show()
+    return plt
 
 
