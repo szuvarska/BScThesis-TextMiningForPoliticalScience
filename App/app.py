@@ -9,7 +9,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from plots import generate_entity_types_plot, generate_most_common_entities_plot, generate_sentiment_dist_plot, \
     generate_sentiment_over_time_plot, generate_sentiment_word_cloud_plot, generate_sentiment_dist_per_target_plot, \
-    generate_sentiment_over_time_per_target_plot
+    generate_sentiment_over_time_per_target_plot, generate_sentiment_dist_over_time_by_target_plot
 from shinywidgets import output_widget, render_widget
 
 here = Path(__file__).parent
@@ -281,13 +281,13 @@ def server(input, output, session):
         plot = generate_sentiment_over_time_per_target_plot(dataset_name)
         return plot
 
-    # @output
-    # @render_widget
-    # def sentiment_dist_over_time_by_target_plot():
-    #     dataset_name = input.dataset_filter()
-    #     sentiment = input.sentiment_filter()
-    #     plot = generate_sentiment_dist_over_time_by_target_plot(dataset_name, sentiment)
-    #     return plot
+    @output
+    @render_widget
+    def sentiment_dist_over_time_by_target_plot():
+        dataset_name = input.dataset_filter()
+        sentiment = input.sentiment_filter()
+        plot = generate_sentiment_dist_over_time_by_target_plot(dataset_name, sentiment)
+        return plot
 
     @output
     @render.ui
@@ -452,7 +452,7 @@ def server(input, output, session):
                 ui.output_plot("sentiment_word_cloud_plot"),
                 output_widget("sentiment_dist_per_target_plot"),
                 output_widget("sentiment_over_time_per_target_plot"),
-                # output_widget("sentiment_dist_over_time_by_target_plot"),
+                output_widget("sentiment_dist_over_time_by_target_plot"),
                 class_="plots-row"
             )
         return ui.div()

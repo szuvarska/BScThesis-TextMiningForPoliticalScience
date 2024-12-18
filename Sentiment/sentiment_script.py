@@ -508,7 +508,7 @@ def calculate_sentiment_over_time_per_target(tsc_results_df: pd.DataFrame, datas
             # Save and display the chart
             #fig.write_image(f"Plots/sentiment_over_time_per_target_{target}_{dataset_name}.png")
             fig.show()
-def caluclate_sentiment_dist_over_time_by_target(tsc_results_df: pd.DataFrame, dataset_name: str, for_shiny = False, sentiment = 'positive'):
+def calculate_sentiment_dist_over_time_by_target(tsc_results_df: pd.DataFrame, dataset_name: str, for_shiny = False, sentiment = 'positive'):
     # Convert 'published_time' to datetime and extract 'month' in YYYY-MM format
     tsc_results_df['published_time'] = pd.to_datetime(tsc_results_df['published_time'])
     tsc_results_df['month'] = tsc_results_df['published_time'].dt.to_period('M').astype(str)  # Format as YYYY-MM
@@ -609,7 +609,45 @@ def caluclate_sentiment_dist_over_time_by_target(tsc_results_df: pd.DataFrame, d
         fig_negative.show()
         fig_neutral.show()
 
+def calculate_sentiment_dist_over_time_by_target_for_shiny(tsc_results_df: pd.DataFrame, dataset_name: str, sentiment: str = 'positive'):
+    # Convert 'published_time' to datetime and extract 'month' in YYYY-MM format
+    tsc_results_df['published_time'] = pd.to_datetime(tsc_results_df['published_time'])
+    tsc_results_df['month'] = tsc_results_df['published_time'].dt.to_period('M').astype(str)  # Format as YYYY-MM
 
+    # Create heatmaps for different sentiment types (positive, negative, neutral)
+    heatmap_data = tsc_results_df.pivot_table(index='Target', columns='month', values='Sentiment',
+                                                       aggfunc=lambda x: (x == sentiment).mean())
+
+    # Create Plotly Heatmap for Sentiment Proportion
+    fig = go.Figure(data=go.Heatmap(
+        z=heatmap_data.values,
+        x=heatmap_data.columns.tolist(),  # Use formatted month labels directly
+        y=heatmap_data.index,
+        colorscale='Greens',
+        colorbar=dict(title="Proportion"),
+    ))
+
+    # Update layout to ensure date labels are correctly displayed
+    print(heatmap_data.columns)
+    fig.update_layout(
+        title=f'Proportion of {sentiment.capitalize()} Sentiment by Target Over Time (Monthly) - {dataset_name}',
+        xaxis_title='Month',
+        yaxis_title='Target',
+        xaxis=dict(
+            tickmode='array',
+            tickvals=heatmap_data.columns.values.tolist(),
+            ticktext=heatmap_data.columns.values.tolist(),
+            tickangle=45,  # Tilt labels for better readability
+            showgrid=False  # Hide gridlines on x-axis
+        ),
+        yaxis=dict(
+            showgrid=False  # Hide gridlines on y-axis
+        ),
+        height=600,
+        width=1000
+    )
+
+    return fig
 
 def main():
     file_name = "../Data/gaza_textcontain_after_new_preprocessed.csv"

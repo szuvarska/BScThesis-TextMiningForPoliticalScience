@@ -11,7 +11,7 @@ from Preparations.EDA_scritpt import plot_word_cout_distribution, sentance_count
 
 from Sentiment.sentiment_script import calculate_sentiment_dist, calculate_sentiment_over_time, \
     generate_word_clouds, calculate_sentiment_dist_per_target, calculate_sentiment_over_time_per_target, \
-    caluclate_sentiment_dist_over_time_by_target
+    calculate_sentiment_dist_over_time_by_target_for_shiny
 
 
 def generate_entity_types_plot(dataset_name: str):
@@ -43,6 +43,7 @@ def generate_sentiment_over_time_plot(dataset_name: str, model_name: str):
 
 
 def generate_sentiment_word_cloud_plot(dataset_name: str, model_name: str, sentiment: str):
+    sentiment = sentiment.lower()
     results_df = pd.read_csv(f"../Sentiment/Results/{model_name}_{dataset_name}.csv")
     return generate_word_clouds(results_df, dataset_name, for_shiny=True, model_name=model_name, sentiment=sentiment)
 
@@ -56,9 +57,10 @@ def generate_sentiment_over_time_per_target_plot(dataset_name: str):
     tsc_results_df = pd.read_csv(f"../Sentiment/Results/tsc_{dataset_name}.csv")
     return calculate_sentiment_over_time_per_target(tsc_results_df, dataset_name, for_shiny=True)
 
-# def generate_sentiment_dist_over_time_by_target_plot(dataset_name: str, sentiment: str):
-#     tsc_results_df = pd.read_csv(f"../Sentiment/Results/tsc_{dataset_name}.csv")
-#     return caluclate_sentiment_dist_over_time_by_target(tsc_results_df, dataset_name, for_shiny=True)
+def generate_sentiment_dist_over_time_by_target_plot(dataset_name: str, sentiment: str):
+    sentiment = sentiment.lower()
+    tsc_results_df = pd.read_csv(f"../Sentiment/Results/tsc_{dataset_name}.csv")
+    return calculate_sentiment_dist_over_time_by_target_for_shiny(tsc_results_df, dataset_name, sentiment=sentiment)
 
 # def generate_word_cout_distribution_plot(dataset_name: str):
 #     df = pd.read_csv(f"../Preparations/Results/{dataset_name}.csv")
