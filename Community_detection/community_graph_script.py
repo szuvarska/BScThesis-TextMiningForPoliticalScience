@@ -136,4 +136,4 @@ def plot_community_graph(df_ner: pd.DataFrame, df_entities: pd.DataFrame, suptit
     # title
     plt.suptitle(suptitle, fontsize=20)
     plt.title(title, fontsize=15)
-    plt.show()
+    return plt
