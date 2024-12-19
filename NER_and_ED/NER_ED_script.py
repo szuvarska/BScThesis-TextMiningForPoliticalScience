@@ -198,7 +198,7 @@ def calculate_entity_distribution(df: pd.DataFrame, dataset_name: str):
 
     # Update layout with title
     fig.update_layout(
-        title_text=f'Words Distribution between Named Entities and Non-Entities ({dataset_name})',
+        title_text=f'Words Distribution between Named Entities and Non-Entities - {dataset_name}',
         title_x=0.5,  # Center the title
     )
 
@@ -228,12 +228,21 @@ def find_most_common_entity_types(df: pd.DataFrame, dataset_name: str, for_shiny
     entity_types_df = entity_types.reset_index()
     entity_types_df.columns = ['Entity Type', 'Frequency']
 
+    entities_dict = {
+        'ORG': 'Organisation',
+        'PER': 'Person',
+        'LOC': 'Location',
+        'MISC': 'Miscellaneous',
+    }
+
+    entity_types_df['Entity Type'] = entity_types_df['Entity Type'].map(entities_dict)
+
     # Create a bar chart using Plotly Express
     fig = px.bar(
         entity_types_df,
         x='Entity Type',
         y='Frequency',
-        title=f'Most Frequently Mentioned Named Entity Types ({dataset_name})',
+        title=f'Most Frequently Mentioned Named Entity Types - {dataset_name}',
         labels={'Entity Type': 'Entity Type', 'Frequency': 'Frequency'},
         color='Frequency',
         color_continuous_scale='Viridis'  # Similar to sns.color_palette('viridis')
@@ -317,7 +326,7 @@ def find_most_common_entities_per_type(df: pd.DataFrame, dataset_name: str, outp
             entity_data,
             x='Word',
             y='Count',
-            title=f'Top 15 Words for {entity_type} ({dataset_name})',
+            title=f'Top 15 Words for {entity_type} - {dataset_name}',
             labels={'Word': 'Word', 'Count': 'Frequency'},
             color='Count',
             color_continuous_scale='Viridis'
@@ -347,7 +356,7 @@ def find_most_common_entities_per_type_for_shiny(dataset_name: str, output_file:
         x='Count',  # Horizontal bars
         y='Word',
         orientation='h',
-        title=f'Top 15 Words for {entity_type_name} ({dataset_name})',
+        title=f'Top 15 Words for {entity_type_name} - {dataset_name}',
         labels={'Word': 'Word', 'Count': 'Frequency'},
         color='Count',
         color_continuous_scale='Viridis',

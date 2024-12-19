@@ -11,6 +11,7 @@ import seaborn as sns
 import plotly.graph_objects as go
 import re
 
+
 def vader_sentiment(text: str) -> str:
     vader_analyzer = SentimentIntensityAnalyzer()
     scores = vader_analyzer.polarity_scores(text)
@@ -121,7 +122,7 @@ def calculate_sentiment_dist(tsc_results_df: pd.DataFrame, vader_results_df: pd.
     # aggregate sentiment counts for VADER
     vader_sentiment_counts = vader_results_df['Sentiment'].value_counts()
 
-    #comparison between TSC and VADER
+    # comparison between TSC and VADER
     sentiment_comparison = pd.DataFrame({
         'Negative': [tsc_sentiment_counts.get('negative', 0), vader_sentiment_counts.get('negative', 0)],
         'Neutral': [tsc_sentiment_counts.get('neutral', 0), vader_sentiment_counts.get('neutral', 0)],
@@ -178,9 +179,8 @@ def calculate_sentiment_dist(tsc_results_df: pd.DataFrame, vader_results_df: pd.
     if for_shiny:
         return fig
     else:
-        #fig.write_image(f"Plots/sentiment_dist_{dataset_name}.png")
+        # fig.write_image(f"Plots/sentiment_dist_{dataset_name}.png")
         fig.show()
-
 
 
 def calculate_sentiment_over_time(model_results_df: pd.DataFrame, dataset_name: str, for_shiny=False, model_name='tsc'):
@@ -261,12 +261,13 @@ def calculate_sentiment_over_time(model_results_df: pd.DataFrame, dataset_name: 
         width=1000
     )
 
-    #fig.write_image(f"Plots/{model_name}_sentiment_over_time_{dataset_name}.png")
+    # fig.write_image(f"Plots/{model_name}_sentiment_over_time_{dataset_name}.png")
 
     if for_shiny:
         return fig
     else:
         fig.show()
+
 
 def clean_sentences(df, sentiment_label):
     sentences = df[df['Sentiment'] == sentiment_label]['Sentence']
@@ -298,7 +299,8 @@ def wc_tsc(sentiment_label, df, dataset_name: str) -> plt:
     return plt
 
 
-def generate_word_clouds(results_df: pd.DataFrame, dataset_name: str, for_shiny=False, model_name='tsc', sentiment='positive'):
+def generate_word_clouds(results_df: pd.DataFrame, dataset_name: str, for_shiny=False, model_name='tsc',
+                         sentiment='positive'):
     sentiment = sentiment.lower()
     sentiment_to_use = sentiment if sentiment in ['positive', 'negative', 'neutral'] else 'positive'
     if model_name == 'tsc':
@@ -326,7 +328,7 @@ def generate_word_clouds(results_df: pd.DataFrame, dataset_name: str, for_shiny=
         return plot.gcf()
     else:
         plt.show()
-    #plt.savefig(f"Plots/{sentiment_to_use}_{model_name}_wordcloud_{dataset_name}.png")
+    # plt.savefig(f"Plots/{sentiment_to_use}_{model_name}_wordcloud_{dataset_name}.png")
 
 
 def calculate_sentiment_dist_per_target(tsc_results_df: pd.DataFrame, dataset_name: str, for_shiny=False):
@@ -358,7 +360,8 @@ def calculate_sentiment_dist_per_target(tsc_results_df: pd.DataFrame, dataset_na
     # plt.show()
     # Overall sentiment distribution per target
     if for_shiny:
-        overall_sentiment_per_target_proportion = pd.read_csv(f'../Sentiment/Results/overall_sentiment_per_target_{dataset_name}.csv')
+        overall_sentiment_per_target_proportion = pd.read_csv(
+            f'../Sentiment/Results/overall_sentiment_per_target_{dataset_name}.csv')
     else:
         overall_sentiment_per_target = tsc_results_df.groupby(['Target', 'Sentiment']).size().unstack(fill_value=0)
         print(overall_sentiment_per_target)
@@ -415,9 +418,8 @@ def calculate_sentiment_dist_per_target(tsc_results_df: pd.DataFrame, dataset_na
     if for_shiny:
         return fig
     else:
-        #fig.write_image(f"Plots/sentiment_dist_per_target_{dataset_name}.png")
+        # fig.write_image(f"Plots/sentiment_dist_per_target_{dataset_name}.png")
         fig.show()
-
 
 
 def calculate_sentiment_over_time_per_target(tsc_results_df: pd.DataFrame, dataset_name: str, for_shiny=False):
@@ -506,9 +508,12 @@ def calculate_sentiment_over_time_per_target(tsc_results_df: pd.DataFrame, datas
         if for_shiny:
             return fig
             # Save and display the chart
-            #fig.write_image(f"Plots/sentiment_over_time_per_target_{target}_{dataset_name}.png")
+            # fig.write_image(f"Plots/sentiment_over_time_per_target_{target}_{dataset_name}.png")
             fig.show()
-def calculate_sentiment_dist_over_time_by_target(tsc_results_df: pd.DataFrame, dataset_name: str, for_shiny = False, sentiment = 'positive'):
+
+
+def calculate_sentiment_dist_over_time_by_target(tsc_results_df: pd.DataFrame, dataset_name: str, for_shiny=False,
+                                                 sentiment='positive'):
     # Convert 'published_time' to datetime and extract 'month' in YYYY-MM format
     tsc_results_df['published_time'] = pd.to_datetime(tsc_results_df['published_time'])
     tsc_results_df['month'] = tsc_results_df['published_time'].dt.to_period('M').astype(str)  # Format as YYYY-MM
@@ -609,30 +614,38 @@ def calculate_sentiment_dist_over_time_by_target(tsc_results_df: pd.DataFrame, d
         fig_negative.show()
         fig_neutral.show()
 
-def calculate_sentiment_dist_over_time_by_target_for_shiny(tsc_results_df: pd.DataFrame, dataset_name: str, sentiment: str = 'positive'):
+
+def calculate_sentiment_dist_over_time_by_target_for_shiny(tsc_results_df: pd.DataFrame, dataset_name: str,
+                                                           sentiment: str = 'positive'):
     # Convert 'published_time' to datetime and extract 'month' in YYYY-MM format
     tsc_results_df['published_time'] = pd.to_datetime(tsc_results_df['published_time'])
     tsc_results_df['month'] = tsc_results_df['published_time'].dt.to_period('M').astype(str)  # Format as YYYY-MM
 
     # Create heatmaps for different sentiment types (positive, negative, neutral)
     heatmap_data = tsc_results_df.pivot_table(index='Target', columns='month', values='Sentiment',
-                                                       aggfunc=lambda x: (x == sentiment).mean())
+                                              aggfunc=lambda x: (x == sentiment).mean())
+
+
+    # Replace NaN values with 0
+    heatmap_data = heatmap_data.fillna(0)
+
+    # Ensure there are no infinite values
+    heatmap_data = heatmap_data.replace([np.inf, -np.inf], 0)
+
 
     # Create Plotly Heatmap for Sentiment Proportion
     fig = go.Figure(data=go.Heatmap(
         z=heatmap_data.values,
         x=heatmap_data.columns.tolist(),  # Use formatted month labels directly
         y=heatmap_data.index,
-        colorscale='Greens',
+        colorscale= 'Greens' if sentiment == 'positive' else 'Reds' if sentiment == 'negative' else 'Greys',
         colorbar=dict(title="Proportion"),
     ))
 
     # Update layout to ensure date labels are correctly displayed
-    print(heatmap_data.columns)
     fig.update_layout(
         title=f'Proportion of {sentiment.capitalize()} Sentiment by Target Over Time (Monthly) - {dataset_name}',
         xaxis_title='Month',
-        yaxis_title='Target',
         xaxis=dict(
             tickmode='array',
             tickvals=heatmap_data.columns.values.tolist(),
@@ -641,6 +654,12 @@ def calculate_sentiment_dist_over_time_by_target_for_shiny(tsc_results_df: pd.Da
             showgrid=False  # Hide gridlines on x-axis
         ),
         yaxis=dict(
+            title='Target',
+            ticklabelposition='outside',
+            ticks='outside',
+            tickcolor='#fdfdfd',
+            ticklen=10,
+            automargin=True,
             showgrid=False  # Hide gridlines on y-axis
         ),
         height=600,
@@ -648,6 +667,7 @@ def calculate_sentiment_dist_over_time_by_target_for_shiny(tsc_results_df: pd.Da
     )
 
     return fig
+
 
 def main():
     file_name = "../Data/gaza_textcontain_after_new_preprocessed.csv"
@@ -662,12 +682,12 @@ def main():
     ]
     tsc_results_df = pd.read_csv(f'Results/tsc_{dataset_name}.csv')
     vader_results_df = pd.read_csv(f'Results/vader_{dataset_name}.csv')
-    calculate_sentiment_dist(tsc_results_df, vader_results_df, dataset_name)
-    calculate_sentiment_over_time(tsc_results_df, vader_results_df, dataset_name)
-    generate_word_clouds(tsc_results_df, vader_results_df, dataset_name)
-    calculate_sentiment_dist_per_target(tsc_results_df, dataset_name)
-    caluclate_sentiment_dist_over_time_by_target(tsc_results_df, dataset_name)
-
+    # calculate_sentiment_dist(tsc_results_df, vader_results_df, dataset_name)
+    # calculate_sentiment_over_time(tsc_results_df, vader_results_df, dataset_name)
+    # generate_word_clouds(tsc_results_df, vader_results_df, dataset_name)
+    # calculate_sentiment_dist_per_target(tsc_results_df, dataset_name)
+    fig = calculate_sentiment_dist_over_time_by_target_for_shiny(tsc_results_df, dataset_name, 'negative')
+    fig.show()
 
 if __name__ == '__main__':
     main()

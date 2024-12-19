@@ -9,10 +9,13 @@ import numpy as np
 import matplotlib.pyplot as plt
 from plots import generate_entity_types_plot, generate_most_common_entities_plot, generate_sentiment_dist_plot, \
     generate_sentiment_over_time_plot, generate_sentiment_word_cloud_plot, generate_sentiment_dist_per_target_plot, \
-    generate_sentiment_over_time_per_target_plot, generate_sentiment_dist_over_time_by_target_plot
+    generate_sentiment_over_time_per_target_plot, generate_sentiment_dist_over_time_by_target_plot, \
+    generate_word_count_distribution_plot, generate_sentance_count_distribution_plot, generate_top_N_common_words_plot, \
+    generate_top_N_common_pos_plot, generate_pos_wordclouds_plot, generate_community_graph
 from shinywidgets import output_widget, render_widget
 
 here = Path(__file__).parent
+
 
 def handle_file_upload(file_input):
     file_info = file_input()
@@ -142,6 +145,7 @@ def server(input, output, session):
     eda_visible = reactive.Value(True)
     ner_visible = reactive.Value(True)
     sentiment_visible = reactive.Value(True)
+    communities_visible = reactive.Value(True)
 
     @reactive.Effect
     @reactive.event(input.view_full_text)
@@ -290,6 +294,52 @@ def server(input, output, session):
         return plot
 
     @output
+    @render_widget
+    def word_count_distribution_plot():
+        dataset_name = input.dataset_filter()
+        plot = generate_word_count_distribution_plot(dataset_name)
+        return plot
+
+    @output
+    @render_widget
+    def sentance_count_distribution_plot():
+        dataset_name = input.dataset_filter()
+        plot = generate_sentance_count_distribution_plot(dataset_name)
+        return plot
+
+    @output
+    @render.plot
+    def top_N_common_words_plot():
+        dataset_name = input.dataset_filter()
+        N = input.word_cloud_n()
+        plot = generate_top_N_common_words_plot(dataset_name, N)
+        return plot
+
+    @output
+    @render_widget
+    def top_N_common_pos_plot():
+        dataset_name = input.dataset_filter()
+        N = input.word_cloud_n()
+        plot = generate_top_N_common_pos_plot(dataset_name, N)
+        return plot
+
+    @output
+    @render.plot
+    def pos_wordclouds_plot():
+        dataset_name = input.dataset_filter()
+        N = input.word_cloud_n()
+        pos = input.pos_filter()
+        plot = generate_pos_wordclouds_plot(dataset_name, N, pos)
+        return plot
+
+    @output
+    @render.plot
+    def community_graph():
+        dataset_name = input.dataset_filter()
+        plot = generate_community_graph(dataset_name)
+        return plot
+
+    @output
     @render.ui
     def all_mode_plots():
         return ui.div(
@@ -307,6 +357,11 @@ def server(input, output, session):
                 "Sentiment",
                 "toggle_sentiment_button",
                 "sentiment_plots"
+            ),
+            collapsible_section(
+                "Community Graphs",
+                "toggle_community_button",
+                "community_plots"
             ),
             class_="plots-container"
         )
@@ -380,6 +435,43 @@ def server(input, output, session):
                 ui.input_select("entity_type_filter", "Select Entity Type",
                                 choices=["Person", "Organisation", "Location", "Miscellaneous"]),
                 ui.input_select("sentiment_model_filter", "Select Sentiment Model", choices=["TSC", "VADER"]),
+                ui.input_numeric("word_cloud_n", "Number of Words in Word Cloud", value=100, min=1),
+                ui.input_selectize("pos_filter", "Select Part of Speech", choices=[
+                    "Common Singular Nouns",
+                    "Common Plural Nouns",
+                    "Proper Singular Nouns",
+                    "Proper Plural Nouns",
+                    "Adjectives in Positive Form",
+                    "Adjectives in Comparative Form",
+                    "Adjectives in Superlative Form",
+                    "Verbs in Base Form",
+                    "Verbs in Past Tense",
+                    "Verbs in Present Participle",
+                    "Verbs in Past Participle",
+                    "Verbs in Non-3rd Person Singular Present Form",
+                    "Verbs in 3rd Person Singular Present Form",
+                    "Adverbs in Positive Form",
+                    "Adverbs in Comparative Form",
+                    "Adverbs in Superlative Form",
+                    "Wh-determiners",
+                    "Wh-pronouns",
+                    "Wh-adverbs",
+                    "Prepositions",
+                    "Conjunctions",
+                    "Determiners",
+                    "Existential There",
+                    "Foreign Words",
+                    "List Item Marker",
+                    "Modal",
+                    "Cardinal Numbers",
+                    "Possessive Ending",
+                    "Personal Pronouns",
+                    "Possessive Pronouns",
+                    "Particles",
+                    "To",
+                    "Interjection",
+                    "Symbol"
+                ], multiple=False, options={"create": False, "searchField": ["label"]}),
                 ui.input_action_button("hide_container_button_all", "Hide Menu", class_="btn btn-secondary"),
                 class_="main-right-container",
                 id="main-right-container-all"
@@ -414,12 +506,23 @@ def server(input, output, session):
         eda_visible.set(not eda_visible.get())
         session.send_input_message("toggle_eda_button", {"label": "⯆" if eda_visible.get() else "⯈"})
 
+    @reactive.Effect
+    @reactive.event(input.toggle_community_button)
+    def toggle_community_visibility():
+        communities_visible.set(not communities_visible.get())
+        session.send_input_message("toggle_community_button", {"label": "⯆" if communities_visible.get() else "⯈"})
+
     @output
     @render.ui
     def eda_plots():
         if eda_visible.get():
             return ui.div(
-                ui.img(src='plot1.png', class_="plot-image eda-plot"),
+                # ui.img(src='plot1.png', class_="plot-image eda-plot"),
+                output_widget("word_count_distribution_plot"),
+                output_widget("sentance_count_distribution_plot"),
+                ui.output_plot("top_N_common_words_plot"),
+                output_widget("top_N_common_pos_plot"),
+                ui.output_plot("pos_wordclouds_plot"),
                 class_="plots-row"
             )
         return ui.div()
@@ -453,6 +556,16 @@ def server(input, output, session):
                 output_widget("sentiment_dist_per_target_plot"),
                 output_widget("sentiment_over_time_per_target_plot"),
                 output_widget("sentiment_dist_over_time_by_target_plot"),
+                class_="plots-row"
+            )
+        return ui.div()
+
+    @output
+    @render.ui
+    def community_plots():
+        if communities_visible.get():
+            return ui.div(
+                ui.output_plot("community_graph"),
                 class_="plots-row"
             )
         return ui.div()

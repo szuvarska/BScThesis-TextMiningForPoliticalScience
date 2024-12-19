@@ -114,7 +114,7 @@ body .nav-underline {
 
 .main-right-container {
     background-color: var(--background-color);
-    width: 20%;
+    width: 25%;
     border: 1px solid #ccc;
     padding: 10px;
     display: flex;
@@ -122,6 +122,12 @@ body .nav-underline {
     align-items: center;
     text-align: center;
     transition: all 0.3s ease;
+    height: 85vh;  /* Set a fixed height */
+    overflow-y: auto;
+}
+
+.main-right-container .btn-secondary {
+    margin-bottom: 20px;  /* Add margin below the button */
 }
 
 .text-content {
@@ -222,6 +228,46 @@ img.entity-types-plot {
 
 #sentiment_over_time_per_target_plot {
     width: 90%;
+}
+
+#sentiment_dist_over_time_by_target_plot {
+    width: 90%;
+}
+
+#word_count_distribution_plot {
+    width: 100%;
+}
+
+#sentance_count_distribution_plot {
+    width: 100%;
+}
+
+#top_N_common_words_plot {
+    width: 87% !important;
+    display: block;
+    margin: 0 auto 30px;
+    border: 2px solid black;
+    padding: 1px;
+}
+
+#top_N_common_pos_plot{
+    width: 100%;
+}
+
+#pos_wordclouds_plot {
+    width: 87% !important;
+    display: block;
+    margin: 0 auto 30px;
+    border: 2px solid black;
+    padding: 1px;
+}
+
+#community_graph {
+    width: 87% !important;
+    display: block;
+    margin: 0 auto 30px;
+    border: 2px solid black;
+    padding: 1px;
 }
 
 .plot-image {

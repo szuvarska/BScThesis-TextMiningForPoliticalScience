@@ -8,11 +8,13 @@ import seaborn as sns
 from wordcloud import WordCloud
 import plotly.express as px
 import plotly.graph_objects as go
+import numpy as np
 
 stop_words = stopwords.words('english')
 for w in stopwords.words('english'):
     stop_words.append(w.capitalize())
 stop_words = set(stop_words)
+
 
 def perpare_df_for_eda(df: pd.DataFrame) -> [pd.DataFrame, pd.DataFrame]:
     df['sentence_count'] = df['article_text'].apply(lambda x: len(x.split('.')) - 1)
@@ -26,10 +28,10 @@ def perpare_df_for_eda(df: pd.DataFrame) -> [pd.DataFrame, pd.DataFrame]:
     df_pos['sentence_count'] = df['sentence_count']
     df_pos['word_count'] = df['word_count']
 
-
     return df, df_pos
 
-def plot_word_cout_distribution(df: pd.DataFrame, df_name: str):
+
+def plot_word_count_distribution(df: pd.DataFrame, df_name: str):
     # plt.figure(figsize=(12, 10))
     # sns.histplot(df.loc[(df['article_category_one'] != "PHOTO") & (df['word_count'] < 2000), 'word_count'], bins=25, kde=True)
     # #plt.xlim(0, 2000)
@@ -46,8 +48,10 @@ def plot_word_cout_distribution(df: pd.DataFrame, df_name: str):
     fig = px.histogram(
         filtered_data,
         nbins=25,
-        title=f'{df_name} Word Count Distribution',
+        title=f'Word Count Distribution - {df_name}',
         labels={'value': 'Word Count'},
+        height=600,
+        width=800
     )
 
     # Dodanie linii średniej
@@ -105,8 +109,10 @@ def sentance_count_distribution(df: pd.DataFrame, df_name: str):
     fig = px.histogram(
         filtered_data,
         nbins=20,
-        title=f'{df_name} Sentence Count Distribution',
+        title=f'Sentence Count Distribution - {df_name}',
         labels={'value': 'Sentence Count'},
+        height=600,
+        width=800
     )
 
     # Obliczenie średniej
@@ -148,48 +154,112 @@ def sentance_count_distribution(df: pd.DataFrame, df_name: str):
     return fig
 
 
-def plot_top_N_common_words(df: pd.DataFrame, df_name: str, N = 100):
+def plot_top_N_common_words(df: pd.DataFrame, df_name: str, N=100):
     stop_words = set(stopwords.words('english'))
     fdist = FreqDist(
-        [word for word in word_tokenize(' '.join(df['article_text'])) if word.lower() not in stop_words and word.isalpha()])
-    wordcloud = WordCloud(width=400, height=400, background_color='white').generate_from_frequencies(
+        [word for word in word_tokenize(' '.join(df['article_text'])) if
+         word.lower() not in stop_words and word.isalpha()])
+    wordcloud = WordCloud(width=800, height=400, background_color='white').generate_from_frequencies(
         dict(fdist.most_common(N)))
-    plt.figure(figsize=(12, 10))
-    plt.imshow(wordcloud)
-    plt.axis('off')
-    plt.title(f'{df_name} Top {N} Most Common Words')
-    plt.show()
-
-def plot_top_N_common_pos(df_pos: pd.DataFrame, df_name: str, N = 10):
     # plt.figure(figsize=(12, 10))
-    # df_pos.drop(columns=['sentence_count', 'word_count']).sum().sort_values(ascending=False).head(N).plot(kind='bar')
-    # plt.title(f'{df_name} Top {N} Most Common Part of Speech')
-    # # turn x labels
-    # plt.xticks(rotation=45)
+    plt.imshow(wordcloud, interpolation='bilinear')
+    plt.axis('off')
+    plt.title(f'Top {N} Most Common Words - {df_name}')
     # plt.show()
+    plt.tight_layout()
+    return plt.gcf()
 
-    # Obliczenie sum dla każdej kolumny (bez sentence_count i word_count)
+
+def plot_top_N_common_pos(df_pos: pd.DataFrame, df_name: str, N=10):
+    pos_dict = {
+        "NN": "Common Singular Nouns",
+        "NNS": "Common Plural Nouns",
+        "NNP": "Proper Singular Nouns",
+        "NNPS": "Proper Plural Nouns",
+        "JJ": "Adjectives in Positive Form",
+        "JJR": "Adjectives in Comparative Form",
+        "JJS": "Adjectives in Superlative Form",
+        "VB": "Verbs in Base Form",
+        "VBD": "Verbs in Past Tense",
+        "VBG": "Verbs in Present Participle",
+        "VBN": "Verbs in Past Participle",
+        "VBP": "Verbs in Non-3rd Person Singular Present Form",
+        "VBZ": "Verbs in 3rd Person Singular Present Form",
+        "RB": "Adverbs in Positive Form",
+        "RBR": "Adverbs in Comparative Form",
+        "RBS": "Adverbs in Superlative Form",
+        "WDT": "Wh-determiners",
+        "WP": "Wh-pronouns",
+        "WRB": "Wh-adverbs",
+        "IN": "Prepositions",
+        "CC": "Conjunctions",
+        "DT": "Determiners",
+        "EX": "Existential There",
+        "FW": "Foreign Words",
+        "LS": "List Item Marker",
+        "MD": "Modal",
+        "CD": "Cardinal Numbers",
+        "POS": "Possessive Ending",
+        "PRP": "Personal Pronouns",
+        "PRP$": "Possessive Pronouns",
+        "RP": "Particles",
+        "TO": "To",
+        "UH": "Interjection",
+        "SYM": "Symbol",
+        "WP$": "Possessive Wh-pronouns",
+        "PDT": "Predeterminers",
+    }
+
+    # Calculate the sum for each POS tag and sort them
     pos_counts = df_pos.drop(columns=['sentence_count', 'word_count']).sum().sort_values(ascending=False).head(N)
 
-    # Utworzenie wykresu słupkowego za pomocą Plotly
+    # Convert the Series to a DataFrame and reset the index
+    pos_counts = pos_counts.reset_index()
+
+    # Rename the columns
+    pos_counts.columns = ['POS', 'Count']
+
+    # Map the short POS tags to their longer names
+    pos_counts['POS'] = pos_counts['POS'].map(pos_dict)
+
+    # Replace NaN values with 0
+    pos_counts['Count'] = pos_counts['Count'].fillna(0)
+
+    # Ensure there are no infinite values
+    pos_counts['Count'] = pos_counts['Count'].replace([np.inf, -np.inf], 0)
+
+    # Create a bar plot using Plotly
     fig = px.bar(
-        x=pos_counts.index,
-        y=pos_counts.values,
-        title=f'{df_name} Top {N} Most Common Part of Speech',
-        labels={'x': 'Part of Speech', 'y': 'Count'},
+        pos_counts,
+        x='Count',
+        y='POS',
+        orientation='h',
+        title=f'Top {N} Most Common Part of Speech - {df_name}',
+        labels={'Count': 'Count', 'POS': 'Part of Speech'},
+        color='Count',
+        color_continuous_scale='Viridis',
     )
 
-    # Aktualizacja układu wykresu
+    # Update the layout of the plot
     fig.update_layout(
-        xaxis=dict(title="Part of Speech", tickangle=45),
-        yaxis_title="Count",
-        title=dict(x=0.5),  # Wyśrodkowanie tytułu
-        showlegend=False  # Usunięcie legendy, bo nie jest potrzebna
+        xaxis=dict(title="Count", tickangle=45),
+        yaxis=dict(
+            title='Part of Speech',
+            ticklabelposition='outside',
+            ticks='outside',
+            tickcolor='#fdfdfd',
+            ticklen=10,
+            automargin=True,
+        ),
+        title=dict(x=0.5),  # Center the title
+        showlegend=False,  # Remove the legend as it is not needed
+        coloraxis_showscale=False,
     )
 
     return fig
 
-def plot_pos_wordclouds(df: pd.DataFrame, df_name: str, N = 100):
+
+def plot_pos_wordclouds(df: pd.DataFrame, df_name: str, N=100):
     #if we want to comate eg diffrents categories, jutro put a piltered df as input
 
     NN = FreqDist([word for word, tag in nltk.pos_tag(word_tokenize(' '.join(df['article_text']))) if
@@ -218,7 +288,7 @@ def plot_pos_wordclouds(df: pd.DataFrame, df_name: str, N = 100):
         dict(NNP.most_common(100)))
     plt.imshow(wordcloud)
     plt.axis('off')
-    plt.title(f'{df_name} Top {N}Most Common Nouns Proper')
+    plt.title(f'{df_name} Top {N} Most Common Nouns Proper')
 
     plt.subplot(6, 1, 3)
     wordcloud = WordCloud(width=400, height=400, background_color='white').generate_from_frequencies(
@@ -250,3 +320,53 @@ def plot_pos_wordclouds(df: pd.DataFrame, df_name: str, N = 100):
     return plt
 
 
+def plot_pos_wordclouds_for_shiny(df: pd.DataFrame, df_name: str, N=100, pos="Common Singular Nouns"):
+    pos_dict = {
+        "Common Singular Nouns": "NN",
+        "Common Plural Nouns": "NNS",
+        "Proper Singular Nouns": "NNP",
+        "Proper Plural Nouns": "NNPS",
+        "Adjectives in Positive Form": "JJ",
+        "Adjectives in Comparative Form": "JJR",
+        "Adjectives in Superlative Form": "JJS",
+        "Verbs in Base Form": "VB",
+        "Verbs in Past Tense": "VBD",
+        "Verbs in Present Participle": "VBG",
+        "Verbs in Past Participle": "VBN",
+        "Verbs in Non-3rd Person Singular Present Form": "VBP",
+        "Verbs in 3rd Person Singular Present Form": "VBZ",
+        "Adverbs in Positive Form": "RB",
+        "Adverbs in Comparative Form": "RBR",
+        "Adverbs in Superlative Form": "RBS",
+        "Wh-determiners": "WDT",
+        "Wh-pronouns": "WP",
+        "Wh-adverbs": "WRB",
+        "Prepositions": "IN",
+        "Conjunctions": "CC",
+        "Determiners": "DT",
+        "Existential There": "EX",
+        "Foreign Words": "FW",
+        "List Item Marker": "LS",
+        "Modal": "MD",
+        "Cardinal Numbers": "CD",
+        "Possessive Ending": "POS",
+        "Personal Pronouns": "PRP",
+        "Possessive Pronouns": "PRP$",
+        "Particle": "RP",
+        "To": "TO",
+        "Interjection": "UH",
+        "Symbol": "SYM"
+    }
+
+    pos_short = pos_dict[pos]
+    tagged_data = nltk.pos_tag(word_tokenize(' '.join(df['article_text'])))
+    pos_data = FreqDist([word for word, tag in tagged_data if
+                         tag == pos_short and word.isalpha() and word not in stop_words])
+    wordcloud = WordCloud(width=800, height=400, background_color='white').generate_from_frequencies(
+        dict(pos_data.most_common(N)))
+    # plt.figure(figsize=(6, 6))
+    plt.imshow(wordcloud, interpolation='bilinear')
+    plt.axis('off')
+    plt.title(f'Top {N} Most Common {pos} - {df_name}')
+    plt.tight_layout()
+    return plt.gcf()
