@@ -34,16 +34,39 @@ def handle_file_upload(file_input):
     return f"{title} -- {published_time} -- {category1} / {category2}", lines
 
 
+# def render_article_content(lines, view_full_text):
+#     if len(lines) < 8:
+#         return "Invalid file format"
+#     if view_full_text.get():
+#         content = "\n".join(line.strip() for line in lines[7:])
+#     else:
+#         first_five_sentences = lines[7:12]
+#         content = "\n".join(line.strip() for line in first_five_sentences)
+#     return content
+
 def render_article_content(lines, view_full_text):
     if len(lines) < 8:
         return "Invalid file format"
-    if view_full_text.get():
-        content = "\n".join(line.strip() for line in lines[7:])
-    else:
-        first_five_sentences = lines[7:12]
-        content = "\n".join(line.strip() for line in first_five_sentences)
-    return content
 
+    # Determine the content to display based on the view_full_text flag
+    if view_full_text.get():
+        content_lines = lines[7:]
+    else:
+        content_lines = lines[7:12]
+
+    # Join the lines to form the article text
+    article_text = "\n".join(line.strip() for line in content_lines)
+
+    # Perform NER on the article text
+    ner_html = perform_ner_single_article(article_text)
+    #
+    # # Split the NER HTML into lines
+    # ner_lines = ner_html.split("\n")
+    #
+    # # Join the lines with <br> tags to preserve line breaks
+    # formatted_html = "<br>".join(ner_lines)
+
+    return ner_html
 
 def generate_histogram():
     data = np.random.randn(1000)
@@ -73,12 +96,11 @@ single_module = ui.tags.div(
     ui.tags.div(
         ui.tags.div(
             ui.tags.h3(ui.output_text("uploaded_text_header")),
-            ui.tags.div(ui.output_text_verbatim("uploaded_text_content"), class_="text-content"),
+            ui.output_ui("uploaded_text_content"),
             ui.input_action_button("view_full_text", "View more", class_="btn btn-primary view-button"),
             class_="article-container single-article-container"
         ),
         ui.output_ui("single_mode_plots"),
-        ui.output_ui("ner_visualization"),
         class_="main-left-container single-module"
     ),
     ui.output_ui("right_container_single"),
@@ -89,13 +111,13 @@ double_module = ui.tags.div(
     ui.tags.div(
         ui.tags.div(
             ui.tags.h3(ui.output_text("uploaded_text_header_1")),
-            ui.tags.div(ui.output_text_verbatim("uploaded_text_content_1"), class_="text-content"),
+            ui.output_ui("uploaded_text_content_1"),
             ui.input_action_button("view_full_text_1", "View more", class_="btn btn-primary view-button"),
             class_="article-container"
         ),
         ui.tags.div(
             ui.tags.h3(ui.output_text("uploaded_text_header_2")),
-            ui.tags.div(ui.output_text_verbatim("uploaded_text_content_2"), class_="text-content"),
+            ui.output_ui("uploaded_text_content_2"),
             ui.input_action_button("view_full_text_2", "View more", class_="btn btn-primary view-button"),
             class_="article-container"
         ),
@@ -179,11 +201,11 @@ def server(input, output, session):
         return "No file uploaded"
 
     @output
-    @render.text
+    @render.ui
     def uploaded_text_content():
         _, lines = handle_file_upload(input.file_upload)
         if lines:
-            return render_article_content(lines, view_full_text)
+            return ui.HTML(render_article_content(lines, view_full_text))
         return "No file uploaded"
 
     @output
@@ -195,10 +217,12 @@ def server(input, output, session):
         return "No file uploaded"
 
     @output
-    @render.text
+    @render.ui
     def uploaded_text_content_1():
         _, lines = handle_file_upload(input.file_upload_1)
-        return render_article_content(lines, view_full_text_1) if lines else "No file uploaded"
+        if lines:
+            return ui.HTML(render_article_content(lines, view_full_text_1))
+        return "No file uploaded"
 
     @output
     @render.text
@@ -209,10 +233,12 @@ def server(input, output, session):
         return "No file uploaded"
 
     @output
-    @render.text
+    @render.ui
     def uploaded_text_content_2():
         _, lines = handle_file_upload(input.file_upload_2)
-        return render_article_content(lines, view_full_text_2) if lines else "No file uploaded"
+        if lines:
+            return ui.HTML(render_article_content(lines, view_full_text_2))
+        return "No file uploaded"
 
     @output
     @render.ui
@@ -537,16 +563,6 @@ def server(input, output, session):
                 class_="plots-row"
             )
         return ui.div()
-
-    @output
-    @render.ui
-    def ner_visualization():
-        _, lines = handle_file_upload(input.file_upload)
-        if lines:
-            article_text = "\n".join(line.strip() for line in lines[7:])
-            ner_html = perform_ner_single_article(article_text)
-            return ui.HTML(ner_html)
-        return "No file uploaded"
 
 
 www_dir = Path(__file__).parent / "App/www"

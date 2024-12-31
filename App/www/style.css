@@ -139,7 +139,7 @@ body .nav-underline {
 #uploaded_text_content, #uploaded_text_content_1, #uploaded_text_content_2 {
     width: 100%;
     word-wrap: break-word;
-    white-space: pre-wrap;
+    /*white-space: pre-wrap;*/
     overflow-x: hidden;
 }
 
