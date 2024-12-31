@@ -1,0 +1,39 @@
+JJR,Adjectives in Comparative Form
+JJ,Adjectives in Positive Form
+JJS,Adjectives in Superlative Form
+RBR,Adverbs in Comparative Form
+RB,Adverbs in Positive Form
+RBS,Adverbs in Superlative Form
+CD,Cardinal Numbers
+NNS,Common Plural Nouns
+NN,Common Singular Nouns
+CC,Conjunctions
+``,Curly Quotation Mark
+DT,Determiners
+$,Dollar Sign
+EX,Existential There
+FW,Foreign Words
+UH,Interjection
+LS,List Item Marker
+MD,Modal
+RP,Particles
+PRP,Personal Pronouns
+POS,Possessive Ending
+PRP$,Possessive Pronouns
+WP$,Possessive Wh-pronouns
+PDT,Predeterminers
+IN,Prepositions
+NNPS,Proper Plural Nouns
+NNP,Proper Singular Nouns
+'',Quotation Mark
+SYM,Symbol
+TO,To
+VBZ,Verbs in 3rd Person Singular Present Form
+VB,Verbs in Base Form
+VBP,Verbs in Non-3rd Person Singular Present Form
+VBN,Verbs in Past Participle
+VBD,Verbs in Past Tense
+VBG,Verbs in Present Participle
+WRB,Wh-adverbs
+WDT,Wh-determiners
+WP,Wh-pronouns

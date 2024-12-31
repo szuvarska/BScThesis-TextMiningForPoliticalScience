@@ -10,6 +10,7 @@ import plotly.express as px
 import plotly.graph_objects as go
 import numpy as np
 import os
+import csv
 
 project_dir = os.path.dirname(os.path.abspath(__file__))
 nltk_data_path = os.path.join(project_dir, 'App/nltk_data')
@@ -22,6 +23,17 @@ stop_words = stopwords.words('english')
 for w in stopwords.words('english'):
     stop_words.append(w.capitalize())
 stop_words = set(stop_words)
+
+
+def load_pos_dict(file_path='Preparations/Data_for_EDA/pos_dict.csv', key='abbr'):
+    pos_dict = {}
+    with open(file_path, 'r') as csvfile:
+        reader = csv.reader(csvfile)
+        if key == 'abbr':
+            pos_dict = {rows[0]: rows[1] for rows in reader}
+        elif key == 'name':
+            pos_dict = {rows[1]: rows[0] for rows in reader}
+    return pos_dict
 
 
 def perpare_df_for_eda(df: pd.DataFrame) -> [pd.DataFrame, pd.DataFrame]:
@@ -179,44 +191,49 @@ def plot_top_N_common_words(df: pd.DataFrame, df_name: str, N=100):
 
 
 def plot_top_N_common_pos(df_pos: pd.DataFrame, df_name: str, N=10):
-    pos_dict = {
-        "NN": "Common Singular Nouns",
-        "NNS": "Common Plural Nouns",
-        "NNP": "Proper Singular Nouns",
-        "NNPS": "Proper Plural Nouns",
-        "JJ": "Adjectives in Positive Form",
-        "JJR": "Adjectives in Comparative Form",
-        "JJS": "Adjectives in Superlative Form",
-        "VB": "Verbs in Base Form",
-        "VBD": "Verbs in Past Tense",
-        "VBG": "Verbs in Present Participle",
-        "VBN": "Verbs in Past Participle",
-        "VBP": "Verbs in Non-3rd Person Singular Present Form",
-        "VBZ": "Verbs in 3rd Person Singular Present Form",
-        "RB": "Adverbs in Positive Form",
-        "RBR": "Adverbs in Comparative Form",
-        "RBS": "Adverbs in Superlative Form",
-        "WDT": "Wh-determiners",
-        "WP": "Wh-pronouns",
-        "WRB": "Wh-adverbs",
-        "IN": "Prepositions",
-        "CC": "Conjunctions",
-        "DT": "Determiners",
-        "EX": "Existential There",
-        "FW": "Foreign Words",
-        "LS": "List Item Marker",
-        "MD": "Modal",
-        "CD": "Cardinal Numbers",
-        "POS": "Possessive Ending",
-        "PRP": "Personal Pronouns",
-        "PRP$": "Possessive Pronouns",
-        "RP": "Particles",
-        "TO": "To",
-        "UH": "Interjection",
-        "SYM": "Symbol",
-        "WP$": "Possessive Wh-pronouns",
-        "PDT": "Predeterminers",
-    }
+    # pos_dict = {
+    #     "NN": "Common Singular Nouns",
+    #     "NNS": "Common Plural Nouns",
+    #     "NNP": "Proper Singular Nouns",
+    #     "NNPS": "Proper Plural Nouns",
+    #     "JJ": "Adjectives in Positive Form",
+    #     "JJR": "Adjectives in Comparative Form",
+    #     "JJS": "Adjectives in Superlative Form",
+    #     "VB": "Verbs in Base Form",
+    #     "VBD": "Verbs in Past Tense",
+    #     "VBG": "Verbs in Present Participle",
+    #     "VBN": "Verbs in Past Participle",
+    #     "VBP": "Verbs in Non-3rd Person Singular Present Form",
+    #     "VBZ": "Verbs in 3rd Person Singular Present Form",
+    #     "RB": "Adverbs in Positive Form",
+    #     "RBR": "Adverbs in Comparative Form",
+    #     "RBS": "Adverbs in Superlative Form",
+    #     "WDT": "Wh-determiners",
+    #     "WP": "Wh-pronouns",
+    #     "WRB": "Wh-adverbs",
+    #     "IN": "Prepositions",
+    #     "CC": "Conjunctions",
+    #     "DT": "Determiners",
+    #     "EX": "Existential There",
+    #     "FW": "Foreign Words",
+    #     "LS": "List Item Marker",
+    #     "MD": "Modal",
+    #     "CD": "Cardinal Numbers",
+    #     "POS": "Possessive Ending",
+    #     "PRP": "Personal Pronouns",
+    #     "PRP$": "Possessive Pronouns",
+    #     "RP": "Particles",
+    #     "TO": "To",
+    #     "UH": "Interjection",
+    #     "SYM": "Symbol",
+    #     "WP$": "Possessive Wh-pronouns",
+    #     "PDT": "Predeterminers",
+    #     '$': "Dollar Sign",
+    #     '``': "Curly Quotation Mark",
+    #     "''": "Quotation Mark",
+    # }
+
+    pos_dict = load_pos_dict(key='abbr')
 
     # Calculate the sum for each POS tag and sort them
     pos_counts = df_pos.drop(columns=['sentence_count', 'word_count']).sum().sort_values(ascending=False).head(N)
@@ -329,42 +346,44 @@ def plot_pos_wordclouds(df: pd.DataFrame, df_name: str, N=100):
 
 
 def plot_pos_wordclouds_for_shiny(df: pd.DataFrame, df_name: str, N=100, pos="Common Singular Nouns"):
-    pos_dict = {
-        "Common Singular Nouns": "NN",
-        "Common Plural Nouns": "NNS",
-        "Proper Singular Nouns": "NNP",
-        "Proper Plural Nouns": "NNPS",
-        "Adjectives in Positive Form": "JJ",
-        "Adjectives in Comparative Form": "JJR",
-        "Adjectives in Superlative Form": "JJS",
-        "Verbs in Base Form": "VB",
-        "Verbs in Past Tense": "VBD",
-        "Verbs in Present Participle": "VBG",
-        "Verbs in Past Participle": "VBN",
-        "Verbs in Non-3rd Person Singular Present Form": "VBP",
-        "Verbs in 3rd Person Singular Present Form": "VBZ",
-        "Adverbs in Positive Form": "RB",
-        "Adverbs in Comparative Form": "RBR",
-        "Adverbs in Superlative Form": "RBS",
-        "Wh-determiners": "WDT",
-        "Wh-pronouns": "WP",
-        "Wh-adverbs": "WRB",
-        "Prepositions": "IN",
-        "Conjunctions": "CC",
-        "Determiners": "DT",
-        "Existential There": "EX",
-        "Foreign Words": "FW",
-        "List Item Marker": "LS",
-        "Modal": "MD",
-        "Cardinal Numbers": "CD",
-        "Possessive Ending": "POS",
-        "Personal Pronouns": "PRP",
-        "Possessive Pronouns": "PRP$",
-        "Particle": "RP",
-        "To": "TO",
-        "Interjection": "UH",
-        "Symbol": "SYM"
-    }
+    # pos_dict = {
+    #     "Common Singular Nouns": "NN",
+    #     "Common Plural Nouns": "NNS",
+    #     "Proper Singular Nouns": "NNP",
+    #     "Proper Plural Nouns": "NNPS",
+    #     "Adjectives in Positive Form": "JJ",
+    #     "Adjectives in Comparative Form": "JJR",
+    #     "Adjectives in Superlative Form": "JJS",
+    #     "Verbs in Base Form": "VB",
+    #     "Verbs in Past Tense": "VBD",
+    #     "Verbs in Present Participle": "VBG",
+    #     "Verbs in Past Participle": "VBN",
+    #     "Verbs in Non-3rd Person Singular Present Form": "VBP",
+    #     "Verbs in 3rd Person Singular Present Form": "VBZ",
+    #     "Adverbs in Positive Form": "RB",
+    #     "Adverbs in Comparative Form": "RBR",
+    #     "Adverbs in Superlative Form": "RBS",
+    #     "Wh-determiners": "WDT",
+    #     "Wh-pronouns": "WP",
+    #     "Wh-adverbs": "WRB",
+    #     "Prepositions": "IN",
+    #     "Conjunctions": "CC",
+    #     "Determiners": "DT",
+    #     "Existential There": "EX",
+    #     "Foreign Words": "FW",
+    #     "List Item Marker": "LS",
+    #     "Modal": "MD",
+    #     "Cardinal Numbers": "CD",
+    #     "Possessive Ending": "POS",
+    #     "Personal Pronouns": "PRP",
+    #     "Possessive Pronouns": "PRP$",
+    #     "Particle": "RP",
+    #     "To": "TO",
+    #     "Interjection": "UH",
+    #     "Symbol": "SYM"
+    # }
+
+    pos_dict = load_pos_dict(key='name')
 
     pos_short = pos_dict[pos]
     tagged_data = nltk.pos_tag(word_tokenize(' '.join(df['article_text'])))

@@ -11,8 +11,9 @@ from App.plots import generate_entity_types_plot, generate_most_common_entities_
     generate_sentiment_over_time_plot, generate_sentiment_word_cloud_plot, generate_sentiment_dist_per_target_plot, \
     generate_sentiment_over_time_per_target_plot, generate_sentiment_dist_over_time_by_target_plot, \
     generate_word_count_distribution_plot, generate_sentance_count_distribution_plot, generate_top_N_common_words_plot, \
-    generate_top_N_common_pos_plot, generate_pos_wordclouds_plot, generate_community_graph
+    generate_top_N_common_pos_plot, generate_pos_wordclouds_plot, generate_community_graph, generate_pos_choices
 from shinywidgets import output_widget, render_widget
+from App.single_analysis import perform_ner_single_article
 
 here = Path(__file__).parent
 
@@ -77,6 +78,7 @@ single_module = ui.tags.div(
             class_="article-container single-article-container"
         ),
         ui.output_ui("single_mode_plots"),
+        ui.output_ui("ner_visualization"),
         class_="main-left-container single-module"
     ),
     ui.output_ui("right_container_single"),
@@ -436,42 +438,7 @@ def server(input, output, session):
                                 choices=["Person", "Organisation", "Location", "Miscellaneous"]),
                 ui.input_select("sentiment_model_filter", "Select Sentiment Model", choices=["TSC", "VADER"]),
                 ui.input_numeric("word_cloud_n", "Number of Words in Word Cloud", value=100, min=1),
-                ui.input_selectize("pos_filter", "Select Part of Speech", choices=[
-                    "Common Singular Nouns",
-                    "Common Plural Nouns",
-                    "Proper Singular Nouns",
-                    "Proper Plural Nouns",
-                    "Adjectives in Positive Form",
-                    "Adjectives in Comparative Form",
-                    "Adjectives in Superlative Form",
-                    "Verbs in Base Form",
-                    "Verbs in Past Tense",
-                    "Verbs in Present Participle",
-                    "Verbs in Past Participle",
-                    "Verbs in Non-3rd Person Singular Present Form",
-                    "Verbs in 3rd Person Singular Present Form",
-                    "Adverbs in Positive Form",
-                    "Adverbs in Comparative Form",
-                    "Adverbs in Superlative Form",
-                    "Wh-determiners",
-                    "Wh-pronouns",
-                    "Wh-adverbs",
-                    "Prepositions",
-                    "Conjunctions",
-                    "Determiners",
-                    "Existential There",
-                    "Foreign Words",
-                    "List Item Marker",
-                    "Modal",
-                    "Cardinal Numbers",
-                    "Possessive Ending",
-                    "Personal Pronouns",
-                    "Possessive Pronouns",
-                    "Particles",
-                    "To",
-                    "Interjection",
-                    "Symbol"
-                ], multiple=False, options={"create": False, "searchField": ["label"]}),
+                ui.input_selectize("pos_filter", "Select Part of Speech", choices=generate_pos_choices(), multiple=False, selected="Common Singular Nouns", options={"create": False, "searchField": ["label"]}),
                 ui.input_action_button("hide_container_button_all", "Hide Menu", class_="btn btn-secondary"),
                 class_="main-right-container",
                 id="main-right-container-all"
@@ -570,6 +537,16 @@ def server(input, output, session):
                 class_="plots-row"
             )
         return ui.div()
+
+    @output
+    @render.ui
+    def ner_visualization():
+        _, lines = handle_file_upload(input.file_upload)
+        if lines:
+            article_text = "\n".join(line.strip() for line in lines[7:])
+            ner_html = perform_ner_single_article(article_text)
+            return ui.HTML(ner_html)
+        return "No file uploaded"
 
 
 www_dir = Path(__file__).parent / "App/www"

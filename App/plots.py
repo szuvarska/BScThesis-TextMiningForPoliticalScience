@@ -7,7 +7,7 @@ sys.path.append(str(Path(__file__).resolve().parent.parent))
 from NER_and_ED.NER_ED_script import find_most_common_entity_types, find_most_common_entities_per_type_for_shiny
 
 from Preparations.EDA_script import plot_word_count_distribution, sentance_count_distribution, plot_top_N_common_words, \
-    plot_top_N_common_pos, plot_pos_wordclouds_for_shiny
+    plot_top_N_common_pos, plot_pos_wordclouds_for_shiny, load_pos_dict
 
 from Sentiment.sentiment_script import calculate_sentiment_dist, calculate_sentiment_over_time, \
     generate_word_clouds, calculate_sentiment_dist_per_target, calculate_sentiment_over_time_per_target, \
@@ -125,3 +125,8 @@ def generate_community_graph(dataset_name: str):
     plot = plot_community_graph(df_ner, df_entities, suptitle=suptitle, title=title,
                                 nodes_displayed=25, layout="spring", edge="std")
     return plot.gcf()
+
+
+def generate_pos_choices():
+    pos_dict = load_pos_dict(key='abbr')
+    return list(pos_dict.values())
