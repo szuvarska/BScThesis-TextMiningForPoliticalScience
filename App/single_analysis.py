@@ -2,7 +2,11 @@ import spacy
 from spacy import displacy
 
 # Load the spacy model
-nlp_spacy = spacy.load("en_core_web_sm")
+try:
+    nlp = spacy.load("en_core_web_sm")
+except OSError:
+    spacy.cli.download("en-core-web-sm")
+    nlp = spacy.load("en_core_web_sm")
 
 # Define the legend for entity categories
 entity_legend = {
