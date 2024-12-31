@@ -361,7 +361,7 @@ def calculate_sentiment_dist_per_target(tsc_results_df: pd.DataFrame, dataset_na
     # Overall sentiment distribution per target
     if for_shiny:
         overall_sentiment_per_target_proportion = pd.read_csv(
-            f'../Sentiment/Results/overall_sentiment_per_target_{dataset_name}.csv')
+            f'Sentiment/Results/overall_sentiment_per_target_{dataset_name}.csv')
     else:
         overall_sentiment_per_target = tsc_results_df.groupby(['Target', 'Sentiment']).size().unstack(fill_value=0)
         print(overall_sentiment_per_target)

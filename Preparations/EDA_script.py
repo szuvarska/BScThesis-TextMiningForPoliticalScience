@@ -9,6 +9,14 @@ from wordcloud import WordCloud
 import plotly.express as px
 import plotly.graph_objects as go
 import numpy as np
+import os
+
+project_dir = os.path.dirname(os.path.abspath(__file__))
+nltk_data_path = os.path.join(project_dir, 'App/nltk_data')
+os.environ['NLTK_DATA'] = nltk_data_path
+nltk.download('punkt_tab')
+nltk.download('averaged_perceptron_tagger_eng')
+nltk.download('stopwords')
 
 stop_words = stopwords.words('english')
 for w in stopwords.words('english'):

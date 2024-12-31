@@ -7,7 +7,7 @@ from shiny import App, render, ui, reactive
 from htmltools import tags, Tag
 import numpy as np
 import matplotlib.pyplot as plt
-from plots import generate_entity_types_plot, generate_most_common_entities_plot, generate_sentiment_dist_plot, \
+from App.plots import generate_entity_types_plot, generate_most_common_entities_plot, generate_sentiment_dist_plot, \
     generate_sentiment_over_time_plot, generate_sentiment_word_cloud_plot, generate_sentiment_dist_per_target_plot, \
     generate_sentiment_over_time_per_target_plot, generate_sentiment_dist_over_time_by_target_plot, \
     generate_word_count_distribution_plot, generate_sentance_count_distribution_plot, generate_top_N_common_words_plot, \
@@ -565,11 +565,12 @@ def server(input, output, session):
     def community_plots():
         if communities_visible.get():
             return ui.div(
-                ui.output_plot("community_graph"),
+                # ui.output_plot("community_graph"),
+                ui.img(src='plot1.png', class_="plot-image eda-plot"),
                 class_="plots-row"
             )
         return ui.div()
 
 
-www_dir = Path(__file__).parent / "www"
+www_dir = Path(__file__).parent / "App/www"
 app = App(app_ui, server, static_assets=www_dir)

@@ -13,7 +13,7 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-app = create_app_fixture("../app.py")
+app = create_app_fixture("../../app.py")
 
 
 def test_app_loads(page: Page, app: ShinyAppProc):
