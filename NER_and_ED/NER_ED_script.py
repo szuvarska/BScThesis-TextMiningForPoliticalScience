@@ -122,6 +122,38 @@ def perform_ner(file_name: str, dict_name: str, output_file: str):
     return df
 
 
+def perform_ner_for_sentences(source: pd.DataFrame, dict_name: str):
+    df = source
+
+    # check and remove incomplete data
+    check_condition = (df['text'].isna()) | (df['text'] == "")
+    df = df[~check_condition]
+
+    # Entity Disambiguation
+    dict_df = pd.read_csv(dict_name)
+    word_dict = pd.Series(dict_df.standard.values, index=dict_df.variation).to_dict()
+    df['text'] = df['text'].apply(lambda x: standardize_text(x, word_dict))
+
+    # load pretrained model and tokenizer
+    model_name = "dbmdz/bert-large-cased-finetuned-conll03-english"
+    tokenizer = AutoTokenizer.from_pretrained(model_name)
+    model = AutoModelForTokenClassification.from_pretrained(model_name)
+
+    # create NER pipeline
+    nlp = pipeline("ner", model=model, tokenizer=tokenizer, aggregation_strategy="simple", device=-1)
+
+    ner_results_list = []
+    for text in tqdm(df['text']):
+        ner_results = nlp(text)
+        merged_results = merge_subwords(ner_results)
+        entities = resolve_entity_labels(merged_results)
+        consolidated_entities = consolidate_entities(entities)
+        ner_results_list.append(consolidated_entities)
+
+    df['NER'] = ner_results_list
+
+    return df
+
 # words distribution named entities and non-entities
 def count_words_distribution(text):
     named_entity_words = sum([count for entity_type, count in text.values()])
