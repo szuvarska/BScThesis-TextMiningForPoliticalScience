@@ -15,7 +15,7 @@ from App.plots import generate_entity_types_plot, generate_most_common_entities_
     generate_word_count_distribution_plot, generate_sentance_count_distribution_plot, generate_top_N_common_words_plot, \
     generate_top_N_common_pos_plot, generate_pos_wordclouds_plot, generate_community_graph, generate_pos_choices
 from shinywidgets import output_widget, render_widget
-from App.single_analysis import perform_ner_single_article
+from App.single_analysis import analyse_single_article
 
 here = Path(__file__).parent
 
@@ -60,7 +60,7 @@ def render_article_content(lines, view_full_text):
     article_text = "\n".join(line.strip() for line in content_lines)
 
     # Perform NER on the article text
-    ner_html = perform_ner_single_article(article_text)
+    html = analyse_single_article(article_text)
     #
     # # Split the NER HTML into lines
     # ner_lines = ner_html.split("\n")
@@ -68,7 +68,7 @@ def render_article_content(lines, view_full_text):
     # # Join the lines with <br> tags to preserve line breaks
     # formatted_html = "<br>".join(ner_lines)
 
-    return ner_html
+    return html
 
 def generate_histogram():
     data = np.random.randn(1000)

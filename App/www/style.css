@@ -359,3 +359,29 @@ img.entity-types-plot {
 .collapsible-section .toggle-button {
     margin-left: 10px;
 }
+
+.entity {
+    position: relative;
+    display: inline-block;
+}
+
+.entity:hover .tooltip {
+    visibility: visible;
+    opacity: 1;
+    transition: opacity 0.3s;
+}
+
+.tooltip {
+    visibility: hidden;
+    position: absolute;
+    background-color: black;
+    color: white;
+    padding: 5px;
+    border-radius: 3px;
+    font-size: 0.9em;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+}
+
