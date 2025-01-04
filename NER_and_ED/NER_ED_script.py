@@ -126,13 +126,13 @@ def perform_ner_for_sentences(source: pd.DataFrame, dict_name: str):
     df = source
 
     # check and remove incomplete data
-    check_condition = (df['text'].isna()) | (df['text'] == "")
+    check_condition = (df['article_text'].isna()) | (df['article_text'] == "")
     df = df[~check_condition]
 
     # Entity Disambiguation
     dict_df = pd.read_csv(dict_name)
     word_dict = pd.Series(dict_df.standard.values, index=dict_df.variation).to_dict()
-    df['text'] = df['text'].apply(lambda x: standardize_text(x, word_dict))
+    df['article_text'] = df['article_text'].apply(lambda x: standardize_text(x, word_dict))
 
     # load pretrained model and tokenizer
     model_name = "dbmdz/bert-large-cased-finetuned-conll03-english"
@@ -143,7 +143,7 @@ def perform_ner_for_sentences(source: pd.DataFrame, dict_name: str):
     nlp = pipeline("ner", model=model, tokenizer=tokenizer, aggregation_strategy="simple", device=-1)
 
     ner_results_list = []
-    for text in tqdm(df['text']):
+    for text in tqdm(df['article_text']):
         ner_results = nlp(text)
         merged_results = merge_subwords(ner_results)
         entities = resolve_entity_labels(merged_results)

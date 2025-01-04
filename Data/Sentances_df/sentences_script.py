@@ -14,7 +14,7 @@ def make_sentences_df(df: pd.DataFrame, dict_name: str):
         article_text.append(str(df['article_text'][i]))
         date = str(df['published_time'][i])
         title = str(df['article_text'][i]).replace(" ", "_")
-        id = str(df['Unnamed: 0'][i])
+        id = str(i)
         article_id.append(id)
 
     senteces_all = []
@@ -33,11 +33,11 @@ def make_sentences_df(df: pd.DataFrame, dict_name: str):
         sentences_id_all += sentences_id
 
     articles_id = [x.split("-")[0] for x in sentences_id_all]
-    sentences_df = pd.DataFrame({'sentence_id': sentences_id_all, 'article_id': articles_id, 'text': senteces_all,
+    sentences_df = pd.DataFrame({'sentence_id': sentences_id_all, 'article_id': articles_id, 'article_text': senteces_all,
                                  'published_time': senteces_date_all})
 
     #perform srntiment analysis
-    sentences_df['sentiment'] = sentences_df['text'].apply(vader_sentiment)
+    sentences_df['sentiment'] = sentences_df['article_text'].apply(vader_sentiment)
     #perform NER
     ner_df = perform_ner_for_sentences(sentences_df, dict_name)
     #perform topics
