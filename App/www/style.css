@@ -376,12 +376,46 @@ img.entity-types-plot {
     position: absolute;
     background-color: black;
     color: white;
-    padding: 5px;
-    border-radius: 3px;
+    padding: 10px;
+    border-radius: 5px;
     font-size: 0.9em;
-    bottom: 100%;
-    left: 50%;
-    transform: translateX(-50%);
+    bottom: -110px;
+    left: 80%;
+    transform: translateX(10%);
     z-index: 10;
+    white-space: pre-wrap;
+    width: 250px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);  /* Adds a shadow for better visibility */
 }
+
+.view-button {
+    margin-top: 20px;  /* Add space before the button */
+}
+
+.icon-container {
+    display: inline-block;
+    background-color: #4CAF50; /* Green for positive sentiment */
+    border-radius: 50%; /* Makes the background circular */
+    padding: 10px; /* Adds space around the icon */
+}
+
+.icon-container img {
+    display: block; /* Ensures no extra spacing around the icon */
+    width: 20px;
+    height: 20px;
+}
+
+a:hover .tooltip {
+    visibility: visible;
+    opacity: 1;
+    bottom: -30px;
+    left: 10%;
+    width: 160px;
+}
+
+a {
+    position: relative; /* Needed for positioning the tooltip relative to the image */
+    display: inline-block; /* Makes the tooltip position relative to the image */
+}
+
 
