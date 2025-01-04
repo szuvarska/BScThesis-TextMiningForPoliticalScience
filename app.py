@@ -172,6 +172,9 @@ def server(input, output, session):
     ner_visible = reactive.Value(True)
     sentiment_visible = reactive.Value(True)
     communities_visible = reactive.Value(True)
+    article_analysis = reactive.Value(None)
+    article_analysis_1 = reactive.Value(None)
+    article_analysis_2 = reactive.Value(None)
 
     @reactive.Effect
     @reactive.event(input.view_full_text)
@@ -194,6 +197,30 @@ def server(input, output, session):
         new_label = "View less" if view_full_text_2.get() else "View more"
         session.send_input_message("view_full_text_2", {"label": new_label})
 
+    @reactive.Effect
+    @reactive.event(input.file_upload)
+    def analyze_article():
+        _, lines = handle_file_upload(input.file_upload)
+        if lines:
+            article_text = "\n".join(line.strip() for line in lines[7:])
+            article_analysis.set(analyse_single_article(article_text))
+
+    @reactive.Effect
+    @reactive.event(input.file_upload_1)
+    def analyze_article_1():
+        _, lines = handle_file_upload(input.file_upload_1)
+        if lines:
+            article_text = "\n".join(line.strip() for line in lines[7:])
+            article_analysis_1.set(analyse_single_article(article_text))
+
+    @reactive.Effect
+    @reactive.event(input.file_upload_2)
+    def analyze_article_2():
+        _, lines = handle_file_upload(input.file_upload_2)
+        if lines:
+            article_text = "\n".join(line.strip() for line in lines[7:])
+            article_analysis_2.set(analyse_single_article(article_text))
+
     @output
     @render.text
     def uploaded_text_header():
@@ -205,9 +232,13 @@ def server(input, output, session):
     @output
     @render.ui
     def uploaded_text_content():
-        _, lines = handle_file_upload(input.file_upload)
-        if lines:
-            return ui.HTML(render_article_content(lines, view_full_text))
+        if article_analysis.get():
+            lines = article_analysis.get().split("<br>")
+            if view_full_text.get():
+                content_lines = lines
+            else:
+                content_lines = lines[:50]
+            return ui.HTML("<br>".join(content_lines))
         return "No file uploaded"
 
     @output
@@ -221,9 +252,13 @@ def server(input, output, session):
     @output
     @render.ui
     def uploaded_text_content_1():
-        _, lines = handle_file_upload(input.file_upload_1)
-        if lines:
-            return ui.HTML(render_article_content(lines, view_full_text_1))
+        if article_analysis_1.get():
+            lines = article_analysis_1.get().split("<br>")
+            if view_full_text_1.get():
+                content_lines = lines
+            else:
+                content_lines = lines[:50]
+            return ui.HTML("<br>".join(content_lines))
         return "No file uploaded"
 
     @output
@@ -237,9 +272,13 @@ def server(input, output, session):
     @output
     @render.ui
     def uploaded_text_content_2():
-        _, lines = handle_file_upload(input.file_upload_2)
-        if lines:
-            return ui.HTML(render_article_content(lines, view_full_text_2))
+        if article_analysis_2.get():
+            lines = article_analysis_2.get().split("<br>")
+            if view_full_text_2.get():
+                content_lines = lines
+            else:
+                content_lines = lines[:50]
+            return ui.HTML("<br>".join(content_lines))
         return "No file uploaded"
 
     @output

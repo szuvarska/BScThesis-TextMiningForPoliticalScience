@@ -99,7 +99,7 @@ def analyse_single_article(article_text: str):
         '<img width="16" height="16" src="https://img.icons8.com/ios-filled/50/00FF00/happy--v1.png" '
         'alt="Positive sentiment" style="background-color: black; border-radius: 50%; padding: 0px;"/>'
         '<span class="tooltip"><b>Positive</b> sentence</span>'
-        '</a>'
+        '</a><br>'
     )
     html = html.replace(
         "emoji_2",
@@ -107,7 +107,7 @@ def analyse_single_article(article_text: str):
         '<img width="16" height="16" src="https://img.icons8.com/ios-filled/50/FF0000/sad.png" '
         'alt="Negative sentiment" style="background-color: black; border-radius: 50%; padding: 0px;"/>'
         '<span class="tooltip"><b>Negative</b> sentence</span>'
-        '</a>'
+        '</a><br>'
     )
     html = html.replace(
         "emoji_3",
@@ -115,7 +115,7 @@ def analyse_single_article(article_text: str):
         '<img width="16" height="16" src="https://img.icons8.com/ios-filled/50/FCC419/neutral-emoticon--v1.png" '
         'alt="Neutral sentiment" style="background-color: black; border-radius: 50%; padding: 0px;"/>'
         '<span class="tooltip"><b>Neutral</b> sentence</span>'
-        '</a>'
+        '</a><br>'
     )
 
     # Add the legend to the HTML output
@@ -127,6 +127,7 @@ def analyse_single_article(article_text: str):
     legend_html += f'<li><strong style="color: green;">Green</strong>: Positive sentiment</li>'
     legend_html += f'<li><strong style="color: #FFBF00;">Yellow</strong>: Neutral sentiment</li>'
     legend_html += f'<li><strong style="color: red;">Red</strong>: Negative sentiment</li>'
+    legend_html += "</ul></div>"
 
     # Combine the legend, NER visualization, and sentiment analysis results
     full_html = legend_html + html
