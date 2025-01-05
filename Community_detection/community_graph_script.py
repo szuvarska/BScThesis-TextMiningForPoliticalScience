@@ -29,20 +29,32 @@ def plot_community_graph(df_ner: pd.DataFrame, df_entities: pd.DataFrame, suptit
     co_sentiment = defaultdict(int)
 
     # iterate through the articles and process with SpaCy to get sentences
-    for article in tqdm(df_ner['article_text']):
-        sentences = article.split('.')
-        # iterate through each sentence in the article
-        for sentence in sentences:
-            present_entities = [entity for entity in entities if entity in sentence]
-            vader_sentiment_score = vader_sentiment(sentence)
-            # print(present_entities)
-            for i in range(len(present_entities)):
-                for j in range(i + 1, len(present_entities)):
-                    co_occurrence[(present_entities[i], present_entities[j])] += 1
-                    if vader_sentiment_score == 'positive':
-                        co_sentiment[(present_entities[i], present_entities[j])] += 1
-                    elif vader_sentiment_score == 'negative':
-                        co_sentiment[(present_entities[i], present_entities[j])] -= 1
+    # for article in tqdm(df_ner['article_text']):
+    #     sentences = article.split('.')
+    #     # iterate through each sentence in the article
+    #     for sentence in sentences:
+    #         present_entities = [entity for entity in entities if entity in sentence]
+    #         vader_sentiment_score = vader_sentiment(sentence)
+    #         # print(present_entities)
+    #         for i in range(len(present_entities)):
+    #             for j in range(i + 1, len(present_entities)):
+    #                 co_occurrence[(present_entities[i], present_entities[j])] += 1
+    #                 if vader_sentiment_score == 'positive':
+    #                     co_sentiment[(present_entities[i], present_entities[j])] += 1
+    #                 elif vader_sentiment_score == 'negative':
+    #                     co_sentiment[(present_entities[i], present_entities[j])] -= 1
+
+    for sentence, sentiment in tqdm(zip(df_ner['article_text'], df_ner['sentiment'])):
+        present_entities = [entity for entity in entities if entity in str(sentence)]
+        for i in range(len(present_entities)):
+            for j in range(i + 1, len(present_entities)):
+                co_occurrence[(present_entities[i], present_entities[j])] += 1
+                if sentiment == 'positive':
+                    co_sentiment[(present_entities[i], present_entities[j])] += 1
+                elif sentiment == 'negative':
+                    co_sentiment[(present_entities[i], present_entities[j])] -= 1
+
+
 
     #standarize sentiment
     for (entity1, entity2), sentiment in co_sentiment.items():
@@ -78,9 +90,9 @@ def plot_community_graph(df_ner: pd.DataFrame, df_entities: pd.DataFrame, suptit
             G[entity1][entity2]['sentiment'] = sentiment
 
     # draw the graph
-    plt.figure(figsize=(15, 15))
+    plt.figure(figsize=(18, 15))
     if layout == 'spring':
-        pos = nx.spring_layout(G)
+        pos = nx.spring_layout(G, k=0.5)
     elif layout == 'circular':
         pos = nx.circular_layout(G)
     elif layout == 'arf':
@@ -112,7 +124,7 @@ def plot_community_graph(df_ner: pd.DataFrame, df_entities: pd.DataFrame, suptit
         weights_to_plot = [((weight - mean_weight) / std_weight) for weight in weights]  # normalize weights
 
     # draw nodes with community colors and egdes with weights
-    nx.draw_networkx_nodes(G, pos, node_size=node_sizes, cmap=plt.cm.rainbow, node_color=node_colors)
+    nx.draw_networkx_nodes(G, pos, node_size=node_sizes, node_color=node_colors)
     #add efges with sentiment as color
     edge_colors = []
     for edge in edges:

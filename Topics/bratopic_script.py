@@ -11,7 +11,7 @@ import openai
 from bertopic.representation import KeyBERTInspired, MaximalMarginalRelevance, OpenAI, PartOfSpeech
 
 def perform_bratopic(df: pd.DataFrame):
-    sentences_tokenized = df['text']
+    sentences_tokenized = df['article_text']
 
     # for text, date in zip(df['text'], df['published_time']):
     #     sentences_tokenized.extend(word_tokenize(str(text)))
