@@ -112,6 +112,10 @@ body .nav-underline {
     width: 100% !important;
 }
 
+.single-module .plots-container {
+    margin-bottom: 30px;
+}
+
 .main-right-container {
     background-color: var(--background-color);
     width: 25%;
@@ -206,12 +210,16 @@ img.entity-types-plot {
     width: 100%;
 }
 
+#sentiment_dist_single_plot {
+    width: 75%;
+}
+
 #sentiment_dist_plot {
     width: 80%;
 }
 
 #sentiment_over_time_plot {
-    width: 75%;
+    width: 85%;
 }
 
 #sentiment_word_cloud_plot {
@@ -227,11 +235,11 @@ img.entity-types-plot {
 }
 
 #sentiment_over_time_per_target_plot {
-    width: 90%;
+    width: 100%;
 }
 
 #sentiment_dist_over_time_by_target_plot {
-    width: 90%;
+    width: 100%;
 }
 
 #word_count_distribution_plot {
@@ -249,6 +257,20 @@ img.entity-types-plot {
     border: 2px solid black;
     padding: 1px;
 }
+
+#most_common_words_single_plot, #most_common_words_double_plot_1, #most_common_words_double_plot_2 {
+    width: 67% !important;
+    display: block;
+    margin: 0 auto 30px;
+    border: 2px solid black;
+    padding: 1px;
+}
+
+#most_common_words_single_plot img, #most_common_words_double_plot_1 img, #most_common_words_double_plot_2 img {
+    width: 100%;
+    margin-bottom: 30px;
+}
+
 
 #top_N_common_pos_plot{
     width: 100%;
@@ -268,6 +290,21 @@ img.entity-types-plot {
     margin: 0 auto 30px;
     border: 2px solid black;
     padding: 1px;
+}
+
+#entity_types_double_plot {
+    width: 75%;
+}
+
+#most_common_entities_double_plot {
+    width: 100%;
+}
+
+#sentiment_dist_sentence_double_plot {
+    width: 75%;
+}
+#sentiment_dist_entity_double_plot {
+    width: 75%;
 }
 
 .plot-image {

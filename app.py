@@ -12,10 +12,11 @@ import matplotlib.pyplot as plt
 from App.plots import generate_entity_types_plot, generate_most_common_entities_plot, generate_sentiment_dist_plot, \
     generate_sentiment_over_time_plot, generate_sentiment_word_cloud_plot, generate_sentiment_dist_per_target_plot, \
     generate_sentiment_over_time_per_target_plot, generate_sentiment_dist_over_time_by_target_plot, \
-    generate_word_count_distribution_plot, generate_sentance_count_distribution_plot, generate_top_N_common_words_plot, \
+    generate_word_count_distribution_plot, generate_sentence_count_distribution_plot, generate_top_N_common_words_plot, \
     generate_top_N_common_pos_plot, generate_pos_wordclouds_plot, generate_community_graph, generate_pos_choices
 from shinywidgets import output_widget, render_widget
-from App.single_analysis import analyse_single_article
+from App.single_analysis import analyse_single_article, entity_types_plot_single, most_common_entities_plot_single,  sentiment_dist_plot_single, most_common_words_plot_single
+from App.double_analysis import entity_types_plot_double, most_common_entities_plot_double, sentiment_dist_plot_double
 
 here = Path(__file__).parent
 
@@ -35,40 +36,6 @@ def handle_file_upload(file_input):
         category2 = categories[1].split(": ", 1)[1].strip()
     return f"{title} -- {published_time} -- {category1} / {category2}", lines
 
-
-# def render_article_content(lines, view_full_text):
-#     if len(lines) < 8:
-#         return "Invalid file format"
-#     if view_full_text.get():
-#         content = "\n".join(line.strip() for line in lines[7:])
-#     else:
-#         first_five_sentences = lines[7:12]
-#         content = "\n".join(line.strip() for line in first_five_sentences)
-#     return content
-
-def render_article_content(lines, view_full_text):
-    if len(lines) < 8:
-        return "Invalid file format"
-
-    # Determine the content to display based on the view_full_text flag
-    if view_full_text.get():
-        content_lines = lines[7:]
-    else:
-        content_lines = lines[7:12]
-
-    # Join the lines to form the article text
-    article_text = "\n".join(line.strip() for line in content_lines)
-
-    # Perform NER on the article text
-    html = analyse_single_article(article_text)
-    #
-    # # Split the NER HTML into lines
-    # ner_lines = ner_html.split("\n")
-    #
-    # # Join the lines with <br> tags to preserve line breaks
-    # formatted_html = "<br>".join(ner_lines)
-
-    return html
 
 def generate_histogram():
     data = np.random.randn(1000)
@@ -173,8 +140,14 @@ def server(input, output, session):
     sentiment_visible = reactive.Value(True)
     communities_visible = reactive.Value(True)
     article_analysis = reactive.Value(None)
+    entity_sentiments = reactive.Value(None)
+    sentiment_sentences = reactive.Value(None)
     article_analysis_1 = reactive.Value(None)
     article_analysis_2 = reactive.Value(None)
+    entity_sentiments_1 = reactive.Value(None)
+    sentiment_sentences_1 = reactive.Value(None)
+    entity_sentiments_2 = reactive.Value(None)
+    sentiment_sentences_2 = reactive.Value(None)
 
     @reactive.Effect
     @reactive.event(input.view_full_text)
@@ -203,7 +176,10 @@ def server(input, output, session):
         _, lines = handle_file_upload(input.file_upload)
         if lines:
             article_text = "\n".join(line.strip() for line in lines[7:])
-            article_analysis.set(analyse_single_article(article_text))
+            analysis, entities, sentences = analyse_single_article(article_text)
+            article_analysis.set(analysis)
+            entity_sentiments.set(entities)
+            sentiment_sentences.set(sentences)
 
     @reactive.Effect
     @reactive.event(input.file_upload_1)
@@ -211,7 +187,10 @@ def server(input, output, session):
         _, lines = handle_file_upload(input.file_upload_1)
         if lines:
             article_text = "\n".join(line.strip() for line in lines[7:])
-            article_analysis_1.set(analyse_single_article(article_text))
+            analysis, entities, sentences = analyse_single_article(article_text)
+            article_analysis_1.set(analysis)
+            entity_sentiments_1.set(entities)
+            sentiment_sentences_1.set(sentences)
 
     @reactive.Effect
     @reactive.event(input.file_upload_2)
@@ -219,7 +198,10 @@ def server(input, output, session):
         _, lines = handle_file_upload(input.file_upload_2)
         if lines:
             article_text = "\n".join(line.strip() for line in lines[7:])
-            article_analysis_2.set(analyse_single_article(article_text))
+            analysis, entities, sentences = analyse_single_article(article_text)
+            article_analysis_2.set(analysis)
+            entity_sentiments_2.set(entities)
+            sentiment_sentences_2.set(sentences)
 
     @output
     @render.text
@@ -284,22 +266,32 @@ def server(input, output, session):
     @output
     @render.ui
     def single_mode_plots():
-        return ui.div(
-            ui.img(src=f"plot1.png", class_="plot-image"),
-            ui.img(src=f"plot2.png", class_="plot-image"),
-            ui.img(src=f"plot1.png", class_="plot-image"),
-            ui.img(src=f"plot2.png", class_="plot-image"),
-            class_="plots-container"
-        )
+        if input.file_upload():
+            return ui.div(
+                output_widget("entity_types_single_plot"),
+                output_widget("most_common_entities_single_plot"),
+                output_widget("sentiment_dist_single_plot"),
+                ui.output_plot("most_common_words_single_plot"),
+                class_="plots-container"
+            )
+        return ui.div()
 
     @output
     @render.ui
     def double_mode_plots():
-        return ui.div(
-            ui.img(src=f"plot1.png", class_="plot-image"),
-            ui.img(src=f"plot2.png", class_="plot-image"),
-            class_="plots-container"
-        )
+        if input.file_upload_1() and input.file_upload_2():
+            return ui.div(
+                # ui.img(src=f"plot1.png", class_="plot-image"),
+                # ui.img(src=f"plot2.png", class_="plot-image"),
+                output_widget("entity_types_double_plot"),
+                output_widget("most_common_entities_double_plot"),
+                output_widget("sentiment_dist_sentence_double_plot"),
+                output_widget("sentiment_dist_entity_double_plot"),
+                ui.output_plot("most_common_words_double_plot_1"),
+                ui.output_plot("most_common_words_double_plot_2"),
+                class_="plots-container"
+            )
+        return ui.div()
 
     @output
     @render_widget
@@ -371,10 +363,19 @@ def server(input, output, session):
 
     @output
     @render_widget
-    def sentance_count_distribution_plot():
+    def sentence_count_distribution_plot():
         dataset_name = input.dataset_filter()
-        plot = generate_sentance_count_distribution_plot(dataset_name)
+        plot = generate_sentence_count_distribution_plot(dataset_name)
         return plot
+
+    # @output
+    # @render.plot
+    # def sentiment_word_cloud_plot():
+    #     dataset_name = input.dataset_filter()
+    #     model_name = input.sentiment_model_filter().lower()
+    #     sentiment = input.sentiment_filter()
+    #     plot = generate_sentiment_word_cloud_plot(dataset_name, model_name, sentiment)
+    #     return plot
 
     @output
     @render.plot
@@ -407,6 +408,66 @@ def server(input, output, session):
         dataset_name = input.dataset_filter()
         plot = generate_community_graph(dataset_name)
         return plot
+
+    @output
+    @render_widget
+    def entity_types_single_plot():
+        if isinstance(entity_sentiments.get(), pd.DataFrame):
+            return entity_types_plot_single(entity_sentiments.get())
+
+    @output
+    @render_widget
+    def most_common_entities_single_plot():
+        if isinstance(entity_sentiments.get(), pd.DataFrame):
+            return most_common_entities_plot_single(entity_sentiments.get())
+
+    @output
+    @render_widget
+    def sentiment_dist_single_plot():
+        if isinstance(sentiment_sentences.get(), pd.DataFrame) and isinstance(entity_sentiments.get(), pd.DataFrame):
+            return sentiment_dist_plot_single(entity_sentiments.get(), sentiment_sentences.get())
+
+    @output
+    @render.plot
+    def most_common_words_single_plot():
+        if isinstance(sentiment_sentences.get(), pd.DataFrame):
+            return most_common_words_plot_single(sentiment_sentences.get())
+
+    @output
+    @render_widget
+    def entity_types_double_plot():
+        if isinstance(entity_sentiments_1.get(), pd.DataFrame) and isinstance(entity_sentiments_2.get(), pd.DataFrame):
+            return entity_types_plot_double(entity_sentiments_1.get(), entity_sentiments_2.get())
+
+    @output
+    @render_widget
+    def most_common_entities_double_plot():
+        if isinstance(entity_sentiments_1.get(), pd.DataFrame) and isinstance(entity_sentiments_2.get(), pd.DataFrame):
+            return most_common_entities_plot_double(entity_sentiments_1.get(), entity_sentiments_2.get())
+
+    @output
+    @render_widget
+    def sentiment_dist_sentence_double_plot():
+        if isinstance(sentiment_sentences_1.get(), pd.DataFrame) and isinstance(sentiment_sentences_2.get(), pd.DataFrame):
+            return sentiment_dist_plot_double(sentiment_sentences_1.get(), sentiment_sentences_2.get(), base="Sentences")
+
+    @output
+    @render_widget
+    def sentiment_dist_entity_double_plot():
+        if isinstance(entity_sentiments_1.get(), pd.DataFrame) and isinstance(entity_sentiments_2.get(), pd.DataFrame):
+            return sentiment_dist_plot_double(entity_sentiments_1.get(), entity_sentiments_2.get(), base="Entities")
+
+    @output
+    @render.ui
+    def most_common_words_double_plot_1():
+        if isinstance(sentiment_sentences_1.get(), pd.DataFrame):
+            return most_common_words_plot_single(sentiment_sentences_1.get(), article=" from Article 1")
+
+    @output
+    @render.ui
+    def most_common_words_double_plot_2():
+        if isinstance(sentiment_sentences_2.get(), pd.DataFrame):
+            return most_common_words_plot_single(sentiment_sentences_2.get(), article=" from Article 2")
 
     @output
     @render.ui
@@ -500,7 +561,7 @@ def server(input, output, session):
                     "Gaza before conflict", "Gaza during conflict",
                     "Ukraine before conflict", "Ukraine during conflict"
                 ]),
-                ui.input_select("sentiment_filter", "Select Sentiment", choices=["Positive", "Negative", "Neutral"]),
+                ui.input_select("sentiment_filter", "Select Sentiment", choices=["Positive", "Neutral", "Negative"]),
                 ui.input_select("entity_type_filter", "Select Entity Type",
                                 choices=["Person", "Organisation", "Location", "Miscellaneous"]),
                 ui.input_select("sentiment_model_filter", "Select Sentiment Model", choices=["TSC", "VADER"]),
@@ -553,7 +614,7 @@ def server(input, output, session):
             return ui.div(
                 # ui.img(src='plot1.png', class_="plot-image eda-plot"),
                 output_widget("word_count_distribution_plot"),
-                output_widget("sentance_count_distribution_plot"),
+                output_widget("sentence_count_distribution_plot"),
                 ui.output_plot("top_N_common_words_plot"),
                 output_widget("top_N_common_pos_plot"),
                 ui.output_plot("pos_wordclouds_plot"),

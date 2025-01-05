@@ -124,9 +124,9 @@ def calculate_sentiment_dist(tsc_results_df: pd.DataFrame, vader_results_df: pd.
 
     # comparison between TSC and VADER
     sentiment_comparison = pd.DataFrame({
-        'Negative': [tsc_sentiment_counts.get('negative', 0), vader_sentiment_counts.get('negative', 0)],
+        'Positive': [tsc_sentiment_counts.get('positive', 0), vader_sentiment_counts.get('positive', 0)],
         'Neutral': [tsc_sentiment_counts.get('neutral', 0), vader_sentiment_counts.get('neutral', 0)],
-        'Positive': [tsc_sentiment_counts.get('positive', 0), vader_sentiment_counts.get('positive', 0)]
+        'Negative': [tsc_sentiment_counts.get('negative', 0), vader_sentiment_counts.get('negative', 0)]
     }, index=['TSC', 'VADER'])
 
     if not for_shiny:
@@ -143,8 +143,8 @@ def calculate_sentiment_dist(tsc_results_df: pd.DataFrame, vader_results_df: pd.
     # plt.show()
 
     fig = go.Figure()
-    sentiments = ['Negative', 'Neutral', 'Positive']
-    colors = ['red', 'gray', 'green']
+    sentiments = ['Positive', 'Neutral', 'Negative']
+    colors = ['green', 'gray', 'red']
 
     for sentiment, color in zip(sentiments, colors):
         fig.add_trace(
@@ -170,6 +170,7 @@ def calculate_sentiment_dist(tsc_results_df: pd.DataFrame, vader_results_df: pd.
         ),
         xaxis=dict(tickangle=0),  # Keep x-axis labels horizontal
         legend_title='Sentiment',
+        legend=dict(traceorder='normal'),
         height=600,
         width=800
     )
@@ -257,6 +258,7 @@ def calculate_sentiment_over_time(model_results_df: pd.DataFrame, dataset_name: 
             automargin=True,
         ),
         legend_title='Sentiment',
+        legend=dict(traceorder='normal'),
         height=600,
         width=1000
     )
@@ -410,6 +412,7 @@ def calculate_sentiment_dist_per_target(tsc_results_df: pd.DataFrame, dataset_na
             automargin=True,
         ),
         legend_title='Sentiment',
+        legend=dict(traceorder='normal'),
         height=800,
         width=1000
     )
@@ -501,6 +504,7 @@ def calculate_sentiment_over_time_per_target(tsc_results_df: pd.DataFrame, datas
             ),
             xaxis=dict(tickangle=45),
             legend_title='Sentiment',
+            legend=dict(traceorder='normal'),
             height=600,
             width=1000
         )

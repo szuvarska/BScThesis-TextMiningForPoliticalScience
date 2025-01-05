@@ -78,7 +78,7 @@ def generate_word_count_distribution_plot(dataset_name: str):
     return plot_word_count_distribution(df, dataset_name_to_display)
 
 
-def generate_sentance_count_distribution_plot(dataset_name: str):
+def generate_sentence_count_distribution_plot(dataset_name: str):
     dataset_name_to_display = dataset_name
     dataset_name = dataset_name.replace(' ', '_')[:-9].lower()
     dataset_name = dataset_name.replace('during', 'after')
