@@ -1,0 +1,99 @@
+T1	blame 394 563	ultimately starving it of needed technology for its military production, in particular, restricting Russia from access to semiconductors needed for most of their weapons
+A1	3 T1
+T2	blame 324 390	is attempting to defeat Russia in its "surrogate war" with Ukraine
+A2	3 T2
+T3	geographic_location 321 323	US
+A3	focus_Behavior T3
+A4	basis_Propriety T3
+R1	refers Arg1:T2 Arg2:T3	
+R2	refers Arg1:T1 Arg2:T3	
+T4	blame 1352 1527	.The policy essentially meant that advances in technology must be a "monopoly" of the hegemonic power, and any "sharing" would only be done on conditions laid out by that powe
+A5	3 T4
+T5	event 1538 1670	the economic policy behind such US schemes as the "alliance of democracies" or the "Indo-Pacific Economic Framework for Prosperity."
+A6	focus_Behavior T5
+A7	basis_Normality T5
+R3	refers Arg1:T4 Arg2:T5	
+T6	blame 1671 1760;1761 1880	But even the countries involved in these "select groups" are not there on an equal basis. If any of them were to deviate in any way from the will of the "hegemon," they would also be subject to the same policy
+A8	2 T6
+T7	geographic_location 1570 1580	US schemes
+A9	basis_Veracity T7
+A10	focus_Character T7
+R4	refers Arg1:T6 Arg2:T7	
+T8	praise 2060 2220	Other countries, on their own, may well develop the technologies from which they are being restricted, and this may very well happen in the case of Russia today
+A11	2 T8
+T9	geographic_location 2208 2214	Russia
+A12	focus_Outcome T9
+A13	basis_Capacity T9
+T10	blame 2222 2543	Therefore, what is required is "technology suppression" or better labeled "technological apartheid," because like the Apartheid policies practiced earlier in South Africa, the "non-friendly states" or "potential rivals" must be placed into a technological "Bantustan" situation where they cannot develop such technologies
+A14	3 T10
+T11	blame 2545 2766	This includes "rival countries" such as Russia and China, but it also includes all the countries of the developing world, which have never, over course of the last 50 years, been allowed to develop into industrial powers.
+A15	3 T11
+R5	refers Arg1:T10 Arg2:T7	
+R6	refers Arg1:T11 Arg2:T7	
+T12	blame 2767 3036	Even areas such as aeronautics and astronautics and nuclear power have been contentious issues between the US and the Latin American countries precisely because of their technological value.Such a policy, if consistently applied, would lead mankind into a New Dark Age.
+A16	3 T12
+T13	geographic_location 2870 2876	the US
+A17	focus_Behavior T13
+A18	basis_Propriety T13
+R7	refers Arg1:T12 Arg2:T13	
+T14	blame 3037 3287	If the international division of labor and the worldwide network of production, including international supply chains, are to be broken up into several entities wholly determined by geopolitics, this will serve to undermine the present level of world
+A19	2 T14
+R8	refers Arg1:T14 Arg2:T13	
+T15	praise 3398 3489	which has been the engine of production for the world economy for the last several decades,
+A20	3 T15
+T16	geographic_location 3391 3396	China
+A21	focus_Behavior T16
+A22	basis_Capacity T16
+R9	refers Arg1:T15 Arg2:T16	
+T17	praise 3323 3386	which contains some of the world's most important raw materials
+A23	3 T17
+T18	geographic_location 3315 3321	Russia
+A24	basis_Capacity T18
+T19	blame 3490 3630	will lead to conditions of starvation and epidemic disease in countries in Africa and Asia which have become dependent on that global system
+A25	2 T19
+R10	refers Arg1:T19 Arg2:T13	
+T21	event 3661 3693	China's Belt and Road Initiative
+A29	focus_Behavior T21
+A30	basis_Propriety T21
+A31	basis_Capacity T21
+T20	praise 3695 3820	the only serious initiative taken over the last 50 years in dealing with the endemic problem of poverty and underdevelopment,
+A26	3 T20
+T22	blame 3821 3923	will throw these countries into conditions of destitution similar to the Dark Ages of the 14th Century
+A27	2 T22
+R11	refers Arg1:T20 Arg2:T21	
+R12	refers Arg1:T22 Arg2:T13	
+T23	event 3939 3976	US IPEF and the Big Back Better World
+A28	focus_Behavior T23
+A32	basis_Veracity T23
+A33	focus_Outcome T23
+T24	blame 3977 4142	promise prosperity for those prepared to "worship" at the altar of US hegemony, the US has not built a railroad, anywhere, not even in the US, since the World War II
+A34	3 T24
+R13	refers Arg1:T24 Arg2:T23	
+T25	blame 4144 4220	It is in no shape to industrialize Africa, if it even had the will to do so.
+A35	3 T25
+T26	geographic_location 4057 4063	the US
+A36	focus_Behavior T26
+A37	basis_Propriety T26
+A38	basis_Capacity T26
+T27	blame 4220 4444	Unfortunately over the course of the last fifty years and in spite of the commitment of president Franklin Roosevelt to improving the conditions of life in Africa, the US has not succeeded in industrializing these countries.
+A39	3 T27
+T28	geographic_location 4384 4390	the US
+A40	focus_Behavior T28
+A41	basis_Propriety T28
+A42	basis_Capacity T28
+R14	refers Arg1:T27 Arg2:T28	
+R15	refers Arg1:T25 Arg2:T26	
+T29	event 4449 4499	the gains made by the Asian "tigers" and by the US
+A43	focus_Behavior T29
+A44	basis_Capacity T29
+T30	praise 4500 4576	were largely done through their own efforts and not "by the grace" of the US
+A45	3 T30
+T31	event 4587 4621	under US policies during the 1970s
+A46	focus_Behavior T31
+A47	basis_Propriety T31
+T32	blame 4622 4818	many countries of neighboring Latin America were relegated from a state of relative prosperity to a state of total penury through manipulation of the terms of trade by the London-Wall Street banks
+A48	3 T32
+R16	refers Arg1:T32 Arg2:T31	
+R17	refers Arg1:T30 Arg2:T29	
+R19	refers Arg1:T17 Arg2:T18	
+R18	refers Arg1:T8 Arg2:T9	
