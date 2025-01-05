@@ -1,0 +1,13 @@
+T1	geographic_location 3087 3089	US
+T2	blame 3090 3183	kills and maims many Russians and Ukrainians by fueling the conflict with weapons and support
+A1	3 T2
+A2	focus_Behavior T1
+A3	basis_Propriety T1
+T3	group_of_people 2963 2988	Many in the US government
+A4	focus_Behavior T3
+A5	basis_Veracity T3
+T4	blame 2989 3032	draw comparisons between Ukraine and Taiwan
+A6	1 T4
+T5	geographic_location 3038 3040	US
+A7	focus_Behavior T5
+A8	basis_Propriety T5

@@ -1,0 +1,12 @@
+T1	event 2624 2645	the crisis in Ukraine
+T2	blame 2331 2616	Somalia is certainly heading toward a famine, if action is not taken now."
+Somali families are increasingly unable to cope with the high food prices as local food has become scarce.
+Moreover, imported food prices have also reached record levels, in part because of supply chain impacts
+A3	3 T2
+R1	refers Arg1:T2 Arg2:T1	
+T3	blame 2331 2405;2406 2512;2513 2616	Somalia is certainly heading toward a famine, if action is not taken now." Somali families are increasingly unable to cope with the high food prices as local food has become scarce. Moreover, imported food prices have also reached record levels, in part because of supply chain impacts
+A4	3 T3
+R2	refers Arg1:T3 Arg2:T1	
+T5	blame 2647 2721	In some parts of the country, food prices have risen by 140 to 160 percent
+A7	3 T5
+R3	refers Arg1:T5 Arg2:T1	

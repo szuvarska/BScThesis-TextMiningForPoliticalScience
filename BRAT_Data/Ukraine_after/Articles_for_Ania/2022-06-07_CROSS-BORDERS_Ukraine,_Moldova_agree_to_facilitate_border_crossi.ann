@@ -1,0 +1,6 @@
+T1	geographic_location 262 269	Ukraine
+T2	geographic_location 274 281	Moldova
+T3	praise 282 338	have agreed to simplify the procedure of border crossing
+A1	1 T3
+R1	refers Arg1:T3 Arg2:T1	
+R2	refers Arg1:T3 Arg2:T2	

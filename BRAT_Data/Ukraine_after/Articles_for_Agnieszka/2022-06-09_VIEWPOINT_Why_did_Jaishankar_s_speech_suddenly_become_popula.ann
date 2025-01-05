@@ -1,0 +1,48 @@
+T1	blame 1870 1910	high-sounding but empty Western rhetoric
+T2	blame 1912 1979	The West's hypocrisy was even more evident when China was concerned
+A2	2 T2
+A1	2 T1
+T3	group_of_countries 1561 1567	Europe
+R1	refers Arg1:T1 Arg2:T3	
+R2	refers Arg1:T2 Arg2:T3	
+T4	group_of_countries 2147 2153	Europe
+T5	blame 2189 2231	Europe's problems are the world's problems
+A3	2 T5
+R3	refers Arg1:T5 Arg2:T4	
+T6	group_of_countries 2453 2459	Europe
+T7	blame 2330 2441;2442 2512	the China-India dispute not only predated the Ukraine crisis, but also had been better managed than the latter. So, it was Europe that should be given a lecture on crisis management.
+A4	2 T7
+R4	refers Arg1:T7 Arg2:T6	
+T8	group_of_countries 3332 3340	the West
+T9	blame 3341 3431	has hardly lived up to their lip service and has been reluctant to treat India accordingly
+A5	2 T9
+R5	refers Arg1:T9 Arg2:T8	
+T10	blame 3433 3599	Instead of courting India with due respect and real concessions, the West was more ready to press India to bear the brunt of the conflicts, be it in Asia or in Europe
+A6	2 T10
+R6	refers Arg1:T10 Arg2:T8	
+T11	geographic_location 3601 3606	India
+T12	praise 3607 3662	should be respected as much as it is needed by the West
+A7	1 T12
+R7	refers Arg1:T12 Arg2:T11	
+T13	geographic_location 2719 2724	India
+T14	praise 2726 2908	as the fifth or the sixth largest economy in the world with one-fifth of the world's population, was perfectly entitled to make its own choices on the balance of values and interests
+A8	1 T14
+R8	refers Arg1:T14 Arg2:T13	
+T15	group_of_countries 3845 3849	West
+T16	blame 3852 3860	underbid
+A9	1 T16
+T17	blame 3897 3919	tightfisted settlement
+A10	1 T17
+R9	refers Arg1:T17 Arg2:T15	
+R10	refers Arg1:T16 Arg2:T15	
+T18	group_of_countries 4251 4259	the West
+T19	blame 4266 4451	first fomented India's ego presumably for strategic purposes.For the West, the principal reason to attach more importance to India has been its growing value as a counterweight to China
+A11	2 T19
+R11	refers Arg1:T19 Arg2:T18	
+T20	group_of_countries 5296 5304	the West
+T21	blame 5307 5316	arrogance
+A12	2 T21
+R12	refers Arg1:T21 Arg2:T20	
+T22	blame 5394 5666	In a same vein, China was talked down to, cowed, pushed around, and denied the right to secure its own interests according to common sense and equality, simply because it has grown more economically prosperous and technologically advanced than what the West could tolerate
+A13	2 T22
+R13	refers Arg1:T22 Arg2:T20	

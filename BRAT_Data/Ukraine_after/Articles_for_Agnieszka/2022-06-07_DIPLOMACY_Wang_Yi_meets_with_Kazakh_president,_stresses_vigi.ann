@@ -1,0 +1,40 @@
+T1	person 279 286	Chinese
+T2	praise 399 558	stressed the importance of vigilance to external forces attempting to involve regional countries in major-power conflicts and to coerce countries to take sides
+A1	1 T2
+R1	refers Arg1:T2 Arg2:T1	
+T3	event 1019 1037	the Ukraine crisis
+T4	blame 978 1015	the serious negative spillover impact
+A4	3 T4
+R2	refers Arg1:T4 Arg2:T3	
+T5	group_of_countries 1065 1088	Central Asian countries
+T6	praise 1089 1219	can stay focused and remove external interference, strengthen coordination and cooperate to safeguard regional peace and stability
+A7	1 T6
+T7	geographic_location 1380 1385	China
+T8	praise 1388 1401	fair position
+A8	1 T8
+R3	refers Arg1:T6 Arg2:T5	
+R4	refers Arg1:T8 Arg2:T7	
+T9	group_of_people 1567 1580	US-led forces
+T10	praise 1586 1634	aim to force Central Asian nations to take sides
+A13	1 T10
+R5	refers Arg1:T10 Arg2:T9	
+T11	group_of_countries 1642 1663	Central Asian nations
+T12	praise 1664 1779	wish to preserve an independent status with no interference from other countries on their sovereignty and diplomacy
+A18	1 T12
+R6	refers Arg1:T12 Arg2:T11	
+T13	group_of_people 1898 1913	External forces
+T14	blame 1914 2050	may also include the forces of terrorism and extremism, of which the impact to Central Asian nations has been increasing in recent years
+A19	2 T14
+R7	refers Arg1:T14 Arg2:T13	
+T15	geographic_location 2288 2290	US
+T16	blame 2291 2379	may take chances to break the balanced diplomacy and even create chaos within Kazakhstan
+A24	2 T16
+R8	refers Arg1:T16 Arg2:T15	
+T17	geographic_location 2527 2532	China
+T18	praise 2534 2613	s willing to strengthen solidarity and cooperation with Central Asian neighbors
+A25	1 T18
+R9	refers Arg1:T18 Arg2:T17	
+T19	geographic_location 2681 2686	China
+T20	praise 2687 2888	is willing to strengthen exchanges and cooperation with member states of the Collective Security Treaty Organization (CSTO) and take effective measures to maintain regional peace and stability together
+A28	2 T20
+R10	refers Arg1:T20 Arg2:T19	

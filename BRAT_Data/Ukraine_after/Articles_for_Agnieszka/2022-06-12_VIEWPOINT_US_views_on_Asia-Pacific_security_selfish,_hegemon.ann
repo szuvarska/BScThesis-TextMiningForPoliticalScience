@@ -1,0 +1,67 @@
+T1	event 743 782	the primary consideration of Washington
+T2	blame 783 913	is about the golden rule of "America First" - in other words, America's core interest concerns how to maintain its global hegemony
+A1	2 T2
+R1	refers Arg1:T2 Arg2:T1	
+T3	event 928 950	China's core interests
+T4	praise 951 1087	lie in not only safeguarding its own sovereignty, security and development, but also maintaining regional and global peace and stability
+A2	3 T4
+R2	refers Arg1:T4 Arg2:T3	
+T5	geographic_location 1100 1105	China
+T6	praise 1106 1260	is shaping international security with the idea of building a community with a shared future for mankind through its national and global security concepts
+A3	3 T6
+R3	refers Arg1:T6 Arg2:T5	
+T7	geographic_location 1337 1339	US
+T8	blame 1340 1375	focuses solely on its own interests
+A4	1 T8
+R4	refers Arg1:T8 Arg2:T7	
+T9	praise 1303 1331	embody international justice
+A5	1 T9
+T10	event 1267 1302	China's views on order and security
+R5	refers Arg1:T9 Arg2:T10	
+T11	event 1507 1560	how the US interprets the security and order concepts
+T12	blame 1561 1607	is selfish, hegemonic and ultimately untenable
+A6	3 T12
+R6	refers Arg1:T12 Arg2:T11	
+T13	event 1909 1925	Austin's remarks
+T14	blame 1926 1945	are highly deceptiv
+A7	3 T14
+R7	refers Arg1:T14 Arg2:T13	
+T15	geographic_location 2077 2095	Beijing and Moscow
+T16	blame 2057 2076;2096 2171	Washington believes are posing threats to its hegemony in Asia-Pacific and Europe, respectively
+A8	2 T16
+R8	refers Arg1:T16 Arg2:T15	
+T17	event 2279 2309	serving US hegemonic interests
+T18	blame 2310 2345	doesn't equal to peace and security
+R9	refers Arg1:T18 Arg2:T17	
+A9	2 T18
+T19	geographic_location 2416 2418	US
+T20	blame 2419 2497	is constantly hyping China as a "coercive and aggressive" force in the region.
+A10	2 T20
+R10	refers Arg1:T20 Arg2:T19	
+T21	geographic_location 2628 2633	China
+T22	blame 2607 2627	Austin still accused
+A11	3 T22
+R11	refers Arg1:T22 Arg2:T21	
+T23	blame 2634 2729	of using its advantaged military power to challenge regional security and bully smaller nations
+A12	3 T23
+R12	refers Arg1:T23 Arg2:T21	
+T24	geographic_location 2759 2764	China
+T25	blame 2731 2758;2765 2823	Washington wants to portray as a direct and real threat to all the allies and partners
+A13	2 T25
+R13	refers Arg1:T25 Arg2:T24	
+T26	geographic_location 3645 3647	US
+T27	blame 3648 3711	is losing its credibility for what it has done to other nations
+A14	2 T27
+T28	geographic_location 3877 3879	US
+T29	blame 3880 3912	will lose its hegemonic position
+A15	2 T29
+R14	refers Arg1:T29 Arg2:T28	
+R15	refers Arg1:T27 Arg2:T26	
+T30	group_of_countries 4211 4235	Some countries in Europe
+T31	blame 4236 4311	are willing to act against Russia under Washington's incitement proactively
+A16	2 T31
+R16	refers Arg1:T31 Arg2:T30	
+T32	geographic_location 4355 4360	China
+T33	praise 4322 4354;4361 4402	many Asia-Pacific countries view as a friend and reliable economic partner
+A17	2 T33
+R17	refers Arg1:T33 Arg2:T32	

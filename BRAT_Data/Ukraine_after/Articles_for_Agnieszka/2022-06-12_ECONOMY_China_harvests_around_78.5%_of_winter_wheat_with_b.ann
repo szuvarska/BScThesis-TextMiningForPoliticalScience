@@ -1,0 +1,8 @@
+T1	event 4155 4182	the Russia-Ukraine conflict
+T2	blame 4183 4215	has severely affected grain trad
+A1	3 T2
+R1	refers Arg1:T2 Arg2:T1	
+T3	event 4439 4518	the backdrop of skyrocketing inflation and the turbulent geopolitical situation
+T4	blame 4520 4577	grain prices will remain high in the international market
+A2	2 T4
+R2	refers Arg1:T4 Arg2:T3	

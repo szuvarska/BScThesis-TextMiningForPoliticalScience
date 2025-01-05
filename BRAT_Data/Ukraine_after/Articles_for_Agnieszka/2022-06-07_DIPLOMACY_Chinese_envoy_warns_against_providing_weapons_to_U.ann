@@ -1,0 +1,33 @@
+T1	group_of_people 383 410	The international community
+T2	blame 311 382	constantly providing weapons to Ukraine or imposing sanctions on Russia
+R1	refers Arg1:T2 Arg2:T1	
+T3	blame 411 479	should not stop at eliminating sexual violence and human trafficking
+A3	3 T2
+A4	1 T3
+R2	refers Arg1:T3 Arg2:T1	
+T4	person 615 623	Dai Bing
+T5	praise 481 614	Only through cease-fire and the restoration of peace can the trauma of conflict for women and children be fundamentally avoided, said
+A5	2 T5
+R3	refers Arg1:T5 Arg2:T4	
+T6	group_of_people 689 716	The international community
+T7	blame 950 1090	Constantly providing weapons or imposing sanctions and pressure will not solve the problem, but will only perpetuate and expand the conflict
+A8	3 T7
+R4	refers Arg1:T7 Arg2:T6	
+T8	geographic_location 1565 1570	China
+T9	praise 1571 1753	once again calls on the parties concerned to put international and regional peace and security first and to play a constructive role in the proper resolution of the crisis in Ukraine
+A11	3 T9
+R5	refers Arg1:T9 Arg2:T8	
+T10	blame 2109 2173	The use of sexual violence as a tactic of war is a serious crime
+A14	3 T10
+T11	group_of_people 1900 1923	Parties to the conflict
+A15	focus_Behavior T11
+A16	basis_Responsability T11
+R6	refers Arg1:T10 Arg2:T11	
+T12	geographic_location 2432 2437	China
+T13	praise 2438 2581	appreciates the humanitarian spirit shown by Ukraine's neighbors in providing safe shelter and basic livelihood for women and children refugees
+A17	1 T13
+R7	refers Arg1:T13 Arg2:T12	
+T14	geographic_location 2704 2709	China
+T15	praise 2710 2801	calls for immediate international cooperation to identify and punish relevant criminal acts
+R8	refers Arg1:T15 Arg2:T14	
+A20	2 T15

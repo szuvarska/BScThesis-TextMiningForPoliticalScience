@@ -1,0 +1,8 @@
+T1	geographic_location 1272 1274	US
+T2	blame 1275 1323	has a sordid history of not keeping its promises
+A1	3 T2
+R1	refers Arg1:T2 Arg2:T1	
+T3	geographic_location 1338 1340	US
+T4	blame 1341 1412	might be too weighed down by other issues - the Russia-Ukraine conflict
+A4	1 T4
+R2	refers Arg1:T4 Arg2:T3	

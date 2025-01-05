@@ -1,0 +1,13 @@
+T1	event 599 683	A report on the EU and the security challenges in the Indo-Pacific adopted by the EP
+T2	blame 718 1208	claims that China poses a threat to the Union's interests in the region, criticizing China's position on the Ukraine crisis and Taiwan, Hong Kong, Macao, and Xinjiang-related issues.In response, a spokesperson of the Chinese Mission to the EU said that the report is based on ideological bias, distorts China's policy and position, plays up the "China threat," denies the country's legitimate right to safeguard its sovereignty and security, and grossly interferes with its internal affairs
+R1	refers Arg1:T2 Arg2:T1	
+T3	blame 1365 1427	does not necessarily represent the position of the whole Union
+R2	refers Arg1:T3 Arg2:T1	
+T4	organization 1467 1469	EP
+T5	blame 1470 1571	has become a place for political performances, especially over China-related issues in the past years
+R3	refers Arg1:T5 Arg2:T4	
+T6	blame 1654 1783	has to constantly increase its presence through political performances to gain or consolidate its say in the EU's decision-making
+R4	refers Arg1:T6 Arg2:T4	
+T7	organization 34 53	European Parliament
+T8	blame 54 111	attempts to hijack real public opinion toward China in EU
+R5	refers Arg1:T8 Arg2:T7	

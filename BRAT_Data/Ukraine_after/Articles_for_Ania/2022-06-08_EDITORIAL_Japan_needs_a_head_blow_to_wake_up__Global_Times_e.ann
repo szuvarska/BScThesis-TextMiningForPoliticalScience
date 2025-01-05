@@ -1,0 +1,8 @@
+T1	group_of_people 2462 2488	Japanese right-wing forces
+T2	blame 2858 2933	try to grab every "opportunity" and Russia-Ukraine conflict is no exception
+R1	refers Arg1:T2 Arg2:T1	
+T3	geographic_location 2964 2969	Japan
+T4	blame 2964 3154	Japan and China have been in "opposing camps" in the Russia-Ukraine conflict and Japan decided to take a step forward on the Taiwan question without thinking too much about China's feelings.
+R2	refers Arg1:T4 Arg2:T3	
+T5	geographic_location 34 39	Japan
+T6	blame 40 68	needs a head blow to wake up

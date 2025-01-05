@@ -1,0 +1,9 @@
+T2	blame 1439 1491;1492 1664	warned that "Ukraine might be tomorrow's East Asia." This is blatant fabrication and dissemination of the fake urgency - a potential war may soon break out in Asia - to terrify regional countries and force them to take sides.
+T1	person 1431 1438	Kishida
+R1	refers Arg1:T2 Arg2:T1	
+T3	person 1679 1686	Kishida
+T4	blame 1665 1950	It seems that Kishida does not mind sending more aftershocks of the ongoing European geopolitical earthquake to Asia in his speech during the Shangri-La Dialogue, Asia's defense summit.The Diaoyu Islands issue and the Taiwan question are fundamentally different from the Ukraine crisis
+R2	refers Arg1:T4 Arg2:T3	
+T5	person 80 87	Kishida
+T6	blame 88 153	will send aftershocks of European geopolitical earthquake to Asia
+R3	refers Arg1:T6 Arg2:T5	

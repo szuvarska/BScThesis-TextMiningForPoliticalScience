@@ -1,0 +1,11 @@
+T1	group_of_people 849 893	The British journalists included in the list
+T2	blame 894 1020	are involved in the deliberate dissemination of false and one-sided information about Russia and events in Ukraine and Donbass
+A1	3 T2
+R1	refers Arg1:T2 Arg2:T1	
+T3	blame 1095 1147	contribute to fueling Russophobia in British society
+A2	3 T3
+R2	refers Arg1:T3 Arg2:T1	
+T4	blame 1202 1380	were involved in making decisions on the supply of weapons to Ukraine, which are used by local punishers and Nazi formations to kill civilians and destroy civilian infrastructure
+A3	3 T4
+T5	group_of_people 1152 1201	20 individuals "linked to the UK defense industry
+R4	refers Arg1:T4 Arg2:T5	

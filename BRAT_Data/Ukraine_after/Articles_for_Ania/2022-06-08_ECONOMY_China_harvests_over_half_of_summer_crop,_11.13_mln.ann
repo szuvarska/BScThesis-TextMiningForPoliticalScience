@@ -1,0 +1,3 @@
+T2	geographic_location 1947 1952	China
+T1	praise 1953 2145	is expected to achieve a bumper crop of summer grain despite COVID-19 resurgence, extreme warm weather pattern this year, and the conflict between Russia and Ukraine, two major grain exporters
+R1	refers Arg1:T1 Arg2:T2	

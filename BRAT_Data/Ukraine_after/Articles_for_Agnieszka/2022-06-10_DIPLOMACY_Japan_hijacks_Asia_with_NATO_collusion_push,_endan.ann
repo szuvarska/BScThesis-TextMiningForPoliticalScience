@@ -1,0 +1,85 @@
+T1	geographic_location 844 849	Japan
+T2	blame 850 1325	is now using the Russia-Ukraine crisis to strengthen its military cooperation with NATO, and trying to channel NATO's influence into the Asia-Pacific region or promote the establishment of a NATO-like military alliance in the region, and such ill-intended plans actually hijacked regional peace and stability to serve its ambition of strengthening its military power, containing China with a military alliance, and getting rid of the constraints  of its Pacifist Constitution
+A1	2 T2
+R1	refers Arg1:T2 Arg2:T1	
+T3	geographic_location 1327 1332	Japan
+T4	blame 1333 1544	uses the pretext of "preventing a crisis like the Russia-Ukraine crisis from happening in Asia" to legitimize its move to collude with NATO and to convince regional countries to serve its goal of targeting China
+A2	2 T4
+R2	refers Arg1:T4 Arg2:T3	
+T5	event 1559 1580	the expansion of NATO
+T6	blame 1581 1746	is the root cause of the ongoing conflict in Ukraine, so if a NATO-like military organization emerges in Asia, the region would come much closer to a military crisis
+A3	2 T6
+R3	refers Arg1:T6 Arg2:T5	
+T7	geographic_location 1761 1766	Tokyo
+T8	blame 1769 1790	selfish and dangerous
+A4	2 T8
+R4	refers Arg1:T8 Arg2:T7	
+T9	group_of_countries 1826 1873	China and other peace-loving regional countries
+T10	praise 1874 1996	will work together to keep the region away from the regional militarization and confrontation which is happening in Europe
+A5	2 T10
+R5	refers Arg1:T10 Arg2:T9	
+T11	geographic_location 2846 2851	Japan
+T12	blame 2852 3102	is not trying to safeguard regional peace and stability, but to create tensions and trouble by hyping the "China threat theory" so that Japan can legitimize its ambition to develop military force and push for an amendment of its Pacifist Constitution
+A6	2 T12
+R6	refers Arg1:T12 Arg2:T11	
+T13	geographic_location 3273 3278	Tokyo
+T14	event 3741 3768	the Russia-Ukraine conflict
+T15	blame 3769 3844	is "causing a deterioration of the security environment in Europe and Asia,
+A7	3 T15
+R7	refers Arg1:T15 Arg2:T14	
+T16	blame 3428 3604	it's not just simply serving the US, but using the current situation in Ukraine and the US Indo-Pacific strategy to realize its own ambitions by creating tensions in the region
+A8	2 T16
+R8	refers Arg1:T16 Arg2:T13	
+T17	group_of_countries 4479 4493	Japan and NATO
+T18	blame 4494 4636	under the pretext of security will be of no help in preventing conflicts, but could seriously damage regional peace and increase uncertainties
+A9	2 T18
+R9	refers Arg1:T18 Arg2:T17	
+T19	event 4792 4909	Japan's move to introduce NATO's influence into Asia or push for the establishment of an Asia-Pacific version of NATO
+T20	blame 4911 4985	will bring danger not only to China but also the whole Asia-Pacific region
+A10	2 T20
+R10	refers Arg1:T20 Arg2:T19	
+T21	event 5228 5242	NATO expansion
+T22	blame 5166 5227	Asia would experience tensions like those in Europe caused by
+A11	2 T22
+R11	refers Arg1:T22 Arg2:T21	
+T23	blame 5253 5479	it will bring obstacles to the process of China's reunification, and even send a wrong signal to encourage Taiwan secessionists; moreover, Japan would increase pressure to target China's law-enforcement over the Diaoyu Islands
+A12	2 T23
+R12	refers Arg1:T23 Arg2:T21	
+T24	blame 5493 5883	Currently, due to the constraints imposed by its Pacifist Constitution, Japan cannot join NATO, but it is possible for it to amend relevant articles and then apply for NATO membership, which would make NATO a global military bloc not only with influence in Europe, but one that enables the US and Japan to build a new military alliance to seriously threaten China's development and security
+A13	2 T24
+R13	refers Arg1:T24 Arg2:T21	
+T25	group_of_countries 5934 5945	some forces
+T26	blame 5946 6049	using the Ukraine crisis as an excuse to advocate NATO's further expansion into the Asia-Pacific region
+A14	1 T26
+R14	refers Arg1:T26 Arg2:T25	
+T27	event 6295 6323	Asia-Pacific version of NATO
+T28	blame 6325 6371	will only do serious harm to regional security
+A15	2 T28
+R15	refers Arg1:T28 Arg2:T27	
+T29	praise 6671 6929	Most Asian countries, even those aligned with the US like South Korea and the Philippines, do not see China as their enemy or a threat, because China is their biggest trade partner and these countries enjoy concrete benefits from their stable ties with China
+A16	2 T29
+T30	geographic_location 6773 6778	China
+R16	refers Arg1:T29 Arg2:T30	
+T31	event 7110 7152	a US strategy to contain and provoke China
+T32	blame 7153 7201	brings nothing good but only losses and pressure
+R17	refers Arg1:T32 Arg2:T31	
+T33	geographic_location 7432 7437	Japan
+T34	blame 7438 7557	has decided to hijack the whole region, and is even inviting NATO to step into the Asia-Pacific region to contain China
+A18	2 T34
+R18	refers Arg1:T34 Arg2:T33	
+T35	geographic_location 7568 7573	China
+T36	praise 7574 7735	needs to do is to strengthen its ties with the regional countries to build a community of shared future and reach a consensus with peace-loving countries in Asia
+A19	2 T36
+R19	refers Arg1:T36 Arg2:T35	
+A17	2 T32
+T37	event 7749 7768	China's development
+T38	praise 7769 7851	is not a threat to Asia, but a certainty for peace and prosperity of the continent
+A20	2 T38
+R20	refers Arg1:T38 Arg2:T37	
+T39	blame 7894 7992	whoever challenges China's development and sovereignty is challenging regional peace and stability
+T40	group_of_countries 7894 7901	whoever
+R21	refers Arg1:T39 Arg2:T40	
+T41	group_of_countries 8234 8252	the hostile forces
+T42	blame 8258 8381	try to challenge and harm China's sovereignty and national security, to minimize the impact on regional peace and stability
+A21	2 T42
+R22	refers Arg1:T42 Arg2:T41	

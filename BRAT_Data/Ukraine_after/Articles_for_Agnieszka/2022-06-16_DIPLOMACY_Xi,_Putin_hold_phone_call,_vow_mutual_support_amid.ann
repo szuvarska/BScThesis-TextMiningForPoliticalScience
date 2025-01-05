@@ -1,0 +1,100 @@
+T1	event 503 597	the close China-Russia strategic partnership and high-level mutual trust between the two sides
+T2	praise 598 672	remain unchanged when the world is experiencing turbulence and uncertainty
+A1	1 T2
+R1	refers Arg1:T2 Arg2:T1	
+T3	group_of_countries 1061 1069	the West
+T4	blame 1070 1133	to use the Russia-Ukraine crisis to instigate China-Russia ties
+A2	1 T4
+R2	refers Arg1:T4 Arg2:T3	
+T5	event 1138 1152	China's stance
+T6	praise 1153 1231	with fairness and justice has won the understanding of both Russia and Ukraine
+A3	2 T6
+R3	refers Arg1:T6 Arg2:T5	
+T7	event 1443 1503	The economic and trade cooperation between the two countries
+T8	praise 1504 1528	has made steady progress
+R4	refers Arg1:T8 Arg2:T7	
+A4	1 T8
+T9	geographic_location 1914 1919	China
+T10	praise 1920 2116	has always independently assessed the situation on the basis of the historical context and the merits of the issue, and actively promoted world peace and the stability of the global economic order
+A5	3 T10
+R5	refers Arg1:T10 Arg2:T9	
+T11	event 2486 2517	the strategic firmness of China
+T12	praise 2518 2612	to keep developing ties and promote cooperation with Russia in the fields of economy and trade
+A6	2 T12
+R6	refers Arg1:T12 Arg2:T11	
+T13	group_of_countries 2622 2630	the West
+T14	blame 2631 2689	is pressuring China to join their sanctions against Russia
+A7	2 T14
+R7	refers Arg1:T14 Arg2:T13	
+T15	group_of_countries 2706 2792	China is not alone, as most non-Western countries, as well as some EU and NATO members
+T16	praise 2794 3055	don't share the view to indiscriminately sanction Russia on everything or cut off all cooperation and exchanges even if this comes with a high cost, and there is nothing wrong for the countries  to develop ties with Russia based on the interests of their people
+A8	1 T16
+R8	refers Arg1:T16 Arg2:T15	
+T17	geographic_location 3072 3077	China
+T18	praise 3078 3489	is willing to work with Russia to continue supporting each other on their respective core interests concerning sovereignty and security, as well as on their major concerns, deepening their strategic coordination, and strengthening communication and coordination in such important international and regional organizations as the United Nations, the BRICS mechanism and the Shanghai Cooperation Organization (SCO)
+A9	1 T18
+R9	refers Arg1:T18 Arg2:T17	
+T19	geographic_location 3499 3504	China
+T20	praise 3505 3756	is also willing to work with Russia to promote solidarity and cooperation among emerging market countries and developing nations, and push for the development of the international order and global governance toward a more just and reasonable direction
+A10	2 T20
+R10	refers Arg1:T20 Arg2:T19	
+T21	geographic_location 3969 3971	US
+T22	blame 3972 4010	has fully activated its Cold War asset
+A11	2 T22
+T23	event 4016 4040	the upcoming NATO summit
+R11	refers Arg1:T22 Arg2:T21	
+T24	blame 4041 4133	will adopt a new Security Concept for the Alliance to target not only Russia but also China,
+A12	1 T24
+R12	refers Arg1:T24 Arg2:T23	
+T25	organization 4230 4234	NATO
+T26	blame 4235 4449	is no longer a military organization in the regions around the north of the Atlantic, but will step into Asia and have global influence, and more importantly, it targets Russia and China as its rivals, even enemies
+A13	2 T26
+R13	refers Arg1:T26 Arg2:T25	
+T27	event 4764 4779	the NATO summit
+T28	blame 4780 4816	is focusing on military and security
+A14	1 T28
+R14	refers Arg1:T28 Arg2:T27	
+T29	event 4824 4840	the BRICS summit
+T30	praise 4841 4914	is focusing on development and the cooperation among the rising economies
+A15	2 T30
+R15	refers Arg1:T30 Arg2:T29	
+T31	group_of_countries 5245 5266	few Western countries
+T32	blame 5267 5325	dominate the international community to make confrontation
+A16	1 T32
+R16	refers Arg1:T32 Arg2:T31	
+T33	event 5397 5443	President Xi's phone call with President Putin
+T34	praise 5489 5567	the two leaders have enjoyed a deep personal friendship for more than a decade
+A17	2 T34
+R17	refers Arg1:T34 Arg2:T33	
+T35	geographic_location 5761 5766	China
+T36	praise 5709 5759;5767 5809	Putin said the Russian side sincerely congratulate on its remarkable development achievements
+A18	3 T36
+R18	refers Arg1:T36 Arg2:T35	
+T37	person 5841 5843	Xi
+T38	praise 5816 5837	the strong leadership
+A19	3 T38
+R19	refers Arg1:T38 Arg2:T37	
+T39	geographic_location 6223 6229	Russia
+T40	praise 6230 6433	is ready to strengthen multilateral coordination with China so as to make constructive efforts in boosting multi-polarization of the world, and establishing a more just and reasonable international order
+A20	2 T40
+R20	refers Arg1:T40 Arg2:T39	
+T41	geographic_location 6565 6567	US
+T42	blame 6535 6555	pressure and threats
+A21	2 T42
+R21	refers Arg1:T42 Arg2:T41	
+T43	event 6608 6676	The China-Russia comprehensive strategic partnership of coordination
+T44	praise 6677 6793	is "the backbone of a multipolar world and plays a vital role in defending NATO's global ambitions and US hegemony,"
+A22	3 T44
+R22	refers Arg1:T44 Arg2:T43	
+T45	event 6803 6915	The multilateral cooperation mechanisms with China and Russia's key participation, such as the BRICS and the SCO
+T46	praise 6917 6982	are having a stronger voice in international and regional affairs
+A23	2 T46
+R23	refers Arg1:T46 Arg2:T45	
+T47	group_of_countries 7013 7029	China and Russia
+T48	praise 7030 7188	are able to provide precious public goods to many developing countries, which have no ideological strings attached compared with the ones provided by the West
+A24	2 T48
+R24	refers Arg1:T48 Arg2:T47	
+T49	geographic_location 7919 7924	China
+T50	praise 7925 8193	looks forward to working with other BRICS members to further consolidate political mutual trust, deepen political and security cooperation, jointly safeguard our security and development interests, and make positive contributions to promoting world peace and stability
+A25	3 T50
+R25	refers Arg1:T50 Arg2:T49	

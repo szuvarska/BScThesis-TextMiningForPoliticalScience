@@ -1,0 +1,14 @@
+T1	group_of_people 1451 1479	some people in the continent
+A1	focus_Behavior T1
+A2	basis_Propriety T1
+T3	event 1189 1212	Russia-Ukraine conflict
+T4	blame 1112 1327	At present, the European economy is facing multiple challenges including the Russia-Ukraine conflict, energy crisis, high inflation, repeated COVID-19 outbreaks, and lasting periods of high temperatures and droughts
+R1	refers Arg1:T4 Arg2:T3	
+T2	blame 1329 1530	At a time Europe should cherish peace, an external environment favorable to development and mutually beneficial partners, some people in the continent intend to artificially create conflicts with China
+R2	refers Arg1:T2 Arg2:T1	
+T5	geographic_location 1558 1563	China
+T6	praise 1564 1621	has become increasingly important for European interests,
+R3	refers Arg1:T6 Arg2:T5	
+T7	geographic_location 1622 1635	the continent
+T8	blame 1622 1698	the continent therefore must decouple from, guard against and repulse China?
+R4	refers Arg1:T8 Arg2:T7	

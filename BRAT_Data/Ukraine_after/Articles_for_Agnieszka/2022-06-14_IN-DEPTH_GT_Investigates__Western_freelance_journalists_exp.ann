@@ -1,0 +1,134 @@
+T1	event 1238 1265	the Russia-Ukraine conflict
+T2	blame 1323 1356	engage in fake news dissemination
+A1	2 T2
+T3	group_of_countries 1290 1319	the parties stirring up chaos
+R2	refers Arg1:T2 Arg2:T3	
+T4	event 1364 1389	NATO's reckless expansion
+T5	blame 1390 1457	remains the major root cause of the ongoing Russia-Ukraine conflict
+A2	3 T5
+R1	refers Arg1:T5 Arg2:T4	
+T6	blame 1039 1062	alleged sexual assaults
+A3	3 T6
+T7	group_of_people 1066 1074	Russians
+R3	refers Arg1:T6 Arg2:T7	
+T8	event 680 703	Russia-Ukraine conflict
+T9	blame 642 672	the rampancy of disinformation
+A4	1 T9
+R4	refers Arg1:T9 Arg2:T8	
+T10	organization 1459 1477	NATO member states
+T11	blame 1482 1533	veterans of concocting and spreading disinformation
+A5	2 T11
+R5	refers Arg1:T11 Arg2:T10	
+T12	organization 1539 1557	some Western media
+T13	blame 1558 1645	have been quietly doing their bit in employing disinformation tactic and fanning flames
+A6	2 T13
+R6	refers Arg1:T13 Arg2:T12	
+T14	organization 1831 1844	Western media
+T15	blame 1850 1915	propaganda employed when reporting on the Russia-Ukraine conflict
+A7	3 T15
+R7	refers Arg1:T15 Arg2:T14	
+T16	geographic_location 2530 2536	Russia
+T17	blame 2513 2529;2540 2560	The West accuses generating fake news
+A8	2 T17
+R8	refers Arg1:T17 Arg2:T16	
+T18	group_of_countries 2513 2521	The West
+T19	blame 2593 2658	addicted to the use of false narratives and deception as a weapon
+A9	2 T19
+R9	refers Arg1:T19 Arg2:T18	
+T20	organization 3755 3780	mainstream European media
+T21	blame 3781 3834	is spreading propaganda about Russia-Ukraine conflict
+A10	2 T21
+R10	refers Arg1:T21 Arg2:T20	
+T22	event 4645 4675	crazy policies by a government
+T23	blame 4681 4770	is making the Italian people pay the cost of arbitrarily imposed sanctions against Russia
+A11	2 T23
+R11	refers Arg1:T23 Arg2:T22	
+T24	group_of_countries 6021 6029	the West
+T25	blame 6030 6176	had provoked and exacerbated the conflict in 2014 and even earlier, finally turning peaceful neighborhoods into refugee camps and mounds of rubble
+A12	3 T25
+R12	refers Arg1:T25 Arg2:T24	
+T26	geographic_location 6300 6307	Ukraine
+T27	blame 6308 6443	is a huge tragedy and is sounding a huge alarm bell to everyone who wants to believe that peace, wealth, and fraternity can last foreve
+A13	3 T27
+R13	refers Arg1:T27 Arg2:T26	
+T28	event 6553 6632	the almost total absence of independent media in Europe and especially in Italy
+T29	blame 6648 6677	demonize the Russian military
+A14	2 T29
+R14	refers Arg1:T29 Arg2:T28	
+T30	group_of_countries 7404 7421	Western countries
+T31	blame 7422 7484	lose their control, they become aggressive in their propaganda
+A15	3 T31
+R15	refers Arg1:T31 Arg2:T30	
+T32	blame 6735 6779	have in fact turned into NATO's press office
+A16	2 T32
+R16	refers Arg1:T32 Arg2:T20	
+T33	group_of_countries 7807 7815	the West
+T34	blame 7747 7806	the neo-Nazi ideological trend, nurtured and facilitated by
+A17	3 T34
+R17	refers Arg1:T34 Arg2:T33	
+T35	blame 7868 7899	the dissemination of propaganda
+A18	2 T35
+R18	refers Arg1:T35 Arg2:T33	
+T36	organization 8443 8494	Western-funded so-called human rights organizations
+T37	blame 8495 8561	are just as busy playing a vicious role in the current battlefield
+A19	3 T37
+R19	refers Arg1:T37 Arg2:T36	
+T38	group_of_people 8669 8683	Russian forces
+T39	blame 8562 8668	Amnesty International, for example, released a report on May 6 documenting alleged war crimes committed by
+A20	3 T39
+R20	refers Arg1:T39 Arg2:T38	
+T40	organization 8958 8979	Amnesty International
+T41	blame 8980 9120	is not an 'independent' organization, but paid by the EU and Western governments to pressure witnesses to say they were hurt by the Russians
+A21	3 T41
+R21	refers Arg1:T41 Arg2:T40	
+T42	blame 9141 9295	The Western propaganda campaign and the suppression of journalists resemble Nazi ideology, under the false banners of freedom, democracy, and human rights
+A22	3 T42
+R22	refers Arg1:T42 Arg2:T33	
+T43	organization 10073 10140	Ukrainian site "Myrotvorets" [the (Peacemaker), a Ukrainian website
+T44	blame 10141 10195	with close ties to law enforcement agencies and hacker
+A23	3 T44
+R23	refers Arg1:T44 Arg2:T43	
+T45	blame 10198 10257	Self-styled as an independent non-governmental organization
+A24	2 T45
+T46	organization 10259 10270	Myrotvorets
+T47	blame 10271 10361	publishes personal information belonging to those who are considered "enemies of Ukraine."
+A25	2 T47
+R24	refers Arg1:T47 Arg2:T46	
+R25	refers Arg1:T45 Arg2:T46	
+T48	organization 10630 10641	Myrotvorets
+T49	blame 10642 10839	created a fake website for pro-Russian forces, where the names, emails, phone numbers, and addresses of more than 4,000 international journalists were published soon after thousands had registered,
+A26	2 T49
+R26	refers Arg1:T49 Arg2:T48	
+T50	group_of_countries 11796 11817	The Western countries
+T51	blame 11818 11953	want to destroy Russia, as they have tried many times in history, but they will finally find that there are no real winners in the mess
+A27	2 T51
+R27	refers Arg1:T51 Arg2:T50	
+T52	group_of_countries 11425 11443	the Western system
+T53	blame 11449 11473	is based on lies and war
+A28	3 T53
+R28	refers Arg1:T53 Arg2:T52	
+T54	organization 10969 10998	A Ukrainian nationalist group
+T55	blame 11007 11041	responsibility for the two murders
+A29	3 T55
+R29	refers Arg1:T55 Arg2:T54	
+T56	organization 12524 12540	the Russian army
+T57	praise 12541 12746	was in actual control of the plant and even prevented certain armed forces from attempting to attack it with missiles, saving people's lives on both sides of Dnieper River from the threat of a dam bursting
+A30	3 T57
+R30	refers Arg1:T57 Arg2:T56	
+T58	group_of_countries 13563 13579	bad-faith actors
+T59	blame 13580 13629	have been compounding the already bloody conflict
+A31	3 T59
+R31	refers Arg1:T59 Arg2:T58	
+T61	event 13673 13748	the $40 billion in additional aid bill to Ukraine signed by Biden on May 21
+A32	2 T61
+T62	blame 13765 13846	will cause a long-term stalemate in Ukraine, Russia, and even the whole of Europe
+A33	2 T62
+R32	refers Arg1:T62 Arg2:T61	
+T60	event 13900 13916	US-aided weapons
+T63	blame 14009 14076	will be used in the future to kill people in Europe and other place
+A34	3 T63
+R33	refers Arg1:T63 Arg2:T60	
+T64	group_of_people 14180 14195	the evil people
+T65	blame 14196 14264	who have pushed for this war who are going to get rich from this war
+A35	2 T65
+R34	refers Arg1:T65 Arg2:T64	

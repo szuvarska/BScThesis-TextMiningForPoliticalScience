@@ -1,0 +1,4 @@
+T1	group_of_countries 394 405	US-led NATO
+T2	blame 406 454	wants to turn Asia Pacific into a new powder keg
+A1	2 T2
+R1	refers Arg1:T2 Arg2:T1	

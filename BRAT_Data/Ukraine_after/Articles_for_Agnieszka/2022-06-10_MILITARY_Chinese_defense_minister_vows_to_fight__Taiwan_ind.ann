@@ -1,0 +1,16 @@
+T1	event 1958 2025	the US recently announced another arms sale to the island of Taiwan
+T2	blame 2033 2267	seriously violated the one-China principle and the three China-US Joint Communiques, severely harmed China's sovereignty and security interests, and badly damaged China-US relations as well as peace and stability in the Taiwan Straits
+A1	2 T2
+R1	refers Arg1:T2 Arg2:T1	
+T3	event 2742 2777	The interference by external forces
+T4	blame 2778 2823	is the biggest uncertain factor in the region
+A2	1 T4
+R2	refers Arg1:T4 Arg2:T3	
+T5	geographic_location 2828 2830	US
+T6	blame 2926 2989	stirring up trouble, inciting disputes and hyping confrontation
+A3	3 T6
+R3	refers Arg1:T6 Arg2:T5	
+T7	geographic_location 3058 3063	China
+T8	praise 3064 3170	always upholds the principle of objectivity and fairness, and is making efforts to promote peace and talks
+A4	3 T8
+R4	refers Arg1:T8 Arg2:T7	

@@ -1,0 +1,158 @@
+T1	event 492 515	Russia-Ukraine conflict
+T2	blame 316 411;412 484	Heartless terrorists turned dreadful mercenaries, weapons scattered in a chaotic battlefield... These disturbing signs showed that a big, horrible disaster is sprawling
+A1	3 T2
+R1	refers Arg1:T2 Arg2:T1	
+T3	blame 631 761	the military equipment the West is sending to Ukraine will end up on the black market and in the hands of terrorists and criminals
+A2	3 T3
+T4	group_of_countries 654 662	the West
+R2	refers Arg1:T3 Arg2:T4	
+T5	geographic_location 847 849	US
+T6	blame 850 1061	was stepping up its efforts to recruit members of international terrorist groups, including extremist organizations, as mercenaries to fight in Ukraine and take part in sabotage operations against Russian forces
+A3	2 T6
+R3	refers Arg1:T6 Arg2:T5	
+T7	person 1068 1090	US President Joe Biden
+T8	blame 1091 1178	formally signed the $40 billion aid package to Ukraine, this worry became more pressing
+A4	2 T8
+R4	refers Arg1:T8 Arg2:T7	
+T9	group_of_countries 1574 1585	US and NATO
+T10	blame 1501 1644	not only Europe, which has been deprived of its security autonomy by the US and NATO, but also the third world countries, will suffer the costs
+A5	3 T10
+R5	refers Arg1:T10 Arg2:T9	
+T11	blame 1758 1807	it is only a matter of time before this backfires
+A6	2 T11
+R6	refers Arg1:T11 Arg2:T9	
+T12	blame 2034 2100;2101 2151	Once the guns fall silent [in Ukraine], illegal weapons will come. We know this from many other instances of conflict
+A7	2 T12
+R7	refers Arg1:T12 Arg2:T9	
+T13	blame 2236 2312	the illegal weapons flowing into the criminal market will create a challenge
+A8	1 T13
+R8	refers Arg1:T13 Arg2:T9	
+T14	organization 2468 2470	EU
+T15	blame 2440 2590;2591 2636	the arms delivered from the EU to Ukraine could easily fall into the hands of criminals which would imperil the internal security landscape of the EU. Along with weapons are bloodthirsty criminals
+A9	3 T15
+R9	refers Arg1:T15 Arg2:T14	
+T16	group_of_people 3153 3197	The far-right "white supremacists" in the US
+T17	blame 3198 3239	now also threaten ordinary people's lives
+A10	3 T17
+R10	refers Arg1:T17 Arg2:T16	
+T18	event 3241 3285	The recent spate of mass shootings in the US
+T19	blame 3286 3369;3370 3517	has made the possible influx of illegal weapons from Ukraine more even frightening. What would it look like, on both sides of the Atlantic, if a large amount of unregulated weapons flows from Ukraine to extremists around the world?
+A11	2 T19
+R11	refers Arg1:T19 Arg2:T18	
+T20	geographic_location 3565 3567	US
+T21	blame 3568 3581	does not care
+A12	2 T21
+R12	refers Arg1:T21 Arg2:T20	
+T22	geographic_location 4032 4034	US
+T23	blame 4237 4318	some of the Western weapons sent as aid to Ukraine are being sold on the dark net
+A13	2 T23
+R13	refers Arg1:T23 Arg2:T22	
+T24	blame 4370 4463	the arms the US and NATO donated are being sold to buyers in the Middle East and North Africa
+A14	2 T24
+T25	group_of_countries 4383 4394	US and NATO
+R14	refers Arg1:T24 Arg2:T25	
+T26	blame 4552 4652;4653 4755;4756 4851	these missiles are now listed for sale on the dark net for just $30,000, ASB Military News revealed. "Many people are taking these weapons and selling them to terrorist organizations on the black market. As a result, these weapons will be used in the future to kill people in Europe and other places
+A15	3 T26
+R15	refers Arg1:T26 Arg2:T25	
+T27	blame 5117 5267	The management of weapons on the Russian-Ukrainian battlefield is in a very chaotic state and the whereabouts of these weapons cannot be traced at all
+A16	2 T27
+T28	organization 5415 5431	the Russian army
+T29	praise 5433 5495	as the regular army, has a set of weapons management processes
+A17	1 T29
+R16	refers Arg1:T29 Arg2:T28	
+T30	organization 5512 5530	the Ukrainian army
+T31	blame 5532 5659	the situation is more complicated.
+In addition to the regular army, there is the Azov Battalion and other militia organizations
+A18	2 T31
+R17	refers Arg1:T31 Arg2:T30	
+R18	refers Arg1:T27 Arg2:T25	
+T32	blame 4950 5017	it is almost impossible to monitor the circulation of these weapons
+A19	2 T32
+R19	refers Arg1:T32 Arg2:T25	
+T33	group_of_countries 5802 5819	Western countries
+T34	blame 5820 6057	just handed them over to the Ukrainian government, but as these weapons are funneled into the conflict and their final destination, there lacks the ability and interest to monitor the situation.Where might these weapons go in the future?
+A20	2 T34
+R20	refers Arg1:T34 Arg2:T33	
+T35	geographic_location 6145 6147	US
+T36	blame 6148 6371	weapons currently supplied to Ukraine are likely to be smuggled to extremists inside or outside Ukraine, as well as to terrorist groups, including the Islamic State, to arm them or create new organizations under other names
+A21	2 T36
+R21	refers Arg1:T36 Arg2:T35	
+T37	blame 6374 6525;6526 6603	If these weapons are in the hands of terrorist organizations and criminal gangs, this could strengthen European separatism and spark internal conflict. Europe would be held accountable for US military actions and its own mistakes
+A22	2 T37
+R22	refers Arg1:T37 Arg2:T35	
+T38	blame 5662 5744	At the beginning of the conflict, some weapons were even distributed to civilians,
+A23	2 T38
+T39	blame 5532 5566;5567 5659	the situation is more complicated. In addition to the regular army, there is the Azov Battalion and other militia organizations
+A24	2 T39
+R23	refers Arg1:T39 Arg2:T30	
+R24	refers Arg1:T38 Arg2:T30	
+T40	event 6789 6807	the Ukraine crisis
+T41	blame 6808 7015	has raised the possibility of terrorist attacks, adding that "the overlap of the refugee crisis, the influx of weapons, and the threat of terrorism is a scenario that Europe is extremely unhappy to foresee."
+A25	2 T41
+T42	event 7117 7144	the Russia-Ukraine conflict
+R25	refers Arg1:T41 Arg2:T40	
+T43	blame 7017 7109	These episodes of chaos prove that the autonomy of Europe's security has obviously been lost
+A26	3 T43
+R26	refers Arg1:T43 Arg2:T42	
+T44	blame 7187 7317	whenever Europe has tried to achieve security autonomy, the US has caused trouble to block the process, with NATO as a key culprit
+A27	2 T44
+T45	geographic_location 7247 7249;7291 7300	US with NATO
+R27	refers Arg1:T44 Arg2:T45	
+T46	geographic_location 7320 7326	Russia
+T47	praise 7327 7404	tried to improve relations with Europe after the collapse of the Soviet Union
+A28	2 T47
+R28	refers Arg1:T47 Arg2:T46	
+T48	geographic_location 7417 7419	US
+T49	blame 7427 7487	such an improvement could be a threat to its global hegemony
+A29	2 T49
+R29	refers Arg1:T49 Arg2:T48	
+T50	geographic_location 7516 7518	US
+T51	blame 7519 7648	wanted to re-awaken 'Russophobia' in Europe, and the conflict between Russia and Ukraine has made the US' plan perfectly realized
+R30	refers Arg1:T51 Arg2:T50	
+T52	blame 7652 7735;7736 7880	For Europe, it is necessary to define and maintain its core interests more clearly. If they blindly follow the pace of the US, their security autonomy will be a fantasy, let alone being an independent actor with global influence
+A30	2 T52
+T53	geographic_location 7775 7777	US
+R31	refers Arg1:T52 Arg2:T53	
+T54	person 7883 7885	Li
+T55	praise 7891 7986	He believes that Europe should strengthen strategic autonomy and transfer its security concepts
+A31	1 T55
+R32	refers Arg1:T55 Arg2:T54	
+T56	praise 7988 8118	Europe should also support the role of the UN in the field of conventional arms control with major powers including China, He said
+A32	1 T56
+T57	geographic_location 8224 8226	US
+T58	blame 8119 8236;8237 8354;8355 8611;8612 8708	Doomed to be backlashedIn addition to the deepening anxiety in Europe, frequent gun violence has hit the US recently. At least 13 mass shootings occurred in the US over the last weekend, resulting in 16 deaths and more than 70 injured. So far, there have been 246 mass shootings in the US this year, according to a report by CNN on June 6.Scattering guns in foreign countries while being unable to ban guns domestically, the US' practice at home and abroad seems to be linked by a "dark line. ""The dark line shows that some people want to see the consequences of the proliferation of guns
+A33	3 T58
+T59	geographic_location 8280 8282	US
+R33	refers Arg1:T58 Arg2:T59	
+T60	geographic_location 8969 8971	US
+T61	blame 8850 8968	selling guns globally and not banning guns at home, the biggest winner would be the military-industrial complex of the
+A34	3 T61
+R34	refers Arg1:T61 Arg2:T60	
+T62	blame 9163 9186;9187 9254;9255 9396	But one thing is clear. For arms manufacturers, what is happening in Ukraine is a "bonanza. "Meanwhile, sending a mixed bag of mercenaries into the battlefield seems like the last piece of the puzzle to fully implement the whole plan
+A35	3 T62
+R35	refers Arg1:T62 Arg2:T60	
+T63	blame 9563 9672;9673 9773;9774 9827	the biggest hidden danger of US' approach is that those who hold dollars and American weapons must be pro-US. "Those who gather with a common interest will naturally disperse when their interests are exhausted. Therefore, backlash will be a sure outcome for the US
+A36	3 T63
+T64	geographic_location 9825 9827	US
+R36	refers Arg1:T63 Arg2:T64	
+T65	geographic_location 9844 9846	US
+T66	blame 9848 9963	s ready to use any means to achieve its geopolitical goals, not excluding sponsoring international terrorist groups
+T67	geographic_location 10279 10281	US
+T68	blame 10254 10273	a hegemonic country
+A37	3 T68
+R37	refers Arg1:T68 Arg2:T67	
+T69	blame 10282 10320	often defines 'terrorism' unilaterally
+A38	2 T69
+R38	refers Arg1:T69 Arg2:T67	
+T70	geographic_location 10364 10366	US
+T71	blame 10368 10460	whether it is 'supporting terrorism' is not defined by the UN, but only by the US' standards
+A39	2 T71
+R39	refers Arg1:T71 Arg2:T70	
+T72	geographic_location 10538 10540	US
+T73	blame 10467 10548	Al Qaeda, which was responsible for the 9/11 attacks, was created with US funding
+A40	3 T73
+T74	geographic_location 10565 10567	US
+T75	blame 10568 10605	is a country that supports terrorists
+A41	3 T75
+R40	refers Arg1:T75 Arg2:T74	
+R41	refers Arg1:T73 Arg2:T72	

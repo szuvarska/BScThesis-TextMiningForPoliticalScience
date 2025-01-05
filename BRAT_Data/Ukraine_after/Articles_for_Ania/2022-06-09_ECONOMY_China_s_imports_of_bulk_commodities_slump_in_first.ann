@@ -1,0 +1,3 @@
+T1	event 1180 1216	the ongoing Russia-Ukraine conflict.
+T2	blame 1106 1511	Analysts noted that the commodities' price surge is primarily impacted by the ongoing Russia-Ukraine conflict.For instance, the price rise in crude oil is a direct result of the accumulated operational cost from each procedure in the supply chain such as labor cost and logistical cost, Wang Guoqing, research director at Beijing Lange Steel Information Research Center, told the Global Times on Thursday.
+R1	refers Arg1:T2 Arg2:T1	

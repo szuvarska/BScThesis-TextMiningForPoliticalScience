@@ -1,0 +1,49 @@
+T1	event 1161 1188	the Russia-Ukraine conflict
+T2	blame 1126 1157	climbing energy and food prices
+A3	3 T2
+R1	refers Arg1:T2 Arg2:T1	
+T3	blame 878 908	high inflation and slow growth
+A4	3 T3
+R2	refers Arg1:T3 Arg2:T1	
+T4	geographic_location 1258 1260	US
+T5	blame 1270 1319	its responsibilities for causing global inflation
+A5	basis_Responsability T5
+A6	focus_Outcome T5
+A7	3 T5
+R3	refers Arg1:T5 Arg2:T4	
+T6	geographic_location 1325 1327	US
+T7	blame 1328 1445	is behind or even caused various crises, including the Russia-Ukraine conflict and the looming food and energy crises
+A10	3 T7
+R4	refers Arg1:T7 Arg2:T6	
+T8	geographic_location 1451 1453	US
+T9	blame 1455 1524	excessive monetary ease over the past two years also pushed up prices
+A13	3 T9
+R5	refers Arg1:T9 Arg2:T8	
+T10	organization 1536 1539	Fed
+T11	blame 1540 1700	misjudged the inflation situation and was reluctant to take necessary intervention until it is too late and the global inflation is now spiraling out of control
+A18	3 T11
+R6	refers Arg1:T11 Arg2:T10	
+T12	geographic_location 1796 1798	US
+T13	blame 1799 1851	is exporting its own crisis to the rest of the world
+A21	3 T13
+R7	refers Arg1:T13 Arg2:T12	
+T14	event 1961 1995	the US' tightening monetary policy
+T15	blame 1996 2025	will have global consequences
+A24	2 T15
+R8	refers Arg1:T15 Arg2:T14	
+T16	geographic_location 2105 2107	US
+T17	blame 2111 2182	use its dollar hegemony to pass its own crisis to the rest of the world
+A27	2 T17
+R9	refers Arg1:T17 Arg2:T16	
+T18	event 2501 2534	rate hikes in developed countries
+T19	blame 2535 2675	will further precipitate the risk of capital outflows and currency depreciation in these economies, aggravating their debt risks accordingly
+A30	2 T19
+R10	refers Arg1:T19 Arg2:T18	
+T20	event 3135 3161	US-led interest rate hikes
+T21	blame 3162 3200	may risk triggering a global recession
+A33	3 T21
+R11	refers Arg1:T21 Arg2:T20	
+T23	praise 3417 3487	With its economic recovery stronger than the other parts of the world,
+A36	2 T23
+T24	geographic_location 3488 3493	China
+R12	refers Arg1:T23 Arg2:T24	

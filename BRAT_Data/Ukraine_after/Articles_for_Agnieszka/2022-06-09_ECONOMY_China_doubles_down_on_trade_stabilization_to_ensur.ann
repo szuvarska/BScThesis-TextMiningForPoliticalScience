@@ -1,0 +1,61 @@
+T1	geographic_location 340 345	China
+T2	praise 359 565;566 650	doubled down on efforts to stabilize its economy, with a slew of new measures introduced for the trade sector as part of an imperative push to ensure the economy's reasonable growth over the second quarter. The fresh official avowal is envisioned to support the trade sector out of a low ebb
+R1	refers Arg1:T2 Arg2:T1	
+A1	2 T2
+T3	organization 817 857	n executive meeting of the State Council
+T4	praise 895 970	called for ramped-up support for the country's foreign trade and investment
+A2	2 T4
+T5	praise 1019 1268	vowed tax rebates in stages within three working days for businesses with sound creditworthiness in export tax rebates, an expansion of imports of high-quality goods and an acceleration in port loading, unloading, transshipment and customs clearance
+A3	2 T5
+R2	refers Arg1:T4 Arg2:T3	
+R3	refers Arg1:T5 Arg2:T3	
+T6	event 1270 1342	Free trade deals such as the Regional Comprehensive Economic Partnership
+T7	praise 1343 1381	would be banked on to facilitate trade
+A4	1 T7
+R4	refers Arg1:T7 Arg2:T6	
+T8	praise 1479 1746	eyed maintaining global supply chain stability and a phased reduction and exemption of port-related charges, as well as urging the creation of a market-oriented and law-abiding international business environment to lure foreign businesses into the domestic investment
+A5	2 T8
+R5	refers Arg1:T8 Arg2:T3	
+T9	geographic_location 3990 3995	China
+T10	praise 3996 4308	is rolling out policies to support trade companies at a time when the sector is facing both unexpected short-term blows, arising from Omicron outbreaks in metropolises like Shenzhen and Shanghai, and challenges on a longer basis, including the influence of Western sanctions against Russia and the Ukraine crisis
+A6	3 T10
+R6	refers Arg1:T10 Arg2:T9	
+T11	blame 4316 4430	will exert a negative influence on China's industrial chain stability and in turn affect China's trade supply side
+A7	3 T11
+T12	event 4253 4308	Western sanctions against Russia and the Ukraine crisis
+R7	refers Arg1:T11 Arg2:T12	
+T13	event 4446 4480	The global grain and energy crisis
+T14	blame 4481 4596	will also influence China's bulk commodity transaction price and further affect global demands for Chinese products
+A8	3 T14
+T15	blame 4610 4851	The consequences of those challenges will add up in China's trade supply and demand sides and emerge gradually, with China's trade scale and growth likely to edge down sharply in the second quarter after going through a temporary peak in Q1,
+A9	2 T15
+R8	refers Arg1:T14 Arg2:T13	
+R9	refers Arg1:T15 Arg2:T13	
+T16	geographic_location 7261 7267	China'
+T17	praise 7269 7420;7421 7462;7463 7506	position in global industrial chains cannot be replaced easily due to its advantages in the business environment, labor force maturity and other areas. "China's competitiveness has not changed. It is still the world's manufacturing basis
+A10	3 T17
+R10	refers Arg1:T17 Arg2:T16	
+T18	event 7530 7551	China's low inflation
+T19	praise 7552 7609	will make its products the best choice for many countries
+A11	2 T19
+R11	refers Arg1:T19 Arg2:T18	
+T20	event 8249 8276	China's exports and imports
+T21	person 8277 8315	might grow by around 6 percent in 2022
+A12	1 T21
+R12	refers Arg1:T21 Arg2:T20	
+T22	event 8034 8064	other countries' product price
+T23	blame 8065 8090	continues a surging trend
+A13	2 T23
+T24	event 8159 8190	China's internal market demands
+T25	praise 8191 8229	will also benefit some trade companies
+A14	2 T25
+R13	refers Arg1:T25 Arg2:T24	
+R14	refers Arg1:T23 Arg2:T22	
+T26	praise 8092 8133	there's space for China's exports to grow
+A15	1 T26
+T27	geographic_location 8110 8116	China'
+R15	refers Arg1:T26 Arg2:T27	
+T28	geographic_location 7862 7867	China
+T29	praise 7862 7952	China's incremental trade volume in 2022 should still be the largest among global economie
+A16	2 T29
+R16	refers Arg1:T29 Arg2:T28	

@@ -1,0 +1,116 @@
+T1	event 339 364	US' Indo-Pacific Strategy
+T2	blame 365 446	is aimed at maintaining US hegemony, creating divisions and fanning confrontation
+A1	2 T2
+R1	refers Arg1:T2 Arg2:T1	
+T3	event 857 882	the Indo-Pacific Strategy
+T4	blame 883 1057	is designed to trap the Asia-Pacific region into a geopolitical game and confrontation as it tries to form a small circle by roping in some countries to incite against others
+A2	2 T4
+R2	refers Arg1:T4 Arg2:T3	
+T5	blame 1059 1215	It seriously impacts the ASEAN-centered regional cooperation architecture and seriously harms the overall and long-term interests of countries in the region
+A3	3 T5
+R3	refers Arg1:T5 Arg2:T3	
+T6	geographic_location 1232 1234	US
+T7	blame 1235 1292	has already turned the Middle East and Europe into a mess
+A4	3 T7
+R4	refers Arg1:T7 Arg2:T6	
+T8	event 1406 1422	the US' strategy
+T9	blame 1423 1451	is designed to destroy peace
+A5	3 T9
+R5	refers Arg1:T9 Arg2:T8	
+T10	event 1477 1499	Asia-Pacific countries
+T11	praise 1500 1547	is peaceful coexistence and win-win cooperation
+A6	2 T11
+R6	refers Arg1:T11 Arg2:T10	
+T12	geographic_location 1557 1559	US
+T13	blame 1574 1805	advocates competition between major powers and creates military confrontation, sending warplanes to showcase its military might in the South China Sea, launching military drills with allies, which all created tensions in the region
+A7	3 T13
+R7	refers Arg1:T13 Arg2:T12	
+T14	blame 1847 1921	served US' own interests against the common will of the regional countries
+A8	2 T14
+R8	refers Arg1:T14 Arg2:T12	
+T15	geographic_location 2231 2236	China
+T16	blame 2241 2273	being "coersive and aggressive."
+A9	2 T16
+R9	refers Arg1:T16 Arg2:T15	
+T17	organization 2773 2801	Pentagon and the White House
+T18	blame 2802 2918	are attempting to internationalize and complicate the Taiwan question, which is a matter of China's domestic affairs
+A10	2 T18
+R10	refers Arg1:T18 Arg2:T17	
+T19	event 3821 3834	the US' words
+T20	blame 3835 3873	are obviously not matched by its deeds
+A11	1 T20
+R11	refers Arg1:T20 Arg2:T19	
+T21	geographic_location 3879 3889	Washington
+T22	blame 3890 3981	has kept playing the Taiwan card, severely obscuring and hollowing out the one-China policy
+A12	1 T22
+R12	refers Arg1:T22 Arg2:T21	
+T23	geographic_location 4315 4345	the People's Republic of China
+T24	praise 4346 4408	is the only legitimate government representing the whole China
+A13	1 T24
+R13	refers Arg1:T24 Arg2:T23	
+T25	event 4012 4031	the Taiwan question
+T26	blame 4098 4201	If not handled properly, it will have a subversive impact on the relationship between the two countries
+A14	2 T26
+R14	refers Arg1:T26 Arg2:T25	
+T27	event 5108 5149	The actions taken by the Chinese military
+T28	praise 5208 5245	are reasonable, safe and professional
+A15	2 T28
+R15	refers Arg1:T28 Arg2:T27	
+T29	group_of_countries 5308 5331;5379 5388	Australian and Canadian countries
+T30	blame 5458 5578	kept carrying out close-in reconnaissance and provocative activities by surveillance planes in East and South China Seas
+A16	3 T30
+R16	refers Arg1:T30 Arg2:T29	
+T31	blame 5581 5698	This is a dangerous act against China's national security and the safety of Chinese and Canadian front-line personnel
+A17	3 T31
+R17	refers Arg1:T31 Arg2:T29	
+T32	group_of_countries 6483 6494	US-led NATO
+T33	blame 6495 6543	wants to turn Asia Pacific into a new powder keg
+A18	2 T33
+R18	refers Arg1:T33 Arg2:T32	
+T34	event 6945 6960	Austin's speech
+T35	blame 6961 7025	is the most blatant and most comprehensive slander against China
+A19	3 T35
+R19	refers Arg1:T35 Arg2:T34	
+T36	event 7369 7386	US real intention
+T37	blame 7387 7638	is to boost its alliance system, mobilizing its allies to maintain the US' versions of rules-based international order, shaping China's peripheral environment, piling enough pressure on China and eventually realize the containment of China's emergence
+A20	2 T37
+R20	refers Arg1:T37 Arg2:T36	
+T38	geographic_location 7994 7996	US
+T39	blame 7943 7988	hyping up tensions and so-called China threat
+A21	2 T39
+R21	refers Arg1:T39 Arg2:T38	
+T40	blame 7997 8150	is trying to drive a wedge between China and regional countries, while kidnapping more countries to its side to coordinate with its Indo-Pacific Strategy
+A22	2 T40
+R22	refers Arg1:T40 Arg2:T38	
+T41	geographic_location 8839 8841	US
+T42	blame 8842 8915	is an outsider, and has no right to intervene in China's domestic affairs
+A23	2 T42
+R23	refers Arg1:T42 Arg2:T41	
+T44	blame 9296 9336	This is an arrogant, hegemonic mentality
+A24	3 T44
+R24	refers Arg1:T44 Arg2:T41	
+T45	blame 9390 9500	are not at all fair and square rules which are accepted by the international community, but a US-dominated one
+A25	3 T45
+T46	event 9609 9621	US-led rules
+T43	blame 9622 9679	have caused great harm to US allies and Europe as a whole
+A26	2 T43
+R25	refers Arg1:T43 Arg2:T46	
+R26	refers Arg1:T45 Arg2:T46	
+T47	geographic_location 9515 9517	US
+T48	blame 9518 9572	is the one and only boss and other has to listen to it
+A27	3 T48
+R27	refers Arg1:T48 Arg2:T47	
+T49	blame 9696 9817	the emerging energy and food crisis, increasing European countries are losing their diplomatic independence and autonomy,
+A28	3 T49
+R28	refers Arg1:T49 Arg2:T46	
+T50	geographic_location 10660 10665	China
+T51	praise 10429 10596	the countries with enough power and strength, as well as the support from the most regional countries, are able to shape the strategic environment in a specific region
+A29	3 T51
+R29	refers Arg1:T51 Arg2:T50	
+T52	group_of_countries 10889 10921	Indonesia, Singapore and Vietnam
+T53	praise 11022 11146	prefer to solve the problems with China rather than be blindly used by the US to pay for its costly confrontation with China
+A30	2 T53
+T54	praise 10923 10967	all have stable and friendly ties with China
+A31	2 T54
+R30	refers Arg1:T54 Arg2:T52	
+R31	refers Arg1:T53 Arg2:T52	

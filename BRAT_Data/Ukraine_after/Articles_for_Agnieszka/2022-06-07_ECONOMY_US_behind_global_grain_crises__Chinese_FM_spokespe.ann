@@ -1,0 +1,24 @@
+T1	geographic_location 312 314	US
+T2	blame 265 307	Each global grain crisis has the shadow of
+A1	2 T2
+R1	refers Arg1:T2 Arg2:T1	
+T3	group_of_countries 463 504	A small number of countries led by the US
+T4	blame 505 629	have been manipulating the global grain trade, setting up a "grain hegemony" and holding firm control on global grain prices
+A6	2 T4
+R2	refers Arg1:T4 Arg2:T3	
+T5	event 1432 1455	the conflict in Ukraine
+T6	blame 1456 1666	has inflated food commodity prices that were already at record highs in March on top of steep increases in 2021 and early 2022.
+The report said 44 million people around the world are facing the threat of famine
+A7	2 T6
+R3	refers Arg1:T6 Arg2:T5	
+T7	event 1824 1855	US-led sanctions against Russia
+T8	blame 1456 1583;1584 1666	has inflated food commodity prices that were already at record highs in March on top of steep increases in 2021 and early 2022. The report said 44 million people around the world are facing the threat of famine
+A10	2 T8
+R4	refers Arg1:T8 Arg2:T5	
+T9	blame 1863 1954	seriously crippled Russian food and fertilizer exports, have further worsened the situation
+A11	2 T9
+R5	refers Arg1:T9 Arg2:T7	
+T10	event 2272 2290	abuse of sanctions
+T11	blame 2291 2419	will not help in diffusing regional tensions and will only worsen the food crisis, leading to even bigger humanitarian disasters
+A14	2 T11
+R6	refers Arg1:T11 Arg2:T10	

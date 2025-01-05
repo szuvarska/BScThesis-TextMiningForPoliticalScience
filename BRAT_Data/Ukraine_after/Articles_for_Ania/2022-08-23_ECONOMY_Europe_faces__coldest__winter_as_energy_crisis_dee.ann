@@ -1,0 +1,58 @@
+T1	group_of_countries 1593 1611	European countries
+T3	blame 1612 1799	are rushing to fill storage sites and diversify their sources of energy, such as by importing liquefied natural gas (LNG) from the US, such moves won't ease the crisis in the near future,
+A1	1 T3
+T9	blame 2177 2299	Europe is being forced to cut itself off from its main energy supplier and it is now suffering from soaring energy prices,
+A7	2 T9
+T14	blame 2614 2813	It is feared that the situation will put European energy-intensive industries under pressure, affect the commitment of Europe to energy conservation and greenhouse gas emission reduction, and further
+A9	basis_Responsability T14
+A10	basis_Propriety T14
+A11	2 T14
+T16	geographic_location 3418 3423	China
+A14	focus_Character T16
+A15	basis_Capacity T16
+T15	geographic_location 3461 3466	China
+A12	focus_Character T15
+A13	basis_Capacity T15
+T18	praise 3467 3527	has the advantage of owning a complete global industry chain
+T19	praise 0 3445	Published Time: 2022-08-23
+Title: Europe faces ‘coldest’ winter as energy crisis deepens, likely to prompt restructuring of global industrial chain
+Category 1: SOURCE; Category 2: ECONOMY
+Author: Qi Xijia
+Author title: Author details not found
+Author description: Author details not found
+Text: 
+A deepening energy crisis in Europe could put many economies on ice in the coming months, which may prompt a possible industrial restructuring, Chinese analysts said on Tuesday.European natural gas and electricity prices soared on Monday after Russia on Friday announced plans to shut off natural gas supplies to Europe for three days, adding to concerns over a plunge in gas availability.Benchmark gas prices settled at a record high, while German power bills surged above 700 euros ($696) per megawatt-hour for the first time, Bloomberg reported.These developments come after Russia said it will stop its key Nord Stream gas pipeline for three days of equipment repairs on August 31, sparking concerns that it won't return to service after the work.The Nord Stream pipeline was already running at 20 percent of capacity, Reuters reported, stoking fears that Russia could halt gas supplies completely during the winter heating season and lead to an intensified energy crisis in Europe.
+"There is a good chance that Russia might cut off supplies to Europe as a result of the Russia-Ukraine conflict, which could further exacerbate Europe's energy crisis," Lin Boqiang, director of the China Center for Energy Economics Research at Xiamen University, told the Global Times on Tuesday.Although some European countries are rushing to fill storage sites and diversify their sources of energy, such as by importing liquefied natural gas (LNG) from the US, such moves won't ease the crisis in the near future, Lin said.
+"If the EU wants to import lots of LNG from the US, it needs the corresponding infrastructure, which cannot be achieved shortly," Lin said.A major cause of the European energy crisis is the sweeping economic sanctions launched by the US and its allies against Russia, experts said.While the US is self-sufficient in energy, it has dragged Europe into a new cold war.
+Europe is being forced to cut itself off from its main energy supplier and it is now suffering from soaring energy prices, Chen Jia, an independent research fellow on international strategy, told the Global Times on Tuesday.Europe has lost about half of its zinc and aluminum smelting capacity within the past year, and a further surge in power prices could knock more plants offline during the coming winter, Bloomberg reported in July.It is feared that the situation will put European energy-intensive industries under pressure, affect the commitment of Europe to energy conservation and greenhouse gas emission reduction, and further aggravate divisions in European society, Zhou Rong, a senior researcher at the Chongyang Institute for Financial Studies of Renmin University of China, told the Global Times on Tuesday.Europe's aluminum smelters have cut output significantly and imports have surged since producers began cutting their output, raising European consumers' carbon footprint by as much as 12 million tons per year, according to Bloomberg.As it is difficult to reverse the energy crisis in the EU, which is expected to deepen in the coming winter, some EU enterprises are considering a shift in some production capacity, and China is an ideal destinati
+A16	3 T19
+A17	2 T18
+T20	group_of_people 3759 3775	German companies
+A18	focus_Behavior T20
+A19	basis_Capacity T20
+T21	praise 3776 3850	have accelerated the pace of investment and factory establishment in China
+A20	2 T21
+T23	praise 3608 3701	will have China's full advantages of technology, manufacturing capacity and market as needed,
+A22	2 T23
+T24	geographic_location 3618 3625	China's
+A23	basis_Capacity T24
+T25	blame 2814 2853	aggravate divisions in European society
+A24	2 T25
+T27	blame 2999 3207	Europe's aluminum smelters have cut output significantly and imports have surged since producers began cutting their output, raising European consumers' carbon footprint by as much as 12 million tons per year
+A25	1 T27
+R1	refers Arg1:T3 Arg2:T1	
+T2	event 1996 2076	the sweeping economic sanctions launched by the US and its allies against Russia
+T4	blame 1949 1992	A major cause of the European energy crisis
+R2	refers Arg1:T4 Arg2:T2	
+T5	geographic_location 2101 2103	US
+T6	blame 2104 2174	is self-sufficient in energy, it has dragged Europe into a new cold wa
+R3	refers Arg1:T6 Arg2:T5	
+R4	refers Arg1:T9 Arg2:T5	
+T7	blame 2401 2613	Europe has lost about half of its zinc and aluminum smelting capacity within the past year, and a further surge in power prices could knock more plants offline during the coming winter, Bloomberg reported in July
+R5	refers Arg1:T7 Arg2:T5	
+R6	refers Arg1:T27 Arg2:T5	
+R7	refers Arg1:T18 Arg2:T15	
+T8	praise 3424 3447	is an ideal destination
+R8	refers Arg1:T23 Arg2:T24	
+R9	refers Arg1:T21 Arg2:T20	
+R10	refers Arg1:T8 Arg2:T16	

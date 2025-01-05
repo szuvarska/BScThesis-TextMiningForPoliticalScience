@@ -1,0 +1,4 @@
+T1	event 1030 1054	the restrictive measures
+T2	blame 1056 1174	Russian educational establishments cannot conduct cultural, scientific and sports exchanges with their Ukrainian peers
+A1	1 T2
+R1	refers Arg1:T2 Arg2:T1	

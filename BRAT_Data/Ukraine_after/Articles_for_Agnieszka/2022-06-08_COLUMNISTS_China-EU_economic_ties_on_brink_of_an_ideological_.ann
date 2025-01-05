@@ -1,0 +1,47 @@
+T1	group_of_countries 374 390	China and the EU
+T2	praise 520 782	make joint efforts, meet each other halfway, show enough courage and carry out concrete actions to stabilize bilateral economic and trade ties, especially in terms of making progress on the resolution of investment, market and supply chain issues between the two
+A1	1 T2
+R1	refers Arg1:T2 Arg2:T1	
+T3	geographic_location 870 872	US
+T4	blame 873 910	launched trade war with China in 2018
+A6	3 T4
+R2	refers Arg1:T4 Arg2:T3	
+T5	geographic_location 1033 1043	Washington
+T6	blame 1044 1211	has focused on forming a "value alliance" against China, with particular emphasis on containing China in the fields of information technology and emerging technologies
+A7	3 T6
+R3	refers Arg1:T6 Arg2:T5	
+T7	blame 912 1015	conflicts in China-EU economic and trade ties caused by differing ideologies have continued to increase
+A10	2 T7
+R4	refers Arg1:T7 Arg2:T3	
+T8	organization 1564 1566	EU
+T9	blame 1567 1677	has also extended its arms trade embargos against China, citing political issues, to include high-tech sectors
+A11	1 T9
+R5	refers Arg1:T9 Arg2:T8	
+T10	group_of_people 1683 1697	EU politicians
+T11	blame 1698 1876	continued to pile up pressure on European companies by hyping up issues such as human rights in Xinjiang.
+As a result, the mistrust between China and the EU has continued to rise
+A14	1 T11
+R6	refers Arg1:T11 Arg2:T10	
+T12	organization 1919 1921	EU
+T13	blame 1698 1803;1804 1876	continued to pile up pressure on European companies by hyping up issues such as human rights in Xinjiang. As a result, the mistrust between China and the EU has continued to rise
+A17	2 T13
+R7	refers Arg1:T13 Arg2:T10	
+T14	blame 1922 2006	will mix human rights, Hong Kong and Xinjiang affairs with economic and trade issues
+A18	1 T14
+R8	refers Arg1:T14 Arg2:T12	
+T15	geographic_location 2062 2067	China
+T16	blame 2068 2117	will take retaliatory moves against its companies
+A25	1 T16
+R9	refers Arg1:T16 Arg2:T15	
+T17	event 2485 2512	the Russia-Ukraine conflict
+T18	blame 2514 2770;2771 2885	EU companies will have to reconsider their future investments in China, their market expansion, the prospect of industrial chain dependence, and look for alternative places for their production against the backdrop of intensified ideological confrontation. Chinese companies and exporters will also have to consider the impact of this trend on their development in Europe
+A28	2 T18
+R10	refers Arg1:T18 Arg2:T17	
+T19	group_of_countries 4094 4112	European countries
+T20	blame 4113 4141	have a colonial past in Asia
+A29	2 T20
+R11	refers Arg1:T20 Arg2:T19	
+T21	event 4329 4413	If the US-led value alliance dominates the development of global finance and economy
+T22	blame 4415 4492;4493 4570	it will be difficult for the EU to truly become a powerful pole in the world. Of course, in that case, China's development will also face more difficulties
+A32	2 T22
+R12	refers Arg1:T22 Arg2:T21	

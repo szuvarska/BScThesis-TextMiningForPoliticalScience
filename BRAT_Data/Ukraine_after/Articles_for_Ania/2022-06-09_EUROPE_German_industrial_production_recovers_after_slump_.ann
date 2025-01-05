@@ -1,0 +1,8 @@
+T1	event 344 368	Russia-Ukraine conflict,
+T2	event 1401 1424	Russia-Ukraine conflict
+T3	blame 255 368	German industrial production recovered slightly in April following a slump caused by the Russia-Ukraine conflict,
+T4	blame 1336 1425	Industrial output in Europe also declined after the start of the Russia-Ukraine conflict,
+R1	refers Arg1:T4 Arg2:T2	
+T5	event 34 62	German industrial production
+T6	praise 63 110	recovers after slump on Russia-Ukraine conflict
+R2	refers Arg1:T6 Arg2:T5	

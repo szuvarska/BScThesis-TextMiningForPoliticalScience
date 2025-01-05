@@ -1,0 +1,27 @@
+T1	geographic_location 2405 2415	Washington
+T2	blame 2416 2532	has ramped up efforts to link the Russia-Ukraine conflict with the Taiwan question and create tensions in the region
+R1	refers Arg1:T2 Arg2:T1	
+T3	geographic_location 2845 2850	Japan
+T4	blame 2851 2996	is the one that closely follows the US in using the current Russia-Ukraine crisis to hype the Chinese mainland's "threat" to the island of Taiwan
+R2	refers Arg1:T4 Arg2:T3	
+T5	geographic_location 2887 2889	US
+T6	blame 2893 2996	using the current Russia-Ukraine crisis to hype the Chinese mainland's "threat" to the island of Taiwan
+R3	refers Arg1:T6 Arg2:T5	
+T7	person 2998 3035	Japanese Prime Minister Fumio Kishida
+T8	blame 3036 3190	used the Russia-Ukraine conflict as an example to oppose "unilateral changes" to the status quo by force and unveil a plan to raise Japan's defense budget
+R4	refers Arg1:T8 Arg2:T7	
+T9	group_of_countries 3190 3211	The US and its allies
+T10	blame 3212 3400	have stepped up efforts to promote the implementation of the "Indo-Pacific Strategy" this year, as it is trying to build an iron curtain between China and others in the Asia-Pacific region
+R5	refers Arg1:T10 Arg2:T9	
+T11	event 3678 3717	The conflict between Russia and Ukraine
+T12	blame 3718 3747	has spilled over to the world
+R6	refers Arg1:T12 Arg2:T11	
+T13	group_of_countries 3775 3792	Western countries
+T14	organization 3749 3753	NATO
+T15	blame 3793 3886	have deliberately added fuel to the fire by linking Ukraine with Taiwan, which are irrelevant
+R7	refers Arg1:T15 Arg2:T13	
+T16	blame 3754 3769	is going global
+R8	refers Arg1:T16 Arg2:T14	
+T17	geographic_location 3962 3967	China
+T18	praise 3968 4305	decided to confidently face them or integrate into them, Yang said, pointing out that China's choice to send its top defense official this year at this sensitive time shows China's confidence and strategic focus, as well as China's strategic sincerity of pushing the Asia-Pacific to integration and cooperation standing at the crossroads
+R9	refers Arg1:T18 Arg2:T17	

@@ -1,0 +1,6 @@
+T1	event 8215 8241	The US and Japan's attempt
+T2	blame 8242 8348	of introducing the measure that instigated the Russia-Ukraine conflict in Europe to Asia is doomed to fail
+R1	refers Arg1:T2 Arg2:T1	
+T3	group_of_countries 8350 8370	Most Asian countries
+T4	praise 8371 8449	understand how to effectively avoid the crisis like the ongoing one in Ukraine
+R2	refers Arg1:T4 Arg2:T3	

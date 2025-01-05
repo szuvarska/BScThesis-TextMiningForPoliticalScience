@@ -1,0 +1,23 @@
+T1	event 1237 1290	the meeting between the Chinese and US defense chiefs
+T2	praise 1301 1322	sent a positive signa
+A1	1 T2
+R1	refers Arg1:T2 Arg2:T1	
+T3	group_of_countries 1696 1715	Japan and Australia
+T4	blame 1716 1781	have chosen to follow the US to attack China over security issues
+A2	2 T4
+R2	refers Arg1:T4 Arg2:T3	
+T5	group_of_countries 2369 2381	Asia-Pacific
+T6	praise 2382 2427	is almost the only stable region in the world
+A3	2 T6
+R3	refers Arg1:T6 Arg2:T5	
+T7	geographic_location 2787 2789	US
+T8	blame 2790 2918	has pushed the idea of alliance and coterie that targets third parties and stimulates security hot spot issues from time to time
+A4	2 T8
+R4	refers Arg1:T8 Arg2:T7	
+T9	blame 2950 3015	has clearly led to divisions and turmoil across the entire region
+A5	2 T9
+R5	refers Arg1:T9 Arg2:T7	
+T10	event 3036 3048	China's idea
+T11	praise 3049 3177	is to build a community with a shared future for mankind and a "new security concept" embodied in the Global Security Initiative
+A6	2 T11
+R6	refers Arg1:T11 Arg2:T10	

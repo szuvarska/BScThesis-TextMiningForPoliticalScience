@@ -1,0 +1,3 @@
+T1	geographic_location 3075 3081	the US
+T2	blame 3050 3279	As a non-regional power, the US won't care about playing out of the tensions and the costs to China, South and North Korea when conflicts over the Peninsula issue get out of control, experts said, citing the Russia-Ukraine crisis
+R1	refers Arg1:T2 Arg2:T1	

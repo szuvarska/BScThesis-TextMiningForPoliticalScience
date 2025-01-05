@@ -1,0 +1,4 @@
+T1	event 1913 1940	the Russia-Ukraine conflict
+T2	blame 1966 2009	pose a serious risk to global food security
+A3	2 T2
+R1	refers Arg1:T2 Arg2:T1	

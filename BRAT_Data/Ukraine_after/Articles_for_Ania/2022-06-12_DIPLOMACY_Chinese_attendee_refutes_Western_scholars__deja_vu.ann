@@ -1,0 +1,12 @@
+T1	group_of_people 1382 1405	Those who fabricated it
+T2	blame 1406 1539	harbored ulterior intentions and wanted to use the Ukraine situation to smear China and distort its international image," said Zhang.
+R1	refers Arg1:T2 Arg2:T1	
+T3	group_of_people 1554 1752	livia Enos, a senior policy analyst of Asian Studies Center at the Heritage Foundation, and Jonathan Eyal, associate director of the Royal United Services Institute for Defence and Security Studies,
+T4	blame 1753 1940;1941 1994;1995 2204	posted on Twitter that the Chinese delegation left the meeting hall during the Shangri-La dialogue when Zelensky delivered his speech, questioning China's stance on the Ukraine situation. Several other accounts also tweeted similar contents. However, US former Department of Defense official Drew Thompson later replied to Olivia Enos that was the Vietnamese delegation who left and that he was sitting next to a senior colonel from the PLA delegation
+R2	refers Arg1:T4 Arg2:T3	
+T5	person 2939 2979	Michael McCaul, a Republican from Texas,
+T6	blame 2980 3131;3132 3215;3216 3377	who took a photograph showing the Chinese delegation seated while other people were giving a standing ovation, and that the members then left the room. He told CNN that the photo was sending a clear message they do not support Ukraine. But the delegation turned out to be the Vietnamese one, while the Chinese delegation was meeting with International Energy Agency chief Fatih Birol at that time.
+R3	refers Arg1:T6 Arg2:T5	
+T7	group_of_people 59 76	Western scholars’
+T8	blame 77 163	déjà vu rumors against China over reaction to Zelensky’s speech at Shangri-La Dialogue
+R4	refers Arg1:T8 Arg2:T7	

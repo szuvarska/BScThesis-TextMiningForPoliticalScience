@@ -1,0 +1,20 @@
+T1	group_of_countries 6709 6736	the countries in the region
+T2	praise 6737 6819	are seeking a path of autonomy rather than blindly following the US on every issue
+A1	3 T2
+R1	refers Arg1:T2 Arg2:T1	
+T3	geographic_location 6533 6535	US
+T4	blame 6536 6689	has failed to receive support from most Latin American countries for its sanctions and accusations against Russia after the Russia-Ukraine conflict began
+A2	1 T4
+R2	refers Arg1:T4 Arg2:T3	
+T5	geographic_location 6820 6830	Washington
+T6	blame 6831 6998	has always used China's rising influence as a pretext to scare and pressure countries in the region, and to mobilize its internal resources to compete with China there
+A3	3 T6
+R3	refers Arg1:T6 Arg2:T5	
+T7	event 7076 7111	US hegemonic approach in the region
+T8	blame 7112 7141	that only serves US interests
+A4	1 T8
+R4	refers Arg1:T8 Arg2:T7	
+T9	event 7173 7245	China-proposed Belt and Road Initiative and other cooperation with China
+T10	praise 7246 7325	to be truly mutually beneficial and does not disrespect the region's countries,
+A5	1 T10
+R5	refers Arg1:T10 Arg2:T9	

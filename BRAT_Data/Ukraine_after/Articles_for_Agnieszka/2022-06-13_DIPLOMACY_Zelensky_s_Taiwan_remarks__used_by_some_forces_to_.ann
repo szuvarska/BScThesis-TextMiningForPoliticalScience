@@ -1,0 +1,8 @@
+T1	event 387 406	the Taiwan question
+T2	blame 508 581	has been used by some forces to create tensions between China and Ukraine
+A1	2 T2
+R1	refers Arg1:T2 Arg2:T1	
+T3	geographic_location 2860 2870	Washington
+T4	blame 2871 3020	has frequently used the Taiwan question to provoke China and encourage separatist authorities on the island to worsen the region's security situation
+A2	2 T4
+R2	refers Arg1:T4 Arg2:T3	

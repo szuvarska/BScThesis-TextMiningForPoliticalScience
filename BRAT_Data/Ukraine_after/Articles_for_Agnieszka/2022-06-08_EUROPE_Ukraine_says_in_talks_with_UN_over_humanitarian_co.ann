@@ -1,0 +1,16 @@
+T1	geographic_location 474 481	Ukraine
+T2	praise 482 578	is investing all efforts in the unblocking of Ukrainian seaports to prevent a global food crisis
+A3	3 T2
+R1	refers Arg1:T2 Arg2:T1	
+T3	blame 1173 1265	The supplies of Ukrainian grain to the global market have been affected in the recent months
+A4	2 T3
+T4	event 1273 1328	the blockade of Ukrainian ports by the Russian military
+R2	refers Arg1:T3 Arg2:T4	
+T5	geographic_location 1338 1345	Ukraine
+T6	praise 1346 1436	harvested a record crop of grain, legumes and oilseeds totaling more than 106 million tons
+A7	3 T6
+R3	refers Arg1:T6 Arg2:T5	
+T7	geographic_location 1536 1543	Ukraine
+T8	praise 1544 1643	exported some 10 billion U.S. dollars worth of crops and oilseeds, up 56 percent on an annual basis
+A10	2 T8
+R4	refers Arg1:T8 Arg2:T7	

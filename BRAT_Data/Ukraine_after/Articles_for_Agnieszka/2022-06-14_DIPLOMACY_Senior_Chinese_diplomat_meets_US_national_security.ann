@@ -1,0 +1,7 @@
+T1	event 1342 1438	the U.S. side has been insisting on further containing and suppressing China in an all-round way
+T2	blame 1451 1647	instead of helping the United States solve its own problems, have plunged China-U.S. relations into a very difficult situation and severely damaged the exchanges and cooperation in bilateral areas
+A1	3 T2
+R1	refers Arg1:T2 Arg2:T1	
+T3	blame 1692 1775	conforms neither to the interests of the two sides nor other countries of the world
+A2	1 T3
+R2	refers Arg1:T3 Arg2:T1	

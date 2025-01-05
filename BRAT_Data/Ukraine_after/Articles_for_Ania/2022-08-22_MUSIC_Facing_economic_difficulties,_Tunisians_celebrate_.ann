@@ -1,0 +1,5 @@
+T1	event 3336 3372	conflict between Russia and Ukraine,
+A1	basis_Responsability T1
+A2	focus_Outcome T1
+T2	blame 3273 3371	Tunisia's inflation, which has already been exacerbated by the conflict between Russia and Ukraine
+R1	refers Arg1:T2 Arg2:T1	

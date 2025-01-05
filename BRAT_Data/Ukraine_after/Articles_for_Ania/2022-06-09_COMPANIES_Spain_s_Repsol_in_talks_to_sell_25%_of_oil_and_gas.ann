@@ -1,0 +1,3 @@
+T1	event 1453 1476	Russia-Ukraine conflict
+T2	praise 1477 1537	drove up oil and gas prices, boosting returns for producers.
+R1	refers Arg1:T2 Arg2:T1	

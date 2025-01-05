@@ -1,0 +1,6 @@
+T1	event 1477 1550	falling yen, along with global inflation and the Russia-Ukraine conflict,
+T2	blame 1551 1636	hits Japanese consumers hard as product prices soar while their salaries remain flat.
+R1	refers Arg1:T2 Arg2:T1	
+T3	event 4276 4320	Russia-Ukraine conflict further deteriorates
+T4	blame 4208 4271	Japanese currency may weaken to 150 yen per dollar this year if
+R2	refers Arg1:T4 Arg2:T3	
