@@ -10,6 +10,7 @@ from wordcloud import WordCloud, STOPWORDS
 import seaborn as sns
 import plotly.graph_objects as go
 import re
+from colors import main_color,my_red,my_blue,my_gray,my_green,my_yellow
 
 
 def vader_sentiment(text: str) -> str:
@@ -144,7 +145,7 @@ def calculate_sentiment_dist(tsc_results_df: pd.DataFrame, vader_results_df: pd.
 
     fig = go.Figure()
     sentiments = ['Positive', 'Neutral', 'Negative']
-    colors = ['green', 'gray', 'red']
+    colors = [my_green, my_yellow, my_red]
 
     for sentiment, color in zip(sentiments, colors):
         fig.add_trace(
@@ -174,7 +175,8 @@ def calculate_sentiment_dist(tsc_results_df: pd.DataFrame, vader_results_df: pd.
         height=600,
         width=800
     )
-
+    #add template
+    fig.update_layout(template='plotly_white')
     # Save the plot as an image
 
     if for_shiny:
@@ -228,7 +230,7 @@ def calculate_sentiment_over_time(model_results_df: pd.DataFrame, dataset_name: 
     fig = go.Figure()
     months = model_sentiment_proportions.index.astype(str)
 
-    for sentiment, color in zip(['positive', 'neutral', 'negative'], ['green', 'gray', 'red']):
+    for sentiment, color in zip(['positive', 'neutral', 'negative'], [my_green, my_yellow, my_red]):
         fig.add_trace(
             go.Bar(
                 name=sentiment.capitalize(),
@@ -262,7 +264,8 @@ def calculate_sentiment_over_time(model_results_df: pd.DataFrame, dataset_name: 
         height=600,
         width=1000
     )
-
+    #template
+    fig.update_layout(template='plotly_white')
     # fig.write_image(f"Plots/{model_name}_sentiment_over_time_{dataset_name}.png")
 
     if for_shiny:
@@ -283,7 +286,7 @@ def clean_sentences(df, sentiment_label):
 def wc_vader(sentiment_label, df, dataset_name: str):
     sentences = clean_sentences(df, sentiment_label)
     if sentences:
-        wordcloud = WordCloud(width=800, height=400, background_color='white').generate(sentences)
+        wordcloud = WordCloud(width=800, height=400, background_color='white', color_func=lambda *args, **kwargs: my_blue).generate(sentences)
         plt.imshow(wordcloud, interpolation='bilinear')
         plt.axis('off')
         plt.title(f'Word Cloud for {sentiment_label.capitalize()} Sentences (VADER) - {dataset_name}')
@@ -294,7 +297,7 @@ def wc_vader(sentiment_label, df, dataset_name: str):
 def wc_tsc(sentiment_label, df, dataset_name: str) -> plt:
     sentences = clean_sentences(df, sentiment_label)
     if sentences:
-        wordcloud = WordCloud(width=800, height=400, background_color='white').generate(sentences)
+        wordcloud = WordCloud(width=800, height=400, background_color='white', color_func=lambda *args, **kwargs: my_blue).generate(sentences)
         plt.imshow(wordcloud, interpolation='bilinear')
         plt.axis('off')
         plt.title(f'Word Cloud for {sentiment_label.capitalize()} Sentences (TSC) - {dataset_name}')
@@ -384,7 +387,7 @@ def calculate_sentiment_dist_per_target(tsc_results_df: pd.DataFrame, dataset_na
 
     # Add traces for each sentiment
     sentiments = ['positive', 'neutral', 'negative', ]
-    colors = ['green', 'gray', 'red']
+    colors = [my_green, my_yellow, my_red]
 
     for sentiment, color in zip(sentiments, colors):
         fig.add_trace(
@@ -416,6 +419,9 @@ def calculate_sentiment_dist_per_target(tsc_results_df: pd.DataFrame, dataset_na
         height=800,
         width=1000
     )
+
+    #add template
+    fig.update_layout(template='plotly_white')
 
     # Save and display the plot
     if for_shiny:
@@ -475,8 +481,8 @@ def calculate_sentiment_over_time_per_target(tsc_results_df: pd.DataFrame, datas
         fig = go.Figure()
 
         # Add traces for each sentiment
-        sentiments = ['positive', 'negative', 'neutral']
-        colors = ['green', 'red', 'gray']
+        sentiments = ['positive', 'neutral', 'negative']
+        colors = [my_green, my_yellow, my_red]
 
         for sentiment, color in zip(sentiments, colors):
             fig.add_trace(
@@ -508,6 +514,9 @@ def calculate_sentiment_over_time_per_target(tsc_results_df: pd.DataFrame, datas
             height=600,
             width=1000
         )
+
+        #add template
+        fig.update_layout(template='plotly_white')
 
         if for_shiny:
             return fig
@@ -592,6 +601,7 @@ def calculate_sentiment_dist_over_time_by_target(tsc_results_df: pd.DataFrame, d
         colorbar=dict(title="Proportion"),
     ))
 
+
     fig_neutral.update_layout(
         title=f'Proportion of Neutral Sentiment by Target Over Time (Monthly) - {dataset_name}',
         xaxis_title='Month',
@@ -605,6 +615,12 @@ def calculate_sentiment_dist_over_time_by_target(tsc_results_df: pd.DataFrame, d
         height=600,
         width=1000
     )
+
+
+    #add template
+    fig_positive.update_layout(template='plotly_white')
+    fig_negative.update_layout(template='plotly_white')
+    fig_neutral.update_layout(template='plotly_white')
 
     if for_shiny:
         if sentiment == 'positive':
@@ -636,13 +652,17 @@ def calculate_sentiment_dist_over_time_by_target_for_shiny(tsc_results_df: pd.Da
     # Ensure there are no infinite values
     heatmap_data = heatmap_data.replace([np.inf, -np.inf], 0)
 
+    my_reds = [[0, "#FFFFFF"], [1, my_red]]
+    my_greens = [[0, "#FFFFFF"], [1, my_green]]
+    my_yellows = [[0, "#FFFFFF"], [1, my_yellow]]
+
 
     # Create Plotly Heatmap for Sentiment Proportion
     fig = go.Figure(data=go.Heatmap(
         z=heatmap_data.values,
         x=heatmap_data.columns.tolist(),  # Use formatted month labels directly
         y=heatmap_data.index,
-        colorscale= 'Greens' if sentiment == 'positive' else 'Reds' if sentiment == 'negative' else 'Greys',
+        colorscale= my_greens if sentiment == 'positive' else my_reds if sentiment == 'negative' else my_yellows,
         colorbar=dict(title="Proportion"),
     ))
 
@@ -669,6 +689,8 @@ def calculate_sentiment_dist_over_time_by_target_for_shiny(tsc_results_df: pd.Da
         height=600,
         width=1000
     )
+    #add template
+    fig.update_layout(template='plotly_white')
 
     return fig
 

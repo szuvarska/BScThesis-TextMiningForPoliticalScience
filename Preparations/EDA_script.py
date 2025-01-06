@@ -192,7 +192,7 @@ def plot_top_N_common_words(df: pd.DataFrame, df_name: str, N=100):
     fdist = FreqDist(
         [word for word in word_tokenize(' '.join(df['article_text'])) if
          word.lower() not in stop_words and word.isalpha()])
-    wordcloud = WordCloud(width=800, height=400, background_color='white',color_func=lambda *args, **kwargs: my_blue ).generate_from_frequencies(
+    wordcloud = WordCloud(width=800, height=400, background_color='white', color_func=lambda *args, **kwargs: my_blue).generate_from_frequencies(
         dict(fdist.most_common(N)))
     # plt.figure(figsize=(12, 10))
     plt.imshow(wordcloud, interpolation='bilinear')
