@@ -15,6 +15,8 @@ from Sentiment.sentiment_script import calculate_sentiment_dist, calculate_senti
 
 from Community_detection.community_graph_script import plot_community_graph
 
+from NGrams.NGrams_script import visualize_bigrams, concordance
+
 
 def generate_entity_types_plot(dataset_name: str):
     dataset_name_to_display = dataset_name
@@ -120,7 +122,7 @@ def generate_community_graph(dataset_name: str):
     df_ner = pd.read_csv(f"Data/Sentances_df/sentences_{dataset_name.lower()}.csv")
     df_entities = pd.read_csv(f"NER_and_ED/Results/{dataset_name}_top_40_entities.csv")
     df_entities = df_entities[~df_entities.Word.isin(["U", "B", "N", "19", "G", "S"])].head(120)
-    suptitle = f"{dataset_name_to_display} conflict\n Co-occurrence in Same Sentence Relationship Graph"
+    suptitle = f"{dataset_name_to_display}\n Co-occurrence in Same Sentence Relationship Graph"
     title = "Nodes represent entities. Edges represent co-occurrence within the same sentence.\nNodes size indicates the node strength.\nEdge width indicates the frequency of co-occurrence. Spring Layout"
     plot = plot_community_graph(df_ner, df_entities, suptitle=suptitle, title=title,
                                 nodes_displayed=25, layout="spring", edge="std")
@@ -134,3 +136,17 @@ def generate_community_graph(dataset_name: str):
 def generate_pos_choices():
     pos_dict = load_pos_dict(key='abbr')
     return list(pos_dict.values())
+
+
+def generate_bigrams_plot(dataset_name: str):
+    dataset_name_to_display = dataset_name
+    dataset_name = dataset_name.replace(' ', '_')[:-9].lower()
+    dataset_name = dataset_name.replace('during', 'after')
+    df = pd.read_csv(f"Preparations/Data_for_EDA/df_{dataset_name}.csv")
+    df = df[(df['article_category_one'] != "PHOTO") & (df['article_text'].notnull())]
+    plot = visualize_bigrams(df, 10, dataset_name_to_display)
+    plot.tight_layout()
+    image_path = f"App/www/bigrams_plot_{dataset_name}.png"
+    plot.savefig(image_path)
+    plot.close()
+    return image_path

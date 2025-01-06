@@ -13,7 +13,8 @@ from App.plots import generate_entity_types_plot, generate_most_common_entities_
     generate_sentiment_over_time_plot, generate_sentiment_word_cloud_plot, generate_sentiment_dist_per_target_plot, \
     generate_sentiment_over_time_per_target_plot, generate_sentiment_dist_over_time_by_target_plot, \
     generate_word_count_distribution_plot, generate_sentence_count_distribution_plot, generate_top_N_common_words_plot, \
-    generate_top_N_common_pos_plot, generate_pos_wordclouds_plot, generate_community_graph, generate_pos_choices
+    generate_top_N_common_pos_plot, generate_pos_wordclouds_plot, generate_community_graph, generate_pos_choices, \
+    generate_bigrams_plot
 from shinywidgets import output_widget, render_widget
 from App.single_analysis import analyse_single_article, entity_types_plot_single, most_common_entities_plot_single,  sentiment_dist_plot_single, most_common_words_plot_single
 from App.double_analysis import entity_types_plot_double, most_common_entities_plot_double, sentiment_dist_plot_double
@@ -144,6 +145,7 @@ def server(input, output, session):
     ner_visible = reactive.Value(True)
     sentiment_visible = reactive.Value(True)
     communities_visible = reactive.Value(True)
+    ngrams_visible = reactive.Value(True)
     article_analysis = reactive.Value(None)
     entity_sentiments = reactive.Value(None)
     sentiment_sentences = reactive.Value(None)
@@ -465,6 +467,13 @@ def server(input, output, session):
             return most_common_words_plot_single(sentiment_sentences_2.get(), article="Article 2")
 
     @output
+    @render.image
+    def bigrams_plot():
+        dataset_name = input.dataset_filter()
+        image_path = generate_bigrams_plot(dataset_name)
+        return {"src": image_path, "alt": "Bigrams Plot", "width": "100%"}
+
+    @output
     @render.ui
     def all_mode_plots():
         return ui.div(
@@ -487,6 +496,11 @@ def server(input, output, session):
                 "Community Graphs",
                 "toggle_community_button",
                 "community_plots"
+            ),
+            collapsible_section(
+                "N-grams",
+                "toggle_ngrams_button",
+                "ngrams_plots"
             ),
             class_="plots-container"
         )
@@ -602,6 +616,12 @@ def server(input, output, session):
         communities_visible.set(not communities_visible.get())
         session.send_input_message("toggle_community_button", {"label": "⯆" if communities_visible.get() else "⯈"})
 
+    @reactive.Effect
+    @reactive.event(input.toggle_ngrams_button)
+    def toggle_ngrams_visibility():
+        ngrams_visible.set(not ngrams_visible.get())
+        session.send_input_message("toggle_ngrams_button", {"label": "⯆" if ngrams_visible.get() else "⯈"})
+
     @output
     @render.ui
     def eda_plots():
@@ -681,6 +701,16 @@ def server(input, output, session):
     def show_view_more_button_2():
         if article_analysis_2.get():
             return ui.input_action_button("view_full_text_2", "View more", class_="btn btn-primary view-button")
+        return ui.div()
+
+    @output
+    @render.ui
+    def ngrams_plots():
+        if ngrams_visible.get():
+            return ui.div(
+                ui.output_image("bigrams_plot"),
+                class_="plots-row"
+            )
         return ui.div()
 
 
