@@ -249,7 +249,7 @@ img.entity-types-plot {
     width: 100%;
 }
 
-#sentance_count_distribution_plot {
+#sentence_count_distribution_plot {
     width: 100%;
 }
 
@@ -292,11 +292,17 @@ img.entity-types-plot {
 
 #community_graph {
     width: 87% !important;
+    height: auto !important;
     display: block;
     margin: 0 auto 30px;
     /*border: 2px solid black;*/
     box-shadow: 3px 3px 10px lightgray;
     padding: 1px;
+}
+
+#community_graph img {
+    width: 100%;
+    margin-bottom: 30px;
 }
 
 #entity_types_double_plot {

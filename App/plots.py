@@ -117,14 +117,17 @@ def generate_community_graph(dataset_name: str):
     dataset_name_to_display = dataset_name
     dataset_name = dataset_name.replace(' ', '_')[:-9]
     dataset_name = dataset_name.replace('during', 'after')
-    df_ner = pd.read_csv(f"NER_and_ED/Results/{dataset_name}_with_NER.csv")
+    df_ner = pd.read_csv(f"Data/Sentances_df/sentences_{dataset_name.lower()}.csv")
     df_entities = pd.read_csv(f"NER_and_ED/Results/{dataset_name}_top_40_entities.csv")
     df_entities = df_entities[~df_entities.Word.isin(["U", "B", "N", "19", "G", "S"])].head(120)
     suptitle = f"{dataset_name_to_display} conflict\n Co-occurrence in Same Sentence Relationship Graph"
     title = "Nodes represent entities. Edges represent co-occurrence within the same sentence.\nNodes size indicates the node strength.\nEdge width indicates the frequency of co-occurrence. Spring Layout"
     plot = plot_community_graph(df_ner, df_entities, suptitle=suptitle, title=title,
                                 nodes_displayed=25, layout="spring", edge="std")
-    return plot.gcf()
+    plot.tight_layout()
+    image_path = f"App/www/community_graph_{dataset_name}.png"
+    plot.savefig(image_path)
+    return image_path
 
 
 def generate_pos_choices():

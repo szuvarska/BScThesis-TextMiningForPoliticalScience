@@ -90,7 +90,7 @@ def plot_community_graph(df_ner: pd.DataFrame, df_entities: pd.DataFrame, suptit
             G[entity1][entity2]['sentiment'] = sentiment
 
     # draw the graph
-    plt.figure(figsize=(18, 15))
+    plt.figure(figsize=(12, 9))
     if layout == 'spring':
         pos = nx.spring_layout(G, k=0.5)
     elif layout == 'circular':

@@ -57,7 +57,6 @@ def collapsible_section(header, button_id, plot_id):
             class_="collapsible-section-header"
         ),
         ui.output_ui(plot_id),
-        ui.busy_indicators.options(spinner_type="bars3"),
         class_="collapsible-section"
     )
 
@@ -67,13 +66,14 @@ single_module = ui.tags.div(
         ui.tags.div(
             ui.tags.h3(ui.output_text("uploaded_text_header")),
             ui.output_ui("uploaded_text_content"),
-            ui.input_action_button("view_full_text", "View more", class_="btn btn-primary view-button"),
+            ui.output_ui("show_view_more_button"),
             class_="article-container single-article-container"
         ),
         ui.output_ui("single_mode_plots"),
         class_="main-left-container single-module"
     ),
     ui.output_ui("right_container_single"),
+    ui.busy_indicators.options(spinner_type="dots2", spinner_color="#ff0000", spinner_size="50px"),
     class_="main-container",
 )
 
@@ -82,19 +82,22 @@ double_module = ui.tags.div(
         ui.tags.div(
             ui.tags.h3(ui.output_text("uploaded_text_header_1")),
             ui.output_ui("uploaded_text_content_1"),
-            ui.input_action_button("view_full_text_1", "View more", class_="btn btn-primary view-button"),
+            ui.output_ui("show_view_more_button_1"),
+            # ui.input_action_button("view_full_text_1", "View more", class_="btn btn-primary view-button"),
             class_="article-container"
         ),
         ui.tags.div(
             ui.tags.h3(ui.output_text("uploaded_text_header_2")),
             ui.output_ui("uploaded_text_content_2"),
-            ui.input_action_button("view_full_text_2", "View more", class_="btn btn-primary view-button"),
+            ui.output_ui("show_view_more_button_2"),
+            # ui.input_action_button("view_full_text_2", "View more", class_="btn btn-primary view-button"),
             class_="article-container"
         ),
         ui.output_ui("double_mode_plots"),
         class_="main-left-container"
     ),
     ui.output_ui("right_container_double"),
+    ui.busy_indicators.options(spinner_type="dots2", spinner_color="#ff0000", spinner_size="50px"),
     class_="main-container"
 )
 
@@ -104,6 +107,7 @@ all_module = ui.tags.div(
         class_="main-left-container"
     ),
     ui.output_ui("right_container_all"),
+    ui.busy_indicators.options(spinner_type="dots2", spinner_color="#ff0000", spinner_size="50px"),
     class_="main-container"
 )
 
@@ -119,7 +123,7 @@ page_layout = ui.page_navbar(
     title="Global Times: Articles Anaysis",#PRESS ARTICLES EXPLORATION
     footer=ui.tags.div(
         ui.tags.div("Łukasz Grabarski & Marta Szuwarska", class_="footer")
-    ),
+    )
 )
 
 app_ui = ui.page_fluid(
@@ -282,8 +286,6 @@ def server(input, output, session):
     def double_mode_plots():
         if input.file_upload_1() and input.file_upload_2():
             return ui.div(
-                # ui.img(src=f"plot1.png", class_="plot-image"),
-                # ui.img(src=f"plot2.png", class_="plot-image"),
                 output_widget("entity_types_double_plot"),
                 output_widget("most_common_entities_double_plot"),
                 output_widget("sentiment_dist_sentence_double_plot"),
@@ -292,6 +294,7 @@ def server(input, output, session):
                 ui.output_plot("most_common_words_double_plot_2"),
                 class_="plots-container"
             )
+
         return ui.div()
 
     @output
@@ -369,15 +372,6 @@ def server(input, output, session):
         plot = generate_sentence_count_distribution_plot(dataset_name)
         return plot
 
-    # @output
-    # @render.plot
-    # def sentiment_word_cloud_plot():
-    #     dataset_name = input.dataset_filter()
-    #     model_name = input.sentiment_model_filter().lower()
-    #     sentiment = input.sentiment_filter()
-    #     plot = generate_sentiment_word_cloud_plot(dataset_name, model_name, sentiment)
-    #     return plot
-
     @output
     @render.plot
     def top_N_common_words_plot():
@@ -404,11 +398,11 @@ def server(input, output, session):
         return plot
 
     @output
-    @render.plot
+    @render.image
     def community_graph():
         dataset_name = input.dataset_filter()
-        plot = generate_community_graph(dataset_name)
-        return plot
+        image_path = generate_community_graph(dataset_name)
+        return {"src": image_path, "alt": "Community Graph", "width": "100%"}
 
     @output
     @render_widget
@@ -432,7 +426,7 @@ def server(input, output, session):
     @render.plot
     def most_common_words_single_plot():
         if isinstance(sentiment_sentences.get(), pd.DataFrame):
-            return most_common_words_plot_single(sentiment_sentences.get())
+            return most_common_words_plot_single(sentiment_sentences.get(), article="")
 
     @output
     @render_widget
@@ -459,16 +453,16 @@ def server(input, output, session):
             return sentiment_dist_plot_double(entity_sentiments_1.get(), entity_sentiments_2.get(), base="Entities")
 
     @output
-    @render.ui
+    @render.plot
     def most_common_words_double_plot_1():
         if isinstance(sentiment_sentences_1.get(), pd.DataFrame):
-            return most_common_words_plot_single(sentiment_sentences_1.get(), article=" from Article 1")
+            return most_common_words_plot_single(sentiment_sentences_1.get(), article="Article 1")
 
     @output
-    @render.ui
+    @render.plot
     def most_common_words_double_plot_2():
         if isinstance(sentiment_sentences_2.get(), pd.DataFrame):
-            return most_common_words_plot_single(sentiment_sentences_2.get(), article=" from Article 2")
+            return most_common_words_plot_single(sentiment_sentences_2.get(), article="Article 2")
 
     @output
     @render.ui
@@ -661,10 +655,32 @@ def server(input, output, session):
     def community_plots():
         if communities_visible.get():
             return ui.div(
-                # ui.output_plot("community_graph"),
-                ui.img(src='plot1.png', class_="plot-image eda-plot"),
+                ui.output_image("community_graph"),
+                # output_widget("community_graph"),
+                # ui.img(src='plot1.png', class_="plot-image eda-plot"),
                 class_="plots-row"
             )
+        return ui.div()
+
+    @output
+    @render.ui
+    def show_view_more_button():
+        if article_analysis.get():
+            return ui.input_action_button("view_full_text", "View more", class_="btn btn-primary view-button")
+        return ui.div()
+
+    @output
+    @render.ui
+    def show_view_more_button_1():
+        if article_analysis_1.get():
+            return ui.input_action_button("view_full_text_1", "View more", class_="btn btn-primary view-button")
+        return ui.div()
+
+    @output
+    @render.ui
+    def show_view_more_button_2():
+        if article_analysis_2.get():
+            return ui.input_action_button("view_full_text_2", "View more", class_="btn btn-primary view-button")
         return ui.div()
 
 

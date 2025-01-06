@@ -268,6 +268,9 @@ def most_common_words_plot_single(sentiment_sentences: pd.DataFrame, N=100, arti
         dict(fdist.most_common(N)))
     plt.imshow(wordcloud, interpolation='bilinear', aspect='auto')
     plt.axis('off')
-    plt.title(f'Top {N} Most Common Words{article}')
+    if article != '':
+        plt.title(f'Top {N} Most Common Words from {article}')
+    else:
+        plt.title(f'Top {N} Most Common Words')
     plt.tight_layout()
     return plt.gcf()
