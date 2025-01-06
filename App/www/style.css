@@ -544,4 +544,20 @@ table.concordance-table thead th.sticky {
   z-index: 2;
 }
 
+.collapsible-section-content {
+    text-align: left;
+}
+
+.collapsible-section-content h3 {
+    margin-top: 20px;
+}
+
+.collapsible-section-content strong {
+    color: #333;
+}
+
+.about-module .collapsible-section{
+    align-items: baseline;
+}
+
 
