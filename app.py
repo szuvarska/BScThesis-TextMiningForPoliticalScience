@@ -1,12 +1,9 @@
 import os
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'  # Suppress TensorFlow logging messages
-import time
 from pathlib import Path
-import sys
 import pandas as pd
 import seaborn as sns
 from shiny import App, render, ui, reactive
-from htmltools import tags, Tag
 import numpy as np
 import matplotlib.pyplot as plt
 from App.plots import generate_entity_types_plot, generate_most_common_entities_plot, generate_sentiment_dist_plot, \
@@ -18,6 +15,7 @@ from App.plots import generate_entity_types_plot, generate_most_common_entities_
 from shinywidgets import output_widget, render_widget
 from App.single_analysis import analyse_single_article, entity_types_plot_single, most_common_entities_plot_single,  sentiment_dist_plot_single, most_common_words_plot_single
 from App.double_analysis import entity_types_plot_double, most_common_entities_plot_double, sentiment_dist_plot_double
+from colors import main_color, my_red, my_blue, my_gray, my_green, my_yellow, my_orange
 
 here = Path(__file__).parent
 
@@ -74,7 +72,7 @@ single_module = ui.tags.div(
         class_="main-left-container single-module"
     ),
     ui.output_ui("right_container_single"),
-    ui.busy_indicators.options(spinner_type="dots2", spinner_color="#ff0000", spinner_size="50px"),
+    ui.busy_indicators.options(spinner_type="dots2", spinner_color=my_orange, spinner_size="50px"),
     class_="main-container",
 )
 
@@ -98,7 +96,7 @@ double_module = ui.tags.div(
         class_="main-left-container"
     ),
     ui.output_ui("right_container_double"),
-    ui.busy_indicators.options(spinner_type="dots2", spinner_color="#ff0000", spinner_size="50px"),
+    ui.busy_indicators.options(spinner_type="dots2", spinner_color=my_orange, spinner_size="50px"),
     class_="main-container"
 )
 
@@ -108,7 +106,7 @@ all_module = ui.tags.div(
         class_="main-left-container"
     ),
     ui.output_ui("right_container_all"),
-    ui.busy_indicators.options(spinner_type="dots2", spinner_color="#ff0000", spinner_size="50px"),
+    ui.busy_indicators.options(spinner_type="dots2", spinner_color=my_orange, spinner_size="50px"),
     class_="main-container"
 )
 
@@ -739,46 +737,42 @@ def server(input, output, session):
         dataset_name = input.dataset_filter()
         filter_words = [word.strip() for word in input.filter_words().split(",") if word.strip()]
         ngram_number = input.ngram_number()
-
+    
         # Generate concordance DataFrame
         concordance_df = generate_concordance(dataset_name, filter_words, ngram_number)
-
+    
         # Ensure only the required columns are used
         concordance_df = concordance_df[["lefts", "center", "rights", "count"]]
-
+    
         if concordance_df.empty:
             return ui.div("No concordance results found.")
 
-        # Convert DataFrame to HTML with a general class for styling
-        table_html = concordance_df.to_html(classes="concordance-table", index=False, escape=False, header=True)
+        table_html = (
+            '<table id="concordance-table" class="concordance-table">'
+            '<tbody>'
+            '<tr>'
+            '<th>Index</th>'
+            '<th>Lefts</th>'
+            '<th>Center</th>'
+            '<th>Rights</th>'
+            '<th>Count</th>'
+            '</tr>'
+        )
 
-        # Ensure headers and rows have the correct classes
-        for col in ["lefts", "center", "rights", "count"]:
-            table_html = table_html.replace(
-                f'<th>{col}</th>', f'<th class="col-{col}">{col.capitalize()}</th>'
-            )
-
-        # Apply column-specific classes to table body rows
-        table_html = table_html.replace("<tbody>", '<tbody class="concordance-body">')
-
-        # Replace each row’s `<td>` tags to include column-specific classes
-        table_html_rows = []
-        for row in concordance_df.itertuples(index=False):
-            table_html_rows.append(
-                f'<tr class="concordance-row">'
-                f'<td class="col-lefts">{row.lefts}</td>'
-                f'<td class="col-center">{row.center}</td>'
-                f'<td class="col-rights">{row.rights}</td>'
-                f'<td class="col-count">{row.count}</td>'
+        for idx, row in concordance_df.iterrows():
+            table_html += (
+                f'<tr>'
+                f'<td>{idx + 1}</td>'
+                f'<td class="column-lefts">{row["lefts"]}</td>'
+                f'<td class="column-center">{row["center"]}</td>'
+                f'<td class="column-rights">{row["rights"]}</td>'
+                f'<td class="column-count">{row["count"]}</td>'
                 f'</tr>'
             )
 
-        # Replace the body with properly formatted rows
-        table_html = table_html.replace(
-            '<tbody class="concordance-body">',
-            '<tbody class="concordance-body">' + "".join(table_html_rows)
-        )
+        table_html += '</tbody></table>'
 
+        # Return the styled HTML table
         return ui.HTML(table_html)
 
 

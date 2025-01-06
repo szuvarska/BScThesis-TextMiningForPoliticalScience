@@ -490,35 +490,58 @@ a {
     display: inline-block; /* Makes the tooltip position relative to the image */
 }
 
-.concordance-table {
-    border-collapse: collapse;
-    justify-content: center;
-    display: flex;
+table.concordance-table {
+  width: auto;
+  border-collapse: collapse;
+  font-size: 14px;
+  line-height: 1.5;
+  margin: 20px auto;
+  color: var(--app-title-color);
+    box-shadow: 3px 3px 10px lightgray;
+
 }
 
-.concordance-table pre {
-    white-space: pre-wrap;
-    word-wrap: break-word;
-    width: 80%;
+table.concordance-table th {
     text-align: center;
-}
-
-.concordance-table tr {
-    border-bottom: 1px solid #ddd;
-}
-
-.col-lefts {
-    text-align: right; color: gray;
-}
-.col-center {
+    padding: 12px;
+    padding-bottom: 8px;
+    border-bottom: 3px solid var(--primary-color);
+    font-size: 16px;
     font-weight: bold;
-    color: black;
-    text-align: center;
 }
-.col-rights {
-    text-align: left; color: gray;
+
+table.concordance-table tbody td {
+    padding: 10px;
+    border: none;
+    border-bottom: 1px solid var(--primary-color);
+    /*background-color: #fff;*/
+    text-align: left;
+    word-wrap: break-word;
 }
-.col-count {
-    text-align: center; font-weight: bold; background-color: #eef;
+
+table.concordance-table td.column-lefts {
+    font-style: italic;
+    text-align: right;
 }
+
+table.concordance-table td.column-center {
+  text-align: center;
+  font-weight: bold;
+}
+
+table.concordance-table td.column-rights {
+    text-align: left;
+    font-style: italic;
+}
+
+table.concordance-table td.column-count {
+  text-align: left;
+}
+
+table.concordance-table thead th.sticky {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
 
