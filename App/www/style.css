@@ -503,4 +503,22 @@ a {
     text-align: center;
 }
 
+.concordance-table tr {
+    border-bottom: 1px solid #ddd;
+}
+
+.col-lefts {
+    text-align: right; color: gray;
+}
+.col-center {
+    font-weight: bold;
+    color: black;
+    text-align: center;
+}
+.col-rights {
+    text-align: left; color: gray;
+}
+.col-count {
+    text-align: center; font-weight: bold; background-color: #eef;
+}
 

@@ -716,22 +716,70 @@ def server(input, output, session):
             )
         return ui.div()
 
+    # @output
+    # @render.ui
+    # def concordance_table():
+    #     dataset_name = input.dataset_filter()
+    #     filter_words = [word.strip() for word in input.filter_words().split(",") if word.strip()]
+    #     ngram_number = input.ngram_number()
+    #     concordance_df = generate_concordance(dataset_name, filter_words, ngram_number)
+    #     concordance_df = concordance_df[["formated_ngram", "count"]]
+    #
+    #     if concordance_df.empty:
+    #         return ui.div("No concordance results found.")
+    #
+    #     formatted_text = "Concordance Results:\n\n"
+    #     formatted_text += "\n".join(
+    #         [f"{row['formated_ngram']} \t Count: {row['count']}" for _, row in concordance_df.iterrows()])
+    #     return ui.HTML(f"<pre>{formatted_text}</pre>")
+
     @output
     @render.ui
     def concordance_table():
         dataset_name = input.dataset_filter()
         filter_words = [word.strip() for word in input.filter_words().split(",") if word.strip()]
         ngram_number = input.ngram_number()
+
+        # Generate concordance DataFrame
         concordance_df = generate_concordance(dataset_name, filter_words, ngram_number)
-        concordance_df = concordance_df[["formated_ngram", "count"]]
+
+        # Ensure only the required columns are used
+        concordance_df = concordance_df[["lefts", "center", "rights", "count"]]
 
         if concordance_df.empty:
             return ui.div("No concordance results found.")
 
-        formatted_text = "Concordance Results:\n\n"
-        formatted_text += "\n".join(
-            [f"{row['formated_ngram']} \t Count: {row['count']}" for _, row in concordance_df.iterrows()])
-        return ui.HTML(f"<pre>{formatted_text}</pre>")
+        # Convert DataFrame to HTML with a general class for styling
+        table_html = concordance_df.to_html(classes="concordance-table", index=False, escape=False, header=True)
+
+        # Ensure headers and rows have the correct classes
+        for col in ["lefts", "center", "rights", "count"]:
+            table_html = table_html.replace(
+                f'<th>{col}</th>', f'<th class="col-{col}">{col.capitalize()}</th>'
+            )
+
+        # Apply column-specific classes to table body rows
+        table_html = table_html.replace("<tbody>", '<tbody class="concordance-body">')
+
+        # Replace each row’s `<td>` tags to include column-specific classes
+        table_html_rows = []
+        for row in concordance_df.itertuples(index=False):
+            table_html_rows.append(
+                f'<tr class="concordance-row">'
+                f'<td class="col-lefts">{row.lefts}</td>'
+                f'<td class="col-center">{row.center}</td>'
+                f'<td class="col-rights">{row.rights}</td>'
+                f'<td class="col-count">{row.count}</td>'
+                f'</tr>'
+            )
+
+        # Replace the body with properly formatted rows
+        table_html = table_html.replace(
+            '<tbody class="concordance-body">',
+            '<tbody class="concordance-body">' + "".join(table_html_rows)
+        )
+
+        return ui.HTML(table_html)
 
 
 www_dir = Path(__file__).parent / "App/www"
