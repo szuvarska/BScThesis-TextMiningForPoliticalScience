@@ -3,10 +3,11 @@ import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 from App.single_analysis import entity_legend, analyse_single_article, most_common_words_plot_single
 import plotly.express as px
+from colors import main_color,my_red,my_blue,my_gray,my_green,my_yellow, my_orange, my_purple, my_lightblue
+
 
 color_palette = [
-    '#FF5733', '#33FF57', '#3357FF', '#FF33A1', '#FF8C33', '#8C33FF'
-]
+    my_blue, my_red, my_green, my_orange, my_purple, my_lightblue, my_gray, my_yellow]
 entity_colors = {entity: color_palette[i % len(color_palette)] for i, entity in enumerate(entity_legend.keys())}
 
 
@@ -57,6 +58,8 @@ def entity_types_plot_double(entity_sentiments_1: pd.DataFrame, entity_sentiment
         height=600,
         width=800
     )
+    #template
+    fig.update_layout(template="plotly_white")
 
     return fig
 
@@ -98,7 +101,7 @@ def most_common_entities_plot_double(entity_sentiments_1: pd.DataFrame, entity_s
         x=article_1_values,
         orientation='h',
         name='Article 1',
-        marker=dict(color='skyblue'),
+        marker=dict(color=my_blue),
         width=0.4  # Set the width for thinner bars
     ))
 
@@ -108,7 +111,7 @@ def most_common_entities_plot_double(entity_sentiments_1: pd.DataFrame, entity_s
         x=article_2_values,
         orientation='h',
         name='Article 2',
-        marker=dict(color='salmon'),
+        marker=dict(color=my_red),
         width=0.4  # Set the width for thinner bars
     ))
 
@@ -131,6 +134,9 @@ def most_common_entities_plot_double(entity_sentiments_1: pd.DataFrame, entity_s
         legend=dict(title='Articles'),
     )
 
+    #template
+    fig.update_layout(template="plotly_white")
+
     return fig
 
 
@@ -145,7 +151,7 @@ def sentiment_dist_plot_double(sentiment_1: pd.DataFrame, sentiment_2: pd.DataFr
 
     fig = go.Figure()
     sentiments = ['Positive', 'Neutral', 'Negative']
-    colors = ['green', 'gray', 'red']
+    colors = [my_green, my_yellow, my_red]
 
     for sentiment, color in zip(sentiments, colors):
         fig.add_trace(
@@ -178,6 +184,9 @@ def sentiment_dist_plot_double(sentiment_1: pd.DataFrame, sentiment_2: pd.DataFr
         height=600,
         width=800
     )
+
+    #template
+    fig.update_layout(template="plotly_white")
 
     return fig
 
