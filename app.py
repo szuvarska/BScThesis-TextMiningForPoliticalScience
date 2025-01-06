@@ -573,9 +573,9 @@ def server(input, output, session):
         display_choices = ["None"] + [display for _, display in file_choices]
         if right_container_visible_single.get():
             return ui.div(
-                ui.input_file("file_upload", "UPLOAD ARTICLE"),
-                ui.input_select("file_select", "Select a file", choices=display_choices,
+                ui.input_select("file_select", "Select article", choices=display_choices,
                                 selected=selected_file_value.get()),
+                ui.input_file("file_upload", "UPLOAD ARTICLE"),
                 ui.input_action_button("hide_container_button_single", "Hide Menu", class_="btn btn-secondary"),
                 class_="main-right-container",
                 id="main-right-container-single"
@@ -595,12 +595,12 @@ def server(input, output, session):
         display_choices = ["None"] + [display for _, display in file_choices]
         if right_container_visible_double.get():
             return ui.div(
-                ui.input_file("file_upload_1", "Upload the first article"),
-                ui.input_select("file_select_1", "Select the first file", choices=display_choices,
+                ui.input_select("file_select_1", "Select the first article", choices=display_choices,
                                 selected=selected_file_value_1.get()),
-                ui.input_file("file_upload_2", "Upload the second article"),
-                ui.input_select("file_select_2", "Select the second file", choices=display_choices,
+                ui.input_file("file_upload_1", "Upload the first article"),
+                ui.input_select("file_select_2", "Select the second article", choices=display_choices,
                                 selected=selected_file_value_2.get()),
+                ui.input_file("file_upload_2", "Upload the second article"),
                 ui.input_action_button("hide_container_button_double", "Hide Menu", class_="btn btn-secondary"),
                 class_="main-right-container",
                 id="main-right-container-double"
