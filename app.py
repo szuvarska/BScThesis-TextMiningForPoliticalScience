@@ -53,7 +53,8 @@ def collapsible_section(header, button_id, plot_id):
             ui.tags.h3(header, style="display: inline;"),
             ui.input_action_button(button_id, "⯆", class_="toggle-button",
                                    style="font-size: 20px; display: inline; margin-left: 10px;"),
-            style="display: flex; align-items: center; margin-bottom: 10px;"
+            style="display: flex; align-items: center; margin-bottom: 10px;",
+            class_="collapsible-section-header"
         ),
         ui.output_ui(plot_id),
         class_="collapsible-section"
@@ -116,10 +117,10 @@ page_dependencies = ui.tags.head(
 
 page_layout = ui.page_navbar(
     ui.nav_spacer(),
-    ui.nav_panel("SINGLE", single_module),
-    ui.nav_panel("DOUBLE", double_module),
-    ui.nav_panel("ALL", all_module),
-    title="PRESS ARTICLES EXPLORATION",
+    ui.nav_panel("Single", single_module),
+    ui.nav_panel("Double", double_module),
+    ui.nav_panel("All", all_module),
+    title="Global Times: Articles Anaysis",#PRESS ARTICLES EXPLORATION
     footer=ui.tags.div(
         ui.tags.div("Łukasz Grabarski & Marta Szuwarska", class_="footer")
     )
@@ -128,7 +129,7 @@ page_layout = ui.page_navbar(
 app_ui = ui.page_fluid(
     page_dependencies,
     page_layout,
-    title="PRESS ARTICLES EXPLORATION",
+    title="Global Times: Articles Anaysis", #PRESS ARTICLES EXPLORATION
 )
 
 

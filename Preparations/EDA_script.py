@@ -11,6 +11,7 @@ import plotly.graph_objects as go
 import numpy as np
 import os
 import csv
+from colors import main_color,my_red,my_blue,my_gray,my_green,my_yellow
 
 project_dir = os.path.dirname(os.path.abspath(__file__))
 nltk_data_path = os.path.join(project_dir, 'App/nltk_data')
@@ -71,7 +72,8 @@ def plot_word_count_distribution(df: pd.DataFrame, df_name: str):
         title=f'Word Count Distribution - {df_name}',
         labels={'value': 'Word Count'},
         height=600,
-        width=800
+        width=800,
+        color_discrete_sequence=[my_blue]
     )
 
     # Dodanie linii średniej
@@ -81,8 +83,8 @@ def plot_word_count_distribution(df: pd.DataFrame, df_name: str):
         x0=mean_value, x1=mean_value,
         y0=0, y1=1,
         xref='x', yref='paper',
-        line=dict(color="red", dash="dash"),
-        name="Mean"
+        line=dict(color=my_red, dash="dash"),
+        name="Mean",
     )
 
     # Dodanie legendy dla średniej
@@ -90,7 +92,7 @@ def plot_word_count_distribution(df: pd.DataFrame, df_name: str):
         x=[mean_value],
         y=[0],
         mode="markers",
-        marker=dict(color="red"),
+        marker=dict(color=my_red),
         name="Mean"
     ))
 
@@ -106,7 +108,13 @@ def plot_word_count_distribution(df: pd.DataFrame, df_name: str):
             xanchor="right",
             x=1
         )
+
     )
+    #add theme
+    fig.update_layout(
+        template="plotly_white"
+    )
+
 
     return fig
 
@@ -132,7 +140,8 @@ def sentance_count_distribution(df: pd.DataFrame, df_name: str):
         title=f'Sentence Count Distribution - {df_name}',
         labels={'value': 'Sentence Count'},
         height=600,
-        width=800
+        width=800,
+        color_discrete_sequence=[my_blue]
     )
 
     # Obliczenie średniej
@@ -144,7 +153,7 @@ def sentance_count_distribution(df: pd.DataFrame, df_name: str):
         x0=mean_value, x1=mean_value,
         y0=0, y1=1,
         xref='x', yref='paper',
-        line=dict(color="red", dash="dash"),
+        line=dict(color=my_red, dash="dash"),
         name="Mean"
     )
 
@@ -153,7 +162,7 @@ def sentance_count_distribution(df: pd.DataFrame, df_name: str):
         x=[mean_value],
         y=[0],
         mode="markers",
-        marker=dict(color="red"),
+        marker=dict(color=my_red),
         name="Mean"
     ))
 
@@ -168,7 +177,11 @@ def sentance_count_distribution(df: pd.DataFrame, df_name: str):
             y=1.02,
             xanchor="right",
             x=1
-        )
+        ),
+    )
+    #add theme
+    fig.update_layout(
+        template="plotly_white"
     )
 
     return fig
@@ -261,8 +274,7 @@ def plot_top_N_common_pos(df_pos: pd.DataFrame, df_name: str, N=10):
         orientation='h',
         title=f'Top {N} Most Common Part of Speech - {df_name}',
         labels={'Count': 'Count', 'POS': 'Part of Speech'},
-        color='Count',
-        color_continuous_scale='Viridis',
+        color_discrete_sequence=[my_blue]
     )
 
     # Update the layout of the plot
@@ -279,6 +291,11 @@ def plot_top_N_common_pos(df_pos: pd.DataFrame, df_name: str, N=10):
         title=dict(x=0.5),  # Center the title
         showlegend=False,  # Remove the legend as it is not needed
         coloraxis_showscale=False,
+    )
+
+    #add theme
+    fig.update_layout(
+        template="plotly_white"
     )
 
     return fig
