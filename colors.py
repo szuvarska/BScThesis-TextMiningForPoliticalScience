@@ -1,0 +1,6 @@
+main_color = "#004a6c"
+my_green = "#12e633"
+my_red = "#e63312"
+my_blue = "#3466af"
+my_yellow = "#FFFF00"
+my_gray = "#808080"
