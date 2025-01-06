@@ -23,7 +23,7 @@ def concordance(df: pd.DataFrame, filter: list, ngram_number: int):
     # ngrams with count
     ngrams_list = []
     for i in range(len(df)):
-        ngrams_i = ngrams(df['tokenized'][i], n)
+        ngrams_i = ngrams(df['tokenized'].iloc[i], n)
         ngrams_list += ngrams_i
     ngrams_counter = Counter(ngrams_list)
 
@@ -78,7 +78,6 @@ def concordance(df: pd.DataFrame, filter: list, ngram_number: int):
         formated_ngram += lefts[i].rjust(max_words_len[0], " ")
         formated_ngram += centers[i].center(max_words_len[1], " ")
         formated_ngram += rights[i].ljust(max_words_len[2] - 1, " ")
-        # print(formated_ngram)
         formated_ngrams.append(formated_ngram)
         formeted_len.append(len(formated_ngram))
 

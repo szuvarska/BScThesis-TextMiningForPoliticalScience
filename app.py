@@ -14,7 +14,7 @@ from App.plots import generate_entity_types_plot, generate_most_common_entities_
     generate_sentiment_over_time_per_target_plot, generate_sentiment_dist_over_time_by_target_plot, \
     generate_word_count_distribution_plot, generate_sentence_count_distribution_plot, generate_top_N_common_words_plot, \
     generate_top_N_common_pos_plot, generate_pos_wordclouds_plot, generate_community_graph, generate_pos_choices, \
-    generate_bigrams_plot
+    generate_bigrams_plot, generate_concordance
 from shinywidgets import output_widget, render_widget
 from App.single_analysis import analyse_single_article, entity_types_plot_single, most_common_entities_plot_single,  sentiment_dist_plot_single, most_common_words_plot_single
 from App.double_analysis import entity_types_plot_double, most_common_entities_plot_double, sentiment_dist_plot_double
@@ -576,6 +576,8 @@ def server(input, output, session):
                 ui.input_select("sentiment_model_filter", "Select Sentiment Model", choices=["TSC", "VADER"]),
                 ui.input_numeric("word_cloud_n", "Number of Words in Word Cloud", value=100, min=1),
                 ui.input_selectize("pos_filter", "Select Part of Speech", choices=generate_pos_choices(), multiple=False, selected="Common Singular Nouns", options={"create": False, "searchField": ["label"]}),
+                ui.input_text("filter_words", "Filter Words (comma-separated)", value="US, China"),
+                ui.input_numeric("ngram_number", "N-gram Number", value=2, min=2),
                 ui.input_action_button("hide_container_button_all", "Hide Menu", class_="btn btn-secondary"),
                 class_="main-right-container",
                 id="main-right-container-all"
@@ -709,9 +711,27 @@ def server(input, output, session):
         if ngrams_visible.get():
             return ui.div(
                 ui.output_image("bigrams_plot"),
+                ui.output_ui("concordance_table", class_="concordance-table"),
                 class_="plots-row"
             )
         return ui.div()
+
+    @output
+    @render.ui
+    def concordance_table():
+        dataset_name = input.dataset_filter()
+        filter_words = [word.strip() for word in input.filter_words().split(",") if word.strip()]
+        ngram_number = input.ngram_number()
+        concordance_df = generate_concordance(dataset_name, filter_words, ngram_number)
+        concordance_df = concordance_df[["formated_ngram", "count"]]
+
+        if concordance_df.empty:
+            return ui.div("No concordance results found.")
+
+        formatted_text = "Concordance Results:\n\n"
+        formatted_text += "\n".join(
+            [f"{row['formated_ngram']} \t Count: {row['count']}" for _, row in concordance_df.iterrows()])
+        return ui.HTML(f"<pre>{formatted_text}</pre>")
 
 
 www_dir = Path(__file__).parent / "App/www"

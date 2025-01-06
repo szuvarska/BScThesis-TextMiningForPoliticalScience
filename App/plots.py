@@ -150,3 +150,11 @@ def generate_bigrams_plot(dataset_name: str):
     plot.savefig(image_path)
     plot.close()
     return image_path
+
+def generate_concordance(dataset_name: str, filter: list, ngram_number: int):
+    dataset_name_to_display = dataset_name
+    dataset_name = dataset_name.replace(' ', '_')[:-9].lower()
+    dataset_name = dataset_name.replace('during', 'after')
+    df = pd.read_csv(f"Preparations/Data_for_EDA/df_{dataset_name}.csv")
+    df = df[(df['article_category_one'] != "PHOTO") & (df['article_text'].notnull())]
+    return concordance(df, filter, ngram_number)

@@ -490,4 +490,17 @@ a {
     display: inline-block; /* Makes the tooltip position relative to the image */
 }
 
+.concordance-table {
+    border-collapse: collapse;
+    justify-content: center;
+    display: flex;
+}
+
+.concordance-table pre {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    width: 80%;
+    text-align: center;
+}
+
 
