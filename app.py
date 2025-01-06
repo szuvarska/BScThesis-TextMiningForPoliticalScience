@@ -110,7 +110,7 @@ all_module = ui.tags.div(
 
 page_dependencies = ui.tags.head(
     ui.tags.link(rel="stylesheet", type="text/css", href="style.css"),
-    ui.tags.link(rel="icon",type="image/png", href="logomini.png")
+    ui.tags.link(rel="icon",type="image/png", href="www/logomini.png")
 )
 
 page_layout = ui.page_navbar(
