@@ -192,7 +192,7 @@ def plot_top_N_common_words(df: pd.DataFrame, df_name: str, N=100):
     fdist = FreqDist(
         [word for word in word_tokenize(' '.join(df['article_text'])) if
          word.lower() not in stop_words and word.isalpha()])
-    wordcloud = WordCloud(width=800, height=400, background_color='white').generate_from_frequencies(
+    wordcloud = WordCloud(width=800, height=400, background_color='white',color_func=lambda *args, **kwargs: my_blue ).generate_from_frequencies(
         dict(fdist.most_common(N)))
     # plt.figure(figsize=(12, 10))
     plt.imshow(wordcloud, interpolation='bilinear')
@@ -406,7 +406,7 @@ def plot_pos_wordclouds_for_shiny(df: pd.DataFrame, df_name: str, N=100, pos="Co
     tagged_data = nltk.pos_tag(word_tokenize(' '.join(df['article_text'])))
     pos_data = FreqDist([word for word, tag in tagged_data if
                          tag == pos_short and word.isalpha() and word not in stop_words])
-    wordcloud = WordCloud(width=800, height=400, background_color='white').generate_from_frequencies(
+    wordcloud = WordCloud(width=800, height=400, background_color='white', color_func=lambda *args, **kwargs: my_blue).generate_from_frequencies(
         dict(pos_data.most_common(N)))
     # plt.figure(figsize=(6, 6))
     plt.imshow(wordcloud, interpolation='bilinear')
