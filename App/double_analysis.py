@@ -62,11 +62,11 @@ def entity_types_plot_double(entity_sentiments_1: pd.DataFrame, entity_sentiment
 
 
 def most_common_entities_plot_double(entity_sentiments_1: pd.DataFrame, entity_sentiments_2: pd.DataFrame):
-    entity_counts_1 = entity_sentiments_1["Entity"].value_counts().head(5)
+    entity_counts_1 = entity_sentiments_1["Entity"].value_counts().head(10)
     entity_counts_1 = entity_counts_1.reset_index()
     entity_counts_1.columns = ["Entity", "Frequency"]
 
-    entity_counts_2 = entity_sentiments_2["Entity"].value_counts().head(5)
+    entity_counts_2 = entity_sentiments_2["Entity"].value_counts().head(10)
     entity_counts_2 = entity_counts_2.reset_index()
     entity_counts_2.columns = ["Entity", "Frequency"]
 
@@ -80,8 +80,14 @@ def most_common_entities_plot_double(entity_sentiments_1: pd.DataFrame, entity_s
     )
     entity_counts_combined.fillna(0, inplace=True)
 
+    entity_counts_combined = entity_counts_combined.sort_values(
+        by=["Frequency_1", "Frequency_2"], ascending=[False, False]
+    )
+    top_10_entities = entity_counts_combined["Entity"].drop_duplicates().values[:10]
+    entity_counts_combined = entity_counts_combined[entity_counts_combined["Entity"].isin(top_10_entities)]
+
     entity_types = entity_counts_combined["Entity"]
-    article_1_values = -entity_counts_combined["Frequency_1"]  # Negative for mirroring
+    article_1_values = entity_counts_combined["Frequency_1"]
     article_2_values = entity_counts_combined["Frequency_2"]
 
     fig = go.Figure()
@@ -92,7 +98,8 @@ def most_common_entities_plot_double(entity_sentiments_1: pd.DataFrame, entity_s
         x=article_1_values,
         orientation='h',
         name='Article 1',
-        marker=dict(color='skyblue')
+        marker=dict(color='skyblue'),
+        width=0.4  # Set the width for thinner bars
     ))
 
     # Add bar for Article 2
@@ -101,7 +108,8 @@ def most_common_entities_plot_double(entity_sentiments_1: pd.DataFrame, entity_s
         x=article_2_values,
         orientation='h',
         name='Article 2',
-        marker=dict(color='salmon')
+        marker=dict(color='salmon'),
+        width=0.4  # Set the width for thinner bars
     ))
 
     # Update layout
@@ -111,12 +119,6 @@ def most_common_entities_plot_double(entity_sentiments_1: pd.DataFrame, entity_s
             x=0.5  # Center-align the title
         ),
         xaxis_title="Frequency",
-        xaxis=dict(
-            tickvals=[i for i in range(-int(max(article_1_values.abs().max(), article_2_values.max())),
-                                       int(max(article_1_values.abs().max(), article_2_values.max())) + 1)],
-            ticktext=[abs(i) for i in range(-int(max(article_1_values.abs().max(), article_2_values.max())),
-                                            int(max(article_1_values.abs().max(), article_2_values.max())) + 1)],
-        ),
         yaxis=dict(
             title='Entity',
             ticklabelposition='outside',
@@ -125,9 +127,8 @@ def most_common_entities_plot_double(entity_sentiments_1: pd.DataFrame, entity_s
             ticklen=10,
             automargin=True,
         ),
-        barmode='relative',
+        barmode='group',  # Group the bars side by side
         legend=dict(title='Articles'),
-        coloraxis_showscale=False,
     )
 
     return fig
@@ -180,26 +181,13 @@ def sentiment_dist_plot_double(sentiment_1: pd.DataFrame, sentiment_2: pd.DataFr
 
     return fig
 
-#
-# def most_common_words_plot_single(sentiment_sentences: pd.DataFrame, N=100):
-#     stop_words = set(nltk.corpus.stopwords.words("english"))
-#     fdist = FreqDist(
-#         [word for word in word_tokenize(' '.join(sentiment_sentences["Sentence"])) if
-#          word.lower() not in stop_words and word.isalpha()])
-#     wordcloud = WordCloud(width=800, height=400, background_color='white').generate_from_frequencies(
-#         dict(fdist.most_common(N)))
-#     plt.imshow(wordcloud, interpolation='bilinear', aspect='auto')
-#     plt.axis('off')
-#     plt.title(f'Top {N} Most Common Words')
-#     plt.tight_layout()
-#     return plt.gcf()
 
 if __name__ == "__main__":
-    file1 = "../BRAT_Data/Gaza_after/Articles_for_Agnieszka/2023-10-22_DIPLOMACY_Israel_s_deepening_attacks_in_Gaza_likely_to_embro.txt"
-    # file2 = "../BRAT_Data/Gaza_after/Articles_for_Agnieszka/2023-10-22_VIEWPOINT_US_biased_attitude_in_Israel-Palestine_conflict_ma.txt"
-    article_text_1 = ''.join(open(file1, "r").readlines()[:20])
-    # article_text_2 = ''.join(open(file2, "r").readlines()[:20])
+    file1 = "../BRAT_Data/Ukraine_before/Articles_for_Agnieszka/2021-09-02_AMERICAS_Biden_talks_security_issues,_ties_in_first_meeting.txt"
+    file2 = "../BRAT_Data/Gaza_after/Articles_for_Agnieszka/2023-10-22_VIEWPOINT_US_biased_attitude_in_Israel-Palestine_conflict_ma.txt"
+    article_text_1 = ''.join(open(file1, "r").readlines()[7:])
+    article_text_2 = ''.join(open(file2, "r").readlines()[:20])
     _, entity_sentiments_1, sentiment_sentences_1 = analyse_single_article(article_text_1)
-    # _, entity_sentiments_2, sentiment_sentences_2 = analyse_single_article(article_text_2)
-    fig = most_common_words_plot_single(sentiment_sentences_1, article=" from Article 1")
+    _, entity_sentiments_2, sentiment_sentences_2 = analyse_single_article(article_text_2)
+    fig = most_common_entities_plot_double(entity_sentiments_1, entity_sentiments_2)
     fig.show()
