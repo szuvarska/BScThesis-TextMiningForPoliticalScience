@@ -849,6 +849,7 @@ def server(input, output, session):
             return ui.div("No concordance results found.")
 
         table_html = (
+            f'<h3 style="text-align: center;">Concordance Results with {ngram_number}-Grams for {input.filter_words()} - {dataset_name}</h3>'
             '<table id="concordance-table" class="concordance-table">'
             '<tbody>'
             '<tr>'
