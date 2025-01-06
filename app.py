@@ -120,7 +120,7 @@ page_layout = ui.page_navbar(
     ui.nav_panel("Single", single_module),
     ui.nav_panel("Double", double_module),
     ui.nav_panel("All", all_module),
-    title="Global Times: Articles Anaysis",#PRESS ARTICLES EXPLORATION
+    title="Global Times: Articles Analysis",#PRESS ARTICLES EXPLORATION
     footer=ui.tags.div(
         ui.tags.div("Łukasz Grabarski & Marta Szuwarska", class_="footer")
     )
@@ -129,7 +129,7 @@ page_layout = ui.page_navbar(
 app_ui = ui.page_fluid(
     page_dependencies,
     page_layout,
-    title="Global Times: Articles Anaysis", #PRESS ARTICLES EXPLORATION
+    title="Global Times: Articles Analysis", #PRESS ARTICLES EXPLORATION
 )
 
 

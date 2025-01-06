@@ -127,6 +127,7 @@ def generate_community_graph(dataset_name: str):
     plot.tight_layout()
     image_path = f"App/www/community_graph_{dataset_name}.png"
     plot.savefig(image_path)
+    plot.close()
     return image_path
 
 
