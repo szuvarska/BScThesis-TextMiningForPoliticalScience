@@ -7,12 +7,13 @@ import seaborn as sns
 from shiny import App, render, ui, reactive
 import numpy as np
 import matplotlib.pyplot as plt
-from App.plots import generate_entity_types_plot, generate_most_common_entities_plot, generate_sentiment_dist_plot, \
-    generate_sentiment_over_time_plot, generate_sentiment_word_cloud_plot, generate_sentiment_dist_per_target_plot, \
-    generate_sentiment_over_time_per_target_plot, generate_sentiment_dist_over_time_by_target_plot, \
-    generate_word_count_distribution_plot, generate_sentence_count_distribution_plot, generate_top_N_common_words_plot, \
-    generate_top_N_common_pos_plot, generate_pos_wordclouds_plot, generate_community_graph, generate_pos_choices, \
-    generate_bigrams_plot, generate_concordance
+from App.plots import (generate_entity_types_plot, generate_most_common_entities_plot, generate_sentiment_dist_plot,
+                       generate_sentiment_over_time_plot, generate_sentiment_word_cloud_plot,
+                       generate_sentiment_dist_per_target_plot,
+                       generate_sentiment_over_time_per_target_plot, generate_sentiment_dist_over_time_by_target_plot,
+                       generate_word_count_distribution_plot, generate_sentence_count_distribution_plot,
+                       generate_top_N_common_words_plot, generate_top_N_common_pos_plot, generate_pos_wordclouds_plot,
+                       generate_community_graph, generate_pos_choices, generate_bigrams_plot, generate_concordance)
 from shinywidgets import output_widget, render_widget
 from App.single_analysis import analyse_single_article, entity_types_plot_single, most_common_entities_plot_single, \
     sentiment_dist_plot_single, most_common_words_plot_single
@@ -73,7 +74,7 @@ def list_files_in_folder(folder_path):
     return file_list
 
 
-def analyze_file(file_path, article_analysis, entity_sentiments, sentiment_sentences, header_key):
+def analyze_file(file_path, article_analysis, entity_sentiments, sentiment_sentences):
     with open(file_path, "r") as file:
         lines = file.readlines()
         if len(lines) >= 7:
@@ -82,8 +83,6 @@ def analyze_file(file_path, article_analysis, entity_sentiments, sentiment_sente
             article_analysis.set(analysis)
             entity_sentiments.set(entities)
             sentiment_sentences.set(sentences)
-            # header = f"{lines[1].split(': ', 1)[1].strip()} -- {lines[0].split(': ', 1)[1].strip()} -- {lines[2].split(';')[0].split(': ', 1)[1].strip()} / {lines[2].split(';')[1].split(': ', 1)[1].strip()}"
-            # session.send_input_message(header_key, {"value": header})
 
 
 def generate_header(file_input, file_select):
@@ -99,7 +98,10 @@ def generate_header(file_input, file_select):
         with open(file_path, "r") as file:
             lines = file.readlines()
             if len(lines) >= 7:
-                display_header = f"{lines[1].split(': ', 1)[1].strip()} -- {lines[0].split(': ', 1)[1].strip()} -- {lines[2].split(';')[0].split(': ', 1)[1].strip()} / {lines[2].split(';')[1].split(': ', 1)[1].strip()}"
+                display_header = (f"{lines[1].split(': ', 1)[1].strip()} -- "
+                                  f"{lines[0].split(': ', 1)[1].strip()} -- "
+                                  f"{lines[2].split(';')[0].split(': ', 1)[1].strip()} / "
+                                  f"{lines[2].split(';')[1].split(': ', 1)[1].strip()}")
                 return display_header
     return "No file uploaded"
 
@@ -152,6 +154,28 @@ all_module = ui.tags.div(
     class_="main-container"
 )
 
+about_module = ui.tags.div(
+    ui.tags.div(
+        collapsible_section(
+            "Introduction",
+            "toggle_introduction_button",
+            "introduction_content"
+        ),
+        collapsible_section(
+            "Guide",
+            "toggle_guide_button",
+            "guide_content"
+        ),
+        collapsible_section(
+            "Authors",
+            "toggle_authors_button",
+            "authors_content"
+        ),
+        class_="main-left-container"
+    ),
+    class_="main-container"
+)
+
 page_dependencies = ui.head_content(
     ui.tags.link(rel="stylesheet", type="text/css", href="style.css"),
     ui.tags.link(rel="icon", type="image/png", href="logomini.png")
@@ -162,7 +186,8 @@ page_layout = ui.page_navbar(
     ui.nav_panel("Single", single_module),
     ui.nav_panel("Double", double_module),
     ui.nav_panel("All", all_module),
-    title="Global Times: Articles Analysis",  # PRESS ARTICLES EXPLORATION
+    ui.nav_panel("About", about_module),
+    title="Global Times: Articles Analysis",
     footer=ui.tags.div(
         ui.tags.div("Łukasz Grabarski & Marta Szuwarska", class_="footer")
     )
@@ -187,6 +212,9 @@ def server(input, output, session):
     sentiment_visible = reactive.Value(True)
     communities_visible = reactive.Value(True)
     ngrams_visible = reactive.Value(True)
+    introduction_visible = reactive.Value(True)
+    guide_visible = reactive.Value(True)
+    authors_visible = reactive.Value(True)
     article_analysis = reactive.Value(None)
     entity_sentiments = reactive.Value(None)
     sentiment_sentences = reactive.Value(None)
@@ -677,6 +705,24 @@ def server(input, output, session):
         ngrams_visible.set(not ngrams_visible.get())
         session.send_input_message("toggle_ngrams_button", {"label": "⯆" if ngrams_visible.get() else "⯈"})
 
+    @reactive.Effect
+    @reactive.event(input.toggle_introduction_button)
+    def toggle_introduction_visibility():
+        introduction_visible.set(not introduction_visible.get())
+        session.send_input_message("toggle_introduction_button", {"label": "⯆" if introduction_visible.get() else "⯈"})
+
+    @reactive.Effect
+    @reactive.event(input.toggle_guide_button)
+    def toggle_guide_visibility():
+        guide_visible.set(not guide_visible.get())
+        session.send_input_message("toggle_guide_button", {"label": "⯆" if guide_visible.get() else "⯈"})
+
+    @reactive.Effect
+    @reactive.event(input.toggle_authors_button)
+    def toggle_authors_visibility():
+        authors_visible.set(not authors_visible.get())
+        session.send_input_message("toggle_authors_button", {"label": "⯆" if authors_visible.get() else "⯈"})
+
     @output
     @render.ui
     def eda_plots():
@@ -840,7 +886,7 @@ def server(input, output, session):
             file_choices = list_files_in_folder(folder_path)
             selected_file = next(full for full, display in file_choices if display == selected_display_file)
             file_path = folder_path / selected_file
-            analyze_file(file_path, article_analysis, entity_sentiments, sentiment_sentences, "uploaded_text_header")
+            analyze_file(file_path, article_analysis, entity_sentiments, sentiment_sentences)
 
     @reactive.Effect
     @reactive.event(input.file_select_1)
@@ -852,8 +898,7 @@ def server(input, output, session):
             file_choices = list_files_in_folder(folder_path)
             selected_file_1 = next(full for full, display in file_choices if display == selected_display_file_1)
             file_path_1 = folder_path / selected_file_1
-            analyze_file(file_path_1, article_analysis_1, entity_sentiments_1, sentiment_sentences_1,
-                         "uploaded_text_header_1")
+            analyze_file(file_path_1, article_analysis_1, entity_sentiments_1, sentiment_sentences_1)
 
     @reactive.Effect
     @reactive.event(input.file_select_2)
@@ -865,8 +910,48 @@ def server(input, output, session):
             file_choices = list_files_in_folder(folder_path)
             selected_file_2 = next(full for full, display in file_choices if display == selected_display_file_2)
             file_path_2 = folder_path / selected_file_2
-            analyze_file(file_path_2, article_analysis_2, entity_sentiments_2, sentiment_sentences_2,
-                         "uploaded_text_header_2")
+            analyze_file(file_path_2, article_analysis_2, entity_sentiments_2, sentiment_sentences_2)
+
+    @output
+    @render.ui
+    def introduction_content():
+        if introduction_visible.get():
+            return ui.HTML("""<p>This application provides an analysis of articles from the Global Times. It includes 
+            various modules:</p> <ul> <li><strong>Single:</strong> Analyze a single article.</li> 
+            <li><strong>Double:</strong> Compare two articles.</li> <li><strong>All:</strong> Perform exploratory 
+            data analysis on a dataset of articles.</li> </ul>""")
+        return ui.div()
+
+    @output
+    @render.ui
+    def guide_content():
+        if guide_visible.get():
+            return ui.HTML("""<p>Instructions on how to use the application:</p> <ul> <li><strong>Select a 
+            file:</strong> Use the dropdown to select a file from the list.</li> <li><strong>Upload a file:</strong> 
+            Click the "UPLOAD ARTICLE" button to upload a new file.</li> <li><strong>View more/less:</strong> Click 
+            the "View more" button to expand the text, and "View less" to collapse it.</li> <li><strong>Hide/Show 
+            Menu:</strong> Click the "Hide Menu" button to hide the right container, and "Show Menu" to display it 
+            again.</li> <li><strong>Select Dataset:</strong> Use the dropdown to select a dataset for analysis.</li> 
+            <li><strong>Select Sentiment:</strong> Use the dropdown to filter by sentiment (Positive, Neutral, 
+            Negative).</li> <li><strong>Select Entity Type:</strong> Use the dropdown to filter by entity type (
+            Person, Organisation, Location, Miscellaneous).</li> <li><strong>Select Sentiment Model:</strong> Use the 
+            dropdown to select a sentiment model (TSC, VADER).</li> <li><strong>Number of Words in Word 
+            Cloud:</strong> Use the numeric input to specify the number of words in the word cloud.</li> 
+            <li><strong>Select Part of Speech:</strong> Use the dropdown to filter by part of speech.</li> 
+            <li><strong>Filter Words:</strong> Use the text input to filter words (comma-separated).</li> 
+            <li><strong>N-gram Number:</strong> Use the numeric input to specify the n-gram number.</li> </ul>""")
+        return ui.div()
+
+    @output
+    @render.ui
+    def authors_content():
+        if authors_visible.get():
+            return ui.HTML("""<p><strong>Authors:</strong> Łukasz Grabarski & Marta Szuwarska (Warsaw University of 
+            Technology)</p> <p><strong>Supervisor:</strong> Dr. Anna Wróblewska (Warsaw University of Technology)</p> 
+            <p><strong>Co-supervisor:</strong> Prof. Agnieszka Kaliska (Adam Mickiewicz University in Poznań)</p> 
+            <p><strong>Co-operations:</strong> Prof. Anna Rudakowska (Tamkang University in Taiwan), Dr. Daniel Dan (
+            Modul University in Vienna)</p>""")
+        return ui.div()
 
 
 www_dir = Path(__file__).parent / "App/www"
