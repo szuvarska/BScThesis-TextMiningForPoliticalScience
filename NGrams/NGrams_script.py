@@ -7,6 +7,7 @@ from nltk.util import ngrams
 import nltk
 from wordcloud import WordCloud
 import networkx as nx
+from colors import main_color,my_red,my_blue,my_gray,my_green,my_yellow
 
 
 def concordance(df: pd.DataFrame, filter: list, ngram_number: int):
@@ -141,7 +142,7 @@ def visualize_bigrams(df: pd.DataFrame, top_n: int = 10, dataset_name: str = '')
     # Plot the graph
     plt.figure(figsize=(15, 15))
     pos = nx.spring_layout(G, k=0.9)  # Adjust k
-    nx.draw_networkx_nodes(G, pos, node_size=[node_size[n] for n in G.nodes], node_color='lightblue',
+    nx.draw_networkx_nodes(G, pos, node_size=[node_size[n] for n in G.nodes], node_color=main_color,
                            edgecolors=None)
     edges = nx.draw_networkx_edges(G, pos, arrowstyle='-|>', edge_color='gray', alpha=0.4,
                                    width=[G[u][v]['weight'] for u, v in G.edges], connectionstyle='arc3,rad=0.05',

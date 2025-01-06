@@ -1,4 +1,4 @@
-main_color = "#004a6c"
+main_color = "#b2c8d2"
 my_green = "#7beb41"
 my_red = "#eb5b41"
 my_blue = "#3466af"
