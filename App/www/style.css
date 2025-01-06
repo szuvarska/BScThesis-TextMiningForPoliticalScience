@@ -1,15 +1,16 @@
 :root {
-    --primary-color: #0096b1;
-    --secondary-color: #0056b3;
-    --background-color: #d7d7d7;
+    --primary-color: #b2c8d2;
+    --secondary-color: #7fa4b5;
+    --background-color: #f9f8f7;
     --container-color: #fdfdfd;
-    --app-title-color: #535353;
-    --text-color: #000000;
+    --app-title-color: #004a6c;
+    --text-color: #002536;
 }
 
 body {
     background-color: var(--background-color) !important;
     color: var(--text-color);
+    font-family: "Lato";
 }
 
 body .navbar.navbar-default {
@@ -43,7 +44,7 @@ body .nav-underline {
 .navbar-nav .nav-item .nav-link {
     background-color: var(--primary-color);
     color: var(--text-color);
-    border-radius: 50px;
+    border-radius: 5px;
     border: 0;
     margin: 1px;
     padding: 10px 50px;
@@ -98,7 +99,8 @@ body .nav-underline {
 
 .article-container {
     width: 100%;
-    border: 2px solid black;
+    /*border: 2px solid black;*/
+    box-shadow: 3px 3px 10px lightgray;
     padding: 10px;
     margin-bottom: 20px;
 }
@@ -161,7 +163,7 @@ body .nav-underline {
 .control-label {
     background-color: var(--primary-color);
     color: var(--text-color);
-    border-radius: 25px;
+    border-radius: 5px;
     padding: 12px 30px;
     display: inline-block;
     cursor: pointer;
@@ -226,7 +228,8 @@ img.entity-types-plot {
     width: 67% !important;
     display: block;
     margin: 0 auto 30px;
-    border: 2px solid black;
+    /*border: 2px solid black;*/
+    box-shadow: 3px 3px 10px lightgray;
     padding: 1px;
 }
 
@@ -254,7 +257,8 @@ img.entity-types-plot {
     width: 87% !important;
     display: block;
     margin: 0 auto 30px;
-    border: 2px solid black;
+    /*border: 2px solid black;*/
+    box-shadow: 3px 3px 10px lightgray;
     padding: 1px;
 }
 
@@ -262,7 +266,8 @@ img.entity-types-plot {
     width: 67% !important;
     display: block;
     margin: 0 auto 30px;
-    border: 2px solid black;
+    /*border: 2px solid black;*/
+    box-shadow: 3px 3px 10px lightgray;
     padding: 1px;
 }
 
@@ -280,7 +285,8 @@ img.entity-types-plot {
     width: 87% !important;
     display: block;
     margin: 0 auto 30px;
-    border: 2px solid black;
+    /*border: 2px solid black;*/
+    box-shadow: 3px 3px 10px lightgray;
     padding: 1px;
 }
 
@@ -288,7 +294,8 @@ img.entity-types-plot {
     width: 87% !important;
     display: block;
     margin: 0 auto 30px;
-    border: 2px solid black;
+    /*border: 2px solid black;*/
+    box-shadow: 3px 3px 10px lightgray;
     padding: 1px;
 }
 
@@ -309,7 +316,8 @@ img.entity-types-plot {
 
 .plot-image {
     width: 45%;
-    border: 2px solid black;
+    /*border: 2px solid black;*/
+    box-shadow: 3px 3px 10px lightgray;
     padding: 10px;
     box-sizing: border-box;
     margin: 10px 10px 30px;
@@ -320,7 +328,7 @@ img.entity-types-plot {
 .shiny-ipywidget-output {
   overflow: hidden;
   width: 45%;
-  border: 2px solid black;
+  box-shadow: 3px 3px 10px lightgray;
   padding: 10px;
   box-sizing: border-box;
   margin: 10px auto 30px;
@@ -369,6 +377,12 @@ img.entity-types-plot {
     display: flex;
     flex-direction: column;
     align-items: center;
+
+}
+
+.collapsible-section-header {
+    width: 100%;
+    border-bottom: var(--primary-color) 1px solid;
 }
 
 .hidden {
