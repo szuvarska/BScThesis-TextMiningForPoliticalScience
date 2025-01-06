@@ -5,6 +5,9 @@ from collections import defaultdict
 from community import community_louvain
 from tqdm import tqdm
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
+import matplotlib.colors as mcolors
+from colors import main_color,my_red,my_blue,my_gray,my_green,my_yellow
+
 
 #from Sentiment.sentiment_script import vader_sentiment
 
@@ -134,10 +137,11 @@ def plot_community_graph(df_ner: pd.DataFrame, df_entities: pd.DataFrame, suptit
             edge_colors.append(edge[2]['sentiment'])
 
     # edge_colors = [edge[2]['sentiment'] if edge[2]['sentiment'] is not None else 0 for edge in edges]
-    nx.draw_networkx_edges(G, pos, edgelist=edges, width=weights_to_plot, edge_color=edge_colors, edge_cmap=plt.cm.RdYlGn)
+    my_cmap = mcolors.LinearSegmentedColormap.from_list("custom_colormap", [my_red, my_yellow, my_green])
+    nx.draw_networkx_edges(G, pos, edgelist=edges, width=weights_to_plot, edge_color=edge_colors, edge_cmap=my_cmap)
     nx.draw_networkx_labels(G, pos, font_size=10, font_weight='bold')
     #add legend for the sentiment
-    sm = plt.cm.ScalarMappable(cmap=plt.cm.RdYlGn, norm=plt.Normalize(vmin=-1, vmax=1))
+    sm = plt.cm.ScalarMappable(cmap=my_cmap, norm=plt.Normalize(vmin=-1, vmax=1))
     sm.set_array([])
     plt.colorbar(sm, label='Sentiment')
 

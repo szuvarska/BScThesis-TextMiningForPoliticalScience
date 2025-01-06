@@ -10,6 +10,7 @@ from collections import Counter
 import seaborn as sns
 import plotly.express as px
 import plotly.graph_objects as go
+from colors import main_color,my_red,my_blue,my_gray,my_green,my_yellow
 
 
 def standardize_text(text: str, word_dict: dict):
@@ -276,8 +277,7 @@ def find_most_common_entity_types(df: pd.DataFrame, dataset_name: str, for_shiny
         y='Frequency',
         title=f'Most Frequently Mentioned Named Entity Types - {dataset_name}',
         labels={'Entity Type': 'Entity Type', 'Frequency': 'Frequency'},
-        color='Frequency',
-        color_continuous_scale='Viridis'  # Similar to sns.color_palette('viridis')
+        color_discrete_sequence=[my_blue]
     )
 
     # Update layout for better readability
@@ -287,6 +287,12 @@ def find_most_common_entity_types(df: pd.DataFrame, dataset_name: str, for_shiny
         title=dict(x=0.5),  # Center-align the title
         coloraxis_showscale=False,  # Hide the color scale legend
     )
+
+    # add theme
+    fig.update_layout(
+        template="plotly_white"
+    )
+
     if for_shiny:
         return fig
     else:
@@ -360,8 +366,7 @@ def find_most_common_entities_per_type(df: pd.DataFrame, dataset_name: str, outp
             y='Count',
             title=f'Top 15 Words for {entity_type} - {dataset_name}',
             labels={'Word': 'Word', 'Count': 'Frequency'},
-            color='Count',
-            color_continuous_scale='Viridis'
+            color_discrete_sequence=[my_blue]
         )
 
         fig.update_layout(
@@ -369,6 +374,11 @@ def find_most_common_entities_per_type(df: pd.DataFrame, dataset_name: str, outp
             yaxis_title='Frequency',
             title=dict(x=0.5),  # Center-align the title
             coloraxis_showscale=False,  # Hide color scale
+        )
+
+        # add theme
+        fig.update_layout(
+            template="plotly_white"
         )
 
         fig.show()
@@ -390,8 +400,7 @@ def find_most_common_entities_per_type_for_shiny(dataset_name: str, output_file:
         orientation='h',
         title=f'Top 15 Words for {entity_type_name} - {dataset_name}',
         labels={'Word': 'Word', 'Count': 'Frequency'},
-        color='Count',
-        color_continuous_scale='Viridis',
+        color_discrete_sequence=[my_blue]
     )
 
     fig.update_layout(
@@ -407,6 +416,11 @@ def find_most_common_entities_per_type_for_shiny(dataset_name: str, output_file:
         # margin=dict(l=150),
         title=dict(x=0.5),  # Center-align the title
         coloraxis_showscale=False,  # Hide the color scale
+    )
+
+    # add theme
+    fig.update_layout(
+        template="plotly_white"
     )
 
     return fig
