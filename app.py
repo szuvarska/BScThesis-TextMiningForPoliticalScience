@@ -62,6 +62,48 @@ def collapsible_section(header, button_id, plot_id):
     )
 
 
+def list_files_in_folder(folder_path):
+    file_list = []
+    for root, _, files in os.walk(folder_path):
+        for file in files:
+            if file.endswith('.txt'):
+                relative_path = os.path.relpath(os.path.join(root, file), folder_path)
+                display_path = relative_path.replace('Articles_for_Agnieszka/', '').replace('Articles_for_Ania/', '')
+                file_list.append((relative_path, display_path))
+    return file_list
+
+
+def analyze_file(file_path, article_analysis, entity_sentiments, sentiment_sentences, header_key):
+    with open(file_path, "r") as file:
+        lines = file.readlines()
+        if len(lines) >= 7:
+            article_text = "\n".join(line.strip() for line in lines[7:])
+            analysis, entities, sentences = analyse_single_article(article_text)
+            article_analysis.set(analysis)
+            entity_sentiments.set(entities)
+            sentiment_sentences.set(sentences)
+            # header = f"{lines[1].split(': ', 1)[1].strip()} -- {lines[0].split(': ', 1)[1].strip()} -- {lines[2].split(';')[0].split(': ', 1)[1].strip()} / {lines[2].split(';')[1].split(': ', 1)[1].strip()}"
+            # session.send_input_message(header_key, {"value": header})
+
+
+def generate_header(file_input, file_select):
+    header, _ = handle_file_upload(file_input)
+    if header:
+        return header
+    selected_file = file_select()
+    if selected_file and selected_file != "None":
+        folder_path = here / "BRAT_Data"
+        file_choices = list_files_in_folder(folder_path)
+        selected_file_full_path = next(full for full, display in file_choices if display == selected_file)
+        file_path = folder_path / selected_file_full_path
+        with open(file_path, "r") as file:
+            lines = file.readlines()
+            if len(lines) >= 7:
+                display_header = f"{lines[1].split(': ', 1)[1].strip()} -- {lines[0].split(': ', 1)[1].strip()} -- {lines[2].split(';')[0].split(': ', 1)[1].strip()} / {lines[2].split(';')[1].split(': ', 1)[1].strip()}"
+                return display_header
+    return "No file uploaded"
+
+
 single_module = ui.tags.div(
     ui.tags.div(
         ui.tags.div(
@@ -120,7 +162,7 @@ page_layout = ui.page_navbar(
     ui.nav_panel("Single", single_module),
     ui.nav_panel("Double", double_module),
     ui.nav_panel("All", all_module),
-    title="Global Times: Articles Analysis",  #PRESS ARTICLES EXPLORATION
+    title="Global Times: Articles Analysis",  # PRESS ARTICLES EXPLORATION
     footer=ui.tags.div(
         ui.tags.div("Łukasz Grabarski & Marta Szuwarska", class_="footer")
     )
@@ -129,7 +171,7 @@ page_layout = ui.page_navbar(
 app_ui = ui.page_fluid(
     page_dependencies,
     page_layout,
-    title="Global Times: Articles Analysis",  #PRESS ARTICLES EXPLORATION
+    title="Global Times: Articles Analysis",  # PRESS ARTICLES EXPLORATION
 )
 
 
@@ -154,6 +196,9 @@ def server(input, output, session):
     sentiment_sentences_1 = reactive.Value(None)
     entity_sentiments_2 = reactive.Value(None)
     sentiment_sentences_2 = reactive.Value(None)
+    selected_file_value = reactive.Value("None")
+    selected_file_value_1 = reactive.Value("None")
+    selected_file_value_2 = reactive.Value("None")
 
     @reactive.Effect
     @reactive.event(input.view_full_text)
@@ -212,10 +257,7 @@ def server(input, output, session):
     @output
     @render.text
     def uploaded_text_header():
-        header, _ = handle_file_upload(input.file_upload)
-        if header:
-            return header
-        return "No file uploaded"
+        return generate_header(input.file_upload, input.file_select)
 
     @output
     @render.ui
@@ -232,10 +274,7 @@ def server(input, output, session):
     @output
     @render.text
     def uploaded_text_header_1():
-        header, _ = handle_file_upload(input.file_upload_1)
-        if header:
-            return header
-        return "No file uploaded"
+        return generate_header(input.file_upload_1, input.file_select_1)
 
     @output
     @render.ui
@@ -252,10 +291,7 @@ def server(input, output, session):
     @output
     @render.text
     def uploaded_text_header_2():
-        header, _ = handle_file_upload(input.file_upload_2)
-        if header:
-            return header
-        return "No file uploaded"
+        return generate_header(input.file_upload_2, input.file_select_2)
 
     @output
     @render.ui
@@ -272,7 +308,7 @@ def server(input, output, session):
     @output
     @render.ui
     def single_mode_plots():
-        if input.file_upload():
+        if input.file_upload() or input.file_select() != "None":
             return ui.div(
                 output_widget("entity_types_single_plot"),
                 output_widget("most_common_entities_single_plot"),
@@ -285,7 +321,8 @@ def server(input, output, session):
     @output
     @render.ui
     def double_mode_plots():
-        if input.file_upload_1() and input.file_upload_2():
+        if (input.file_upload_1() or input.file_select_1() != "None") and (
+                input.file_upload_2() or input.file_select_2() != "None"):
             return ui.div(
                 output_widget("entity_types_double_plot"),
                 output_widget("most_common_entities_double_plot"),
@@ -517,9 +554,10 @@ def server(input, output, session):
         right_container_visible_double.set(not right_container_visible_double.get())
 
     @reactive.Effect
-    @reactive.event(input.file_upload)
+    @reactive.event(input.file_upload, input.file_select)
     def auto_hide_container_single():
-        right_container_visible_single.set(False)
+        if input.file_upload() or (input.file_select() != "None"):
+            right_container_visible_single.set(False)
 
     @reactive.Effect
     @reactive.event(input.file_upload_1, input.file_upload_2)
@@ -530,9 +568,14 @@ def server(input, output, session):
     @output
     @render.ui
     def right_container_single():
+        folder_path = here / "BRAT_Data"  # Adjust the folder path as needed
+        file_choices = list_files_in_folder(folder_path)
+        display_choices = ["None"] + [display for _, display in file_choices]
         if right_container_visible_single.get():
             return ui.div(
                 ui.input_file("file_upload", "UPLOAD ARTICLE"),
+                ui.input_select("file_select", "Select a file", choices=display_choices,
+                                selected=selected_file_value.get()),
                 ui.input_action_button("hide_container_button_single", "Hide Menu", class_="btn btn-secondary"),
                 class_="main-right-container",
                 id="main-right-container-single"
@@ -547,10 +590,17 @@ def server(input, output, session):
     @output
     @render.ui
     def right_container_double():
+        folder_path = here / "BRAT_Data"  # Adjust the folder path as needed
+        file_choices = list_files_in_folder(folder_path)
+        display_choices = ["None"] + [display for _, display in file_choices]
         if right_container_visible_double.get():
             return ui.div(
                 ui.input_file("file_upload_1", "Upload the first article"),
+                ui.input_select("file_select_1", "Select the first file", choices=display_choices,
+                                selected=selected_file_value_1.get()),
                 ui.input_file("file_upload_2", "Upload the second article"),
+                ui.input_select("file_select_2", "Select the second file", choices=display_choices,
+                                selected=selected_file_value_2.get()),
                 ui.input_action_button("hide_container_button_double", "Hide Menu", class_="btn btn-secondary"),
                 class_="main-right-container",
                 id="main-right-container-double"
@@ -779,6 +829,44 @@ def server(input, output, session):
 
         # Return the styled HTML table
         return ui.HTML(table_html)
+
+    @reactive.Effect
+    @reactive.event(input.file_select)
+    def analyze_selected_file():
+        selected_display_file = input.file_select()
+        if selected_display_file and selected_display_file != "None":
+            selected_file_value.set(selected_display_file)
+            folder_path = here / "BRAT_Data"
+            file_choices = list_files_in_folder(folder_path)
+            selected_file = next(full for full, display in file_choices if display == selected_display_file)
+            file_path = folder_path / selected_file
+            analyze_file(file_path, article_analysis, entity_sentiments, sentiment_sentences, "uploaded_text_header")
+
+    @reactive.Effect
+    @reactive.event(input.file_select_1)
+    def analyze_selected_file_1():
+        selected_display_file_1 = input.file_select_1()
+        if selected_display_file_1 and selected_display_file_1 != "None":
+            selected_file_value_1.set(selected_display_file_1)
+            folder_path = here / "BRAT_Data"
+            file_choices = list_files_in_folder(folder_path)
+            selected_file_1 = next(full for full, display in file_choices if display == selected_display_file_1)
+            file_path_1 = folder_path / selected_file_1
+            analyze_file(file_path_1, article_analysis_1, entity_sentiments_1, sentiment_sentences_1,
+                         "uploaded_text_header_1")
+
+    @reactive.Effect
+    @reactive.event(input.file_select_2)
+    def analyze_selected_file_2():
+        selected_display_file_2 = input.file_select_2()
+        if selected_display_file_2 and selected_display_file_2 != "None":
+            selected_file_value_2.set(selected_display_file_2)
+            folder_path = here / "BRAT_Data"
+            file_choices = list_files_in_folder(folder_path)
+            selected_file_2 = next(full for full, display in file_choices if display == selected_display_file_2)
+            file_path_2 = folder_path / selected_file_2
+            analyze_file(file_path_2, article_analysis_2, entity_sentiments_2, sentiment_sentences_2,
+                         "uploaded_text_header_2")
 
 
 www_dir = Path(__file__).parent / "App/www"
