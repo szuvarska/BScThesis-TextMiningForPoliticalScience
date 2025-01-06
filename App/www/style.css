@@ -305,6 +305,21 @@ img.entity-types-plot {
     margin-bottom: 30px;
 }
 
+#bigrams_plot {
+    width: 87% !important;
+    height: auto !important;
+    display: block;
+    margin: 0 auto 30px;
+    /*border: 2px solid black;*/
+    box-shadow: 3px 3px 10px lightgray;
+    padding: 1px;
+}
+
+#bigrams_plot img {
+    width: 100%;
+    margin-bottom: 30px;
+}
+
 #entity_types_double_plot {
     width: 75%;
 }

@@ -8,8 +8,9 @@ import nltk
 from wordcloud import WordCloud
 import networkx as nx
 
-def concordance(df: pd.DataFrame, filter: list, ngram_number:int):
-    #n >= 2
+
+def concordance(df: pd.DataFrame, filter: list, ngram_number: int):
+    # n >= 2
     n = ngram_number
     # tokenization
     df['tokenized'] = df['article_text'].apply(str).apply(word_tokenize)
@@ -26,7 +27,7 @@ def concordance(df: pd.DataFrame, filter: list, ngram_number:int):
         ngrams_list += ngrams_i
     ngrams_counter = Counter(ngrams_list)
 
-    #corcordance making and filtering
+    # corcordance making and filtering
     ngrams_counted_list = []
     for ngram, count in ngrams_counter.items():
         ngram_center = ngram[int(n / 2)]
@@ -35,7 +36,7 @@ def concordance(df: pd.DataFrame, filter: list, ngram_number:int):
     ngrams_df = pd.DataFrame(ngrams_counted_list, columns=['ngram', 'count', 'center'])
     ngrams_df = ngrams_df[ngrams_df['center'].isin(filter)]
 
-    #formating
+    # formating
     ngrams_df_table = ngrams_df.sort_values(by='count', ascending=False).head(20)
     max_words_len = [0, 0, 0]
     lefts = []
@@ -85,7 +86,8 @@ def concordance(df: pd.DataFrame, filter: list, ngram_number:int):
     ngrams_df_table['formated_len'] = formeted_len
     return ngrams_df_table
 
-def visualize_bigrams(df: pd.DataFrame, top_n:int = 10):
+
+def visualize_bigrams(df: pd.DataFrame, top_n: int = 10, dataset_name: str = ''):
     df['tokenized'] = df['article_text'].apply(str).apply(word_tokenize)
     # remove punctuation
     df['tokenized'] = df['tokenized'].apply(lambda x: [i for i in x if i.isalnum()])
@@ -98,7 +100,7 @@ def visualize_bigrams(df: pd.DataFrame, top_n:int = 10):
     ngrams_list = []
 
     for i in range(len(df)):
-        ngrams_i = ngrams(df['tokenized'][i], n)
+        ngrams_i = ngrams(df['tokenized'].iloc[i], n)
         ngrams_list += ngrams_i
     ngrams_counter = Counter(ngrams_list)
     word_0 = []
@@ -127,13 +129,14 @@ def visualize_bigrams(df: pd.DataFrame, top_n:int = 10):
 
     filtered_df['count'] = filtered_df['count'] / filtered_df['count'].max()
 
-    #crating a graph
+    # crating a graph
     G = nx.DiGraph()
     for _, row in filtered_df.iterrows():
         G.add_edge(row['word_0'], row['word_1'], weight=(row['count']) * 10)
 
     # Compute node size based on degree (incoming + outgoing edges)
-    node_size = {node: (G.in_degree(node, weight='weight') + G.out_degree(node, weight='weight')) * 50 for node in G.nodes}
+    node_size = {node: (G.in_degree(node, weight='weight') + G.out_degree(node, weight='weight')) * 50 for node in
+                 G.nodes}
 
     # Plot the graph
     plt.figure(figsize=(15, 15))
@@ -144,5 +147,5 @@ def visualize_bigrams(df: pd.DataFrame, top_n:int = 10):
                                    width=[G[u][v]['weight'] for u, v in G.edges], connectionstyle='arc3,rad=0.05',
                                    arrowsize=20)
     nx.draw_networkx_labels(G, pos, font_size=10, font_weight='bold')
-    plt.title("Bigram Graph Visualization")
+    plt.title(f"Bigram Graph Visualization - {dataset_name}")
     return plt
