@@ -84,6 +84,9 @@ def concordance(df: pd.DataFrame, filter: list, ngram_number: int):
 
     ngrams_df_table['formated_ngram'] = formated_ngrams
     ngrams_df_table['formated_len'] = formeted_len
+    ngrams_df_table['lefts'] = lefts
+    ngrams_df_table['rights'] = rights
+
     return ngrams_df_table
 
 
