@@ -101,7 +101,7 @@ def analyse_single_article(article_text: str):
     html = html.replace(
         "emoji_1",
         '<a href="https://img.icons8.com/ios-filled/50/00FF00/happy--v1.png" target="_blank">'
-        '<img width="16" height="16" src="https://img.icons8.com/ios-filled/50/00FF00/happy--v1.png" '
+        f'<img width="16" height="16" src="https://img.icons8.com/ios-filled/50/{my_green[1:]}/happy--v1.png" '
         'alt="Positive sentiment" style="background-color: black; border-radius: 50%; padding: 0px;"/>'
         '<span class="tooltip"><b>Positive</b> sentence</span>'
         '</a><br>'
@@ -109,7 +109,7 @@ def analyse_single_article(article_text: str):
     html = html.replace(
         "emoji_2",
         '<a href="https://img.icons8.com/ios-filled/50/FF0000/sad.png" target="_blank">'
-        '<img width="16" height="16" src="https://img.icons8.com/ios-filled/50/FF0000/sad.png" '
+        f'<img width="16" height="16" src="https://img.icons8.com/ios-filled/50/{my_red[1:]}/sad.png" '
         'alt="Negative sentiment" style="background-color: black; border-radius: 50%; padding: 0px;"/>'
         '<span class="tooltip"><b>Negative</b> sentence</span>'
         '</a><br>'
@@ -117,7 +117,7 @@ def analyse_single_article(article_text: str):
     html = html.replace(
         "emoji_3",
         '<a href="https://img.icons8.com/ios-filled/50/FCC419/neutral-emoticon--v1.png" target="_blank">'
-        '<img width="16" height="16" src="https://img.icons8.com/ios-filled/50/FCC419/neutral-emoticon--v1.png" '
+        f'<img width="16" height="16" src="https://img.icons8.com/ios-filled/50/{my_gray[1:]}/neutral-emoticon--v1.png" '
         'alt="Neutral sentiment" style="background-color: black; border-radius: 50%; padding: 0px;"/>'
         '<span class="tooltip"><b>Neutral</b> sentence</span>'
         '</a><br>'

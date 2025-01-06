@@ -82,14 +82,12 @@ double_module = ui.tags.div(
             ui.tags.h3(ui.output_text("uploaded_text_header_1")),
             ui.output_ui("uploaded_text_content_1"),
             ui.output_ui("show_view_more_button_1"),
-            # ui.input_action_button("view_full_text_1", "View more", class_="btn btn-primary view-button"),
             class_="article-container"
         ),
         ui.tags.div(
             ui.tags.h3(ui.output_text("uploaded_text_header_2")),
             ui.output_ui("uploaded_text_content_2"),
             ui.output_ui("show_view_more_button_2"),
-            # ui.input_action_button("view_full_text_2", "View more", class_="btn btn-primary view-button"),
             class_="article-container"
         ),
         ui.output_ui("double_mode_plots"),
@@ -686,21 +684,21 @@ def server(input, output, session):
     @render.ui
     def show_view_more_button():
         if article_analysis.get():
-            return ui.input_action_button("view_full_text", "View more", class_="btn btn-primary view-button")
+            return ui.input_action_button("view_full_text", "View more", class_="btn btn-secondary view-button")
         return ui.div()
 
     @output
     @render.ui
     def show_view_more_button_1():
         if article_analysis_1.get():
-            return ui.input_action_button("view_full_text_1", "View more", class_="btn btn-primary view-button")
+            return ui.input_action_button("view_full_text_1", "View more", class_="btn btn-secondary view-button")
         return ui.div()
 
     @output
     @render.ui
     def show_view_more_button_2():
         if article_analysis_2.get():
-            return ui.input_action_button("view_full_text_2", "View more", class_="btn btn-primary view-button")
+            return ui.input_action_button("view_full_text_2", "View more", class_="btn btn-secondary view-button")
         return ui.div()
 
     @output
