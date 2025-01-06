@@ -15,6 +15,7 @@ from wordcloud import WordCloud
 import matplotlib.pyplot as plt
 import plotly.express as px
 import plotly.graph_objects as go
+from colors import main_color,my_red,my_blue,my_gray,my_green,my_yellow
 
 warnings.filterwarnings("ignore", category=FutureWarning, module="huggingface_hub.file_download")
 
@@ -128,9 +129,9 @@ def analyse_single_article(article_text: str):
         legend_html += f"<li><strong>{entity}</strong>: {description}</li>"
     legend_html += "</ul></div>"
     legend_html += "<div class='legend'><h3>Sentiment Legend</h3><ul>"
-    legend_html += f'<li><strong style="color: green;">Green</strong>: Positive sentiment</li>'
-    legend_html += f'<li><strong style="color: #FFBF00;">Yellow</strong>: Neutral sentiment</li>'
-    legend_html += f'<li><strong style="color: red;">Red</strong>: Negative sentiment</li>'
+    legend_html += f'<li><strong style="color: {my_green};">Green</strong>: Positive sentiment</li>'
+    legend_html += f'<li><strong style="color: {my_yellow};">Gray</strong>: Neutral sentiment</li>'
+    legend_html += f'<li><strong style="color: {my_red};">Red</strong>: Negative sentiment</li>'
     legend_html += "</ul></div>"
 
     # Combine the legend, NER visualization, and sentiment analysis results
@@ -138,7 +139,7 @@ def analyse_single_article(article_text: str):
 
     # Add inline styles for entity colors based on sentiment
     for entity, label, sentiment in entity_sentiments:
-        color = "green" if sentiment == "positive" else "red" if sentiment == "negative" else "yellow"
+        color = my_green if sentiment == "positive" else my_red if sentiment == "negative" else my_yellow
         tooltip_value = f'<b>Value:</b> {entity}<br><b>Entity type:</b> {entity_legend[label]}<br><b>Sentiment:</b> {sentiment}'
         tooltip = f'><span class="tooltip">{tooltip_value}</span>'
         title = f'"<b>Value:</b> {entity}<br><b>Entity type:</b> {entity_legend[label]}<br><b>Sentiment:</b> {sentiment}">'
@@ -165,8 +166,7 @@ def entity_types_plot_single(entity_sentiments: pd.DataFrame):
         y='Frequency',
         title=f'Distribution of Named Entity Types',
         labels={'Entity Type': 'Entity Type', 'Frequency': 'Frequency'},
-        color='Frequency',
-        color_continuous_scale='Viridis'  # Similar to sns.color_palette('viridis')
+        color_discrete_sequence=[my_blue]  # Similar to sns.color_palette('viridis')
     )
 
     # Update layout for better readability
@@ -176,6 +176,9 @@ def entity_types_plot_single(entity_sentiments: pd.DataFrame):
         title=dict(x=0.5),  # Center-align the title
         coloraxis_showscale=False,  # Hide the color scale legend
     )
+    #temmplate
+    fig.update_layout(template='plotly_white')
+
     return fig
 
 
@@ -192,8 +195,7 @@ def most_common_entities_plot_single(entity_sentiments: pd.DataFrame):
         orientation='h',
         title=f'Most Common Named Entities',
         labels={'Entity': 'Entity', 'Frequency': 'Frequency'},
-        color='Frequency',
-        color_continuous_scale='Viridis',
+        color_discrete_sequence=[my_blue],
     )
 
     fig.update_layout(
@@ -210,6 +212,7 @@ def most_common_entities_plot_single(entity_sentiments: pd.DataFrame):
         title=dict(x=0.5),  # Center-align the title
         coloraxis_showscale=False,  # Hide the color scale
     )
+    fig.update_layout(template='plotly_white')
 
     return fig
 
@@ -225,7 +228,7 @@ def sentiment_dist_plot_single(entity_sentiments: pd.DataFrame, sentiment_senten
 
     fig = go.Figure()
     sentiments = ['Positive', 'Neutral', 'Negative']
-    colors = ['green', 'gray', 'red']
+    colors = [my_green, my_yellow, my_red]
 
     for sentiment, color in zip(sentiments, colors):
         fig.add_trace(
@@ -255,6 +258,7 @@ def sentiment_dist_plot_single(entity_sentiments: pd.DataFrame, sentiment_senten
         height=600,
         width=800
     )
+    fig.update_layout(template='plotly_white')
 
     return fig
 
@@ -264,7 +268,7 @@ def most_common_words_plot_single(sentiment_sentences: pd.DataFrame, N=100, arti
     fdist = FreqDist(
         [word for word in word_tokenize(' '.join(sentiment_sentences["Sentence"])) if
          word.lower() not in stop_words and word.isalpha()])
-    wordcloud = WordCloud(width=800, height=400, background_color='white').generate_from_frequencies(
+    wordcloud = WordCloud(width=800, height=400, background_color='white', color_func=lambda *args, **kwargs: my_blue).generate_from_frequencies(
         dict(fdist.most_common(N)))
     plt.imshow(wordcloud, interpolation='bilinear', aspect='auto')
     plt.axis('off')
