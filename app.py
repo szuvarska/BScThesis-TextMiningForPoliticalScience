@@ -1,4 +1,5 @@
 import os
+
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'  # Suppress TensorFlow logging messages
 from pathlib import Path
 import pandas as pd
@@ -13,7 +14,8 @@ from App.plots import generate_entity_types_plot, generate_most_common_entities_
     generate_top_N_common_pos_plot, generate_pos_wordclouds_plot, generate_community_graph, generate_pos_choices, \
     generate_bigrams_plot, generate_concordance
 from shinywidgets import output_widget, render_widget
-from App.single_analysis import analyse_single_article, entity_types_plot_single, most_common_entities_plot_single,  sentiment_dist_plot_single, most_common_words_plot_single
+from App.single_analysis import analyse_single_article, entity_types_plot_single, most_common_entities_plot_single, \
+    sentiment_dist_plot_single, most_common_words_plot_single
 from App.double_analysis import entity_types_plot_double, most_common_entities_plot_double, sentiment_dist_plot_double
 from colors import main_color, my_red, my_blue, my_gray, my_green, my_yellow, my_orange
 
@@ -108,9 +110,9 @@ all_module = ui.tags.div(
     class_="main-container"
 )
 
-page_dependencies = ui.tags.head(
+page_dependencies = ui.head_content(
     ui.tags.link(rel="stylesheet", type="text/css", href="style.css"),
-    ui.tags.link(rel="icon",type="image/png", href="logomini.png")
+    ui.tags.link(rel="icon", type="image/png", href="logomini.png")
 )
 
 page_layout = ui.page_navbar(
@@ -118,7 +120,7 @@ page_layout = ui.page_navbar(
     ui.nav_panel("Single", single_module),
     ui.nav_panel("Double", double_module),
     ui.nav_panel("All", all_module),
-    title="Global Times: Articles Analysis",#PRESS ARTICLES EXPLORATION
+    title="Global Times: Articles Analysis",  #PRESS ARTICLES EXPLORATION
     footer=ui.tags.div(
         ui.tags.div("Łukasz Grabarski & Marta Szuwarska", class_="footer")
     )
@@ -127,7 +129,7 @@ page_layout = ui.page_navbar(
 app_ui = ui.page_fluid(
     page_dependencies,
     page_layout,
-    title="Global Times: Articles Analysis", #PRESS ARTICLES EXPLORATION
+    title="Global Times: Articles Analysis",  #PRESS ARTICLES EXPLORATION
 )
 
 
@@ -442,8 +444,10 @@ def server(input, output, session):
     @output
     @render_widget
     def sentiment_dist_sentence_double_plot():
-        if isinstance(sentiment_sentences_1.get(), pd.DataFrame) and isinstance(sentiment_sentences_2.get(), pd.DataFrame):
-            return sentiment_dist_plot_double(sentiment_sentences_1.get(), sentiment_sentences_2.get(), base="Sentences")
+        if isinstance(sentiment_sentences_1.get(), pd.DataFrame) and isinstance(sentiment_sentences_2.get(),
+                                                                                pd.DataFrame):
+            return sentiment_dist_plot_double(sentiment_sentences_1.get(), sentiment_sentences_2.get(),
+                                              base="Sentences")
 
     @output
     @render_widget
@@ -572,7 +576,9 @@ def server(input, output, session):
                                 choices=["Person", "Organisation", "Location", "Miscellaneous"]),
                 ui.input_select("sentiment_model_filter", "Select Sentiment Model", choices=["TSC", "VADER"]),
                 ui.input_numeric("word_cloud_n", "Number of Words in Word Cloud", value=100, min=1),
-                ui.input_selectize("pos_filter", "Select Part of Speech", choices=generate_pos_choices(), multiple=False, selected="Common Singular Nouns", options={"create": False, "searchField": ["label"]}),
+                ui.input_selectize("pos_filter", "Select Part of Speech", choices=generate_pos_choices(),
+                                   multiple=False, selected="Common Singular Nouns",
+                                   options={"create": False, "searchField": ["label"]}),
                 ui.input_text("filter_words", "Filter Words (comma-separated)", value="US, China"),
                 ui.input_numeric("ngram_number", "N-gram Number", value=2, min=2),
                 ui.input_action_button("hide_container_button_all", "Hide Menu", class_="btn btn-secondary"),
@@ -736,13 +742,13 @@ def server(input, output, session):
         dataset_name = input.dataset_filter()
         filter_words = [word.strip() for word in input.filter_words().split(",") if word.strip()]
         ngram_number = input.ngram_number()
-    
+
         # Generate concordance DataFrame
         concordance_df = generate_concordance(dataset_name, filter_words, ngram_number)
-    
+
         # Ensure only the required columns are used
         concordance_df = concordance_df[["lefts", "center", "rights", "count"]]
-    
+
         if concordance_df.empty:
             return ui.div("No concordance results found.")
 
