@@ -27,16 +27,19 @@ def handle_file_upload(file_input):
     file_info = file_input()
     if file_info is None or len(file_info) == 0:
         return None, None
-    with open(file_info[0]["datapath"], "r") as file:
-        lines = file.readlines()
-        if len(lines) < 7:
-            return "Invalid file format", None
-        published_time = lines[0].split(": ", 1)[1].strip()
-        title = lines[1].split(": ", 1)[1].strip()
-        categories = lines[2].split(";")
-        category1 = categories[0].split(": ", 1)[1].strip()
-        category2 = categories[1].split(": ", 1)[1].strip()
-    return f"{title} -- {published_time} -- {category1} / {category2}", lines
+    try:
+        with open(file_info[0]["datapath"], "r", encoding="utf-8", errors="ignore") as file:
+            lines = file.readlines()
+            if len(lines) < 7:
+                return "Invalid file format", None
+            published_time = lines[0].split(": ", 1)[1].strip()
+            title = lines[1].split(": ", 1)[1].strip()
+            categories = lines[2].split(";")
+            category1 = categories[0].split(": ", 1)[1].strip()
+            category2 = categories[1].split(": ", 1)[1].strip()
+        return f"{title} -- {published_time} -- {category1} / {category2}", lines
+    except UnicodeDecodeError:
+        return "File encoding error", None
 
 
 def generate_histogram():
