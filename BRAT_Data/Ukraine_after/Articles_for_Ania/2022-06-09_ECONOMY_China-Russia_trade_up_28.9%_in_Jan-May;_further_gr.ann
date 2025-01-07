@@ -1,5 +1,5 @@
 T1	geographic_location 3287 3292	China
-T2	praise 3293 3451;3452 3534	will continue to conduct normal trade cooperation with Russia, while remaining firmly opposed to unilateral sanctions that have no basis in international law. "Reality has shown that sanctions are not the right solution to the Ukraine crisis
+T2	praise 3293 3451	will continue to conduct normal trade cooperation with Russia, while remaining firmly opposed to unilateral sanctions that have no basis in international law. "Reality has shown that sanctions are not the right solution to the Ukraine crisis
 R1	refers Arg1:T2 Arg2:T1	
 T3	event 2734 2752	China-Russia trade
 T4	praise 2753 3027	will show a relatively large increase despite the Ukraine crisis and COVID-19 outbreaks this year, boosted by the complementary needs of the economies, experts said.Li predicted that China-Russia trade will maintain robust growth this year and could surge above $150 billion

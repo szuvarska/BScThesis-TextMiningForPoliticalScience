@@ -1,5 +1,5 @@
 T1	geographic_location 340 345	China
-T2	praise 359 565;566 650	doubled down on efforts to stabilize its economy, with a slew of new measures introduced for the trade sector as part of an imperative push to ensure the economy's reasonable growth over the second quarter. The fresh official avowal is envisioned to support the trade sector out of a low ebb
+T2	praise 359 565	doubled down on efforts to stabilize its economy, with a slew of new measures introduced for the trade sector as part of an imperative push to ensure the economy's reasonable growth over the second quarter. The fresh official avowal is envisioned to support the trade sector out of a low ebb
 R1	refers Arg1:T2 Arg2:T1	
 A1	2 T2
 T3	organization 817 857	n executive meeting of the State Council
@@ -32,7 +32,7 @@ A9	2 T15
 R8	refers Arg1:T14 Arg2:T13	
 R9	refers Arg1:T15 Arg2:T13	
 T16	geographic_location 7261 7267	China'
-T17	praise 7269 7420;7421 7462;7463 7506	position in global industrial chains cannot be replaced easily due to its advantages in the business environment, labor force maturity and other areas. "China's competitiveness has not changed. It is still the world's manufacturing basis
+T17	praise 7269 7420	position in global industrial chains cannot be replaced easily due to its advantages in the business environment, labor force maturity and other areas. "China's competitiveness has not changed. It is still the world's manufacturing basis
 A10	3 T17
 R10	refers Arg1:T17 Arg2:T16	
 T18	event 7530 7551	China's low inflation

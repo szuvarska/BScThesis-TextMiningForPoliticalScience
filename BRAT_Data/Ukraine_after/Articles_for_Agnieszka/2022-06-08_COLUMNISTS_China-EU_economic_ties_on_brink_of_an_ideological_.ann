@@ -19,11 +19,10 @@ A11	1 T9
 R5	refers Arg1:T9 Arg2:T8	
 T10	group_of_people 1683 1697	EU politicians
 T11	blame 1698 1876	continued to pile up pressure on European companies by hyping up issues such as human rights in Xinjiang.
-As a result, the mistrust between China and the EU has continued to rise
 A14	1 T11
 R6	refers Arg1:T11 Arg2:T10	
 T12	organization 1919 1921	EU
-T13	blame 1698 1803;1804 1876	continued to pile up pressure on European companies by hyping up issues such as human rights in Xinjiang. As a result, the mistrust between China and the EU has continued to rise
+T13	blame 1698 1803	continued to pile up pressure on European companies by hyping up issues such as human rights in Xinjiang. As a result, the mistrust between China and the EU has continued to rise
 A17	2 T13
 R7	refers Arg1:T13 Arg2:T10	
 T14	blame 1922 2006	will mix human rights, Hong Kong and Xinjiang affairs with economic and trade issues
@@ -34,7 +33,7 @@ T16	blame 2068 2117	will take retaliatory moves against its companies
 A25	1 T16
 R9	refers Arg1:T16 Arg2:T15	
 T17	event 2485 2512	the Russia-Ukraine conflict
-T18	blame 2514 2770;2771 2885	EU companies will have to reconsider their future investments in China, their market expansion, the prospect of industrial chain dependence, and look for alternative places for their production against the backdrop of intensified ideological confrontation. Chinese companies and exporters will also have to consider the impact of this trend on their development in Europe
+T18	blame 2514 2770	EU companies will have to reconsider their future investments in China, their market expansion, the prospect of industrial chain dependence, and look for alternative places for their production against the backdrop of intensified ideological confrontation. Chinese companies and exporters will also have to consider the impact of this trend on their development in Europe
 A28	2 T18
 R10	refers Arg1:T18 Arg2:T17	
 T19	group_of_countries 4094 4112	European countries
@@ -42,6 +41,6 @@ T20	blame 4113 4141	have a colonial past in Asia
 A29	2 T20
 R11	refers Arg1:T20 Arg2:T19	
 T21	event 4329 4413	If the US-led value alliance dominates the development of global finance and economy
-T22	blame 4415 4492;4493 4570	it will be difficult for the EU to truly become a powerful pole in the world. Of course, in that case, China's development will also face more difficulties
+T22	blame 4415 4492	it will be difficult for the EU to truly become a powerful pole in the world. Of course, in that case, China's development will also face more difficulties
 A32	2 T22
 R12	refers Arg1:T22 Arg2:T21	

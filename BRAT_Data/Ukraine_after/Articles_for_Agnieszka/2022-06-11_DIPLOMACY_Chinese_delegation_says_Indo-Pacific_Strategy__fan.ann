@@ -56,7 +56,7 @@ T27	event 5108 5149	The actions taken by the Chinese military
 T28	praise 5208 5245	are reasonable, safe and professional
 A15	2 T28
 R15	refers Arg1:T28 Arg2:T27	
-T29	group_of_countries 5308 5331;5379 5388	Australian and Canadian countries
+T29	group_of_countries 5308 5331	Australian and Canadian countries
 T30	blame 5458 5578	kept carrying out close-in reconnaissance and provocative activities by surveillance planes in East and South China Seas
 A16	3 T30
 R16	refers Arg1:T30 Arg2:T29	

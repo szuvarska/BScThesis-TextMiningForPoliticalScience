@@ -67,7 +67,7 @@ T34	praise 5489 5567	the two leaders have enjoyed a deep personal friendship for
 A17	2 T34
 R17	refers Arg1:T34 Arg2:T33	
 T35	geographic_location 5761 5766	China
-T36	praise 5709 5759;5767 5809	Putin said the Russian side sincerely congratulate on its remarkable development achievements
+T36	praise 5709 5759	Putin said the Russian side sincerely congratulate on its remarkable development achievements
 A18	3 T36
 R18	refers Arg1:T36 Arg2:T35	
 T37	person 5841 5843	Xi

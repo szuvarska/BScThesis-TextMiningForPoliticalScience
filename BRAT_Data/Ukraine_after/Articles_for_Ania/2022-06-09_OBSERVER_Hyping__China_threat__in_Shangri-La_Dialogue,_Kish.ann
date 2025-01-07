@@ -1,4 +1,4 @@
-T2	blame 1439 1491;1492 1664	warned that "Ukraine might be tomorrow's East Asia." This is blatant fabrication and dissemination of the fake urgency - a potential war may soon break out in Asia - to terrify regional countries and force them to take sides.
+T2	blame 1439 1491	warned that "Ukraine might be tomorrow's East Asia." This is blatant fabrication and dissemination of the fake urgency - a potential war may soon break out in Asia - to terrify regional countries and force them to take sides.
 T1	person 1431 1438	Kishida
 R1	refers Arg1:T2 Arg2:T1	
 T3	person 1679 1686	Kishida

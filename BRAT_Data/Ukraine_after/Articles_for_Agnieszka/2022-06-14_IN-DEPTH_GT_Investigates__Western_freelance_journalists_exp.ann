@@ -28,7 +28,7 @@ T15	blame 1850 1915	propaganda employed when reporting on the Russia-Ukraine con
 A7	3 T15
 R7	refers Arg1:T15 Arg2:T14	
 T16	geographic_location 2530 2536	Russia
-T17	blame 2513 2529;2540 2560	The West accuses generating fake news
+T17	blame 2513 2529	The West accuses generating fake news
 A8	2 T17
 R8	refers Arg1:T17 Arg2:T16	
 T18	group_of_countries 2513 2521	The West

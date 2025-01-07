@@ -27,7 +27,7 @@ T14	blame 1926 1945	are highly deceptiv
 A7	3 T14
 R7	refers Arg1:T14 Arg2:T13	
 T15	geographic_location 2077 2095	Beijing and Moscow
-T16	blame 2057 2076;2096 2171	Washington believes are posing threats to its hegemony in Asia-Pacific and Europe, respectively
+T16	blame 2057 2076	Washington believes are posing threats to its hegemony in Asia-Pacific and Europe, respectively
 A8	2 T16
 R8	refers Arg1:T16 Arg2:T15	
 T17	event 2279 2309	serving US hegemonic interests
@@ -46,7 +46,7 @@ T23	blame 2634 2729	of using its advantaged military power to challenge regional
 A12	3 T23
 R12	refers Arg1:T23 Arg2:T21	
 T24	geographic_location 2759 2764	China
-T25	blame 2731 2758;2765 2823	Washington wants to portray as a direct and real threat to all the allies and partners
+T25	blame 2731 2758	Washington wants to portray as a direct and real threat to all the allies and partners
 A13	2 T25
 R13	refers Arg1:T25 Arg2:T24	
 T26	geographic_location 3645 3647	US
@@ -62,6 +62,6 @@ T31	blame 4236 4311	are willing to act against Russia under Washington's incitem
 A16	2 T31
 R16	refers Arg1:T31 Arg2:T30	
 T32	geographic_location 4355 4360	China
-T33	praise 4322 4354;4361 4402	many Asia-Pacific countries view as a friend and reliable economic partner
+T33	praise 4322 4354	many Asia-Pacific countries view as a friend and reliable economic partner
 A17	2 T33
 R17	refers Arg1:T33 Arg2:T32	

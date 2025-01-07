@@ -3,7 +3,7 @@ import spacy
 
 
 def read_txt_file(file_path):
-    with open(file_path, 'r') as file:
+    with open(file_path, 'r', encoding="utf-8") as file:
         return file.read()
 
 
@@ -148,6 +148,6 @@ def perform_preprocessing(path):
     ann_df = clean_ann(ann)
     relations = make_relations_df(ann_df)
     final_df = make_final_df(relations, ann_df, sentences)
-    final_df = add_ner_to_sentence(final_df)
-    atomized_df = atomize_entities(final_df)
+    ner_df = add_ner_to_sentence(final_df)
+    atomized_df = atomize_entities(ner_df)
     return atomized_df
