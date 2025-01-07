@@ -6,10 +6,11 @@ from community import community_louvain
 from tqdm import tqdm
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 import matplotlib.colors as mcolors
-from colors import main_color,my_red,my_blue,my_gray,my_green,my_yellow
+from colors import main_color, my_red, my_blue, my_gray, my_green, my_yellow
+import matplotlib.gridspec as gridspec
 
 
-#from Sentiment.sentiment_script import vader_sentiment
+# from Sentiment.sentiment_script import vader_sentiment
 
 def vader_sentiment(text: str) -> str:
     vader_analyzer = SentimentIntensityAnalyzer()
@@ -21,7 +22,6 @@ def vader_sentiment(text: str) -> str:
         return 'negative'
     else:
         return 'neutral'
-
 
 
 def plot_community_graph(df_ner: pd.DataFrame, df_entities: pd.DataFrame, suptitle: str, title: str,
@@ -57,9 +57,7 @@ def plot_community_graph(df_ner: pd.DataFrame, df_entities: pd.DataFrame, suptit
                 elif sentiment == 'negative':
                     co_sentiment[(present_entities[i], present_entities[j])] -= 1
 
-
-
-    #standarize sentiment
+    # standarize sentiment
     for (entity1, entity2), sentiment in co_sentiment.items():
         co_sentiment[(entity1, entity2)] = sentiment / co_occurrence[(entity1, entity2)]
 
@@ -87,13 +85,16 @@ def plot_community_graph(df_ner: pd.DataFrame, df_entities: pd.DataFrame, suptit
     for node, community in partition.items():
         G.nodes[node]['community'] = community
 
-    #add sentiment to the edges
+    # add sentiment to the edges
     for (entity1, entity2), sentiment in co_sentiment.items():
         if entity1 in G.nodes and entity2 in G.nodes and G.has_edge(entity1, entity2):
             G[entity1][entity2]['sentiment'] = sentiment
 
     # draw the graph
-    plt.figure(figsize=(12, 9))
+    fig = plt.figure(figsize=(12, 9))
+    gs = gridspec.GridSpec(1, 2, width_ratios=[15, 1])
+    ax = plt.subplot(gs[0])
+    cax = plt.subplot(gs[1])
     if layout == 'spring':
         pos = nx.spring_layout(G, k=0.5)
     elif layout == 'circular':
@@ -127,8 +128,8 @@ def plot_community_graph(df_ner: pd.DataFrame, df_entities: pd.DataFrame, suptit
         weights_to_plot = [((weight - mean_weight) / std_weight) for weight in weights]  # normalize weights
 
     # draw nodes with community colors and egdes with weights
-    nx.draw_networkx_nodes(G, pos, node_size=node_sizes, node_color=node_colors)
-    #add efges with sentiment as color
+    nx.draw_networkx_nodes(G, pos, node_size=node_sizes, node_color=node_colors, ax=ax)
+    # add efges with sentiment as color
     edge_colors = []
     for edge in edges:
         if len(edge[2]) < 2:
@@ -138,13 +139,14 @@ def plot_community_graph(df_ner: pd.DataFrame, df_entities: pd.DataFrame, suptit
 
     # edge_colors = [edge[2]['sentiment'] if edge[2]['sentiment'] is not None else 0 for edge in edges]
     my_cmap = mcolors.LinearSegmentedColormap.from_list("custom_colormap", [my_red, my_yellow, my_green])
-    nx.draw_networkx_edges(G, pos, edgelist=edges, width=weights_to_plot, edge_color=edge_colors, edge_cmap=my_cmap)
-    nx.draw_networkx_labels(G, pos, font_size=10, font_weight='bold')
-    #add legend for the sentiment
+    nx.draw_networkx_edges(G, pos, edgelist=edges, width=weights_to_plot, edge_color=edge_colors, edge_cmap=my_cmap,
+                           ax=ax)
+    nx.draw_networkx_labels(G, pos, font_size=10, font_weight='bold', ax=ax)
+    # add legend for the sentiment
     sm = plt.cm.ScalarMappable(cmap=my_cmap, norm=plt.Normalize(vmin=-1, vmax=1))
     sm.set_array([])
-    plt.colorbar(sm, label='Sentiment')
-
+    cbar = fig.colorbar(sm, cax=cax)
+    cbar.set_label('Sentiment')
 
     # labels = nx.get_edge_attributes(G, 'weight')
     # nx.draw_networkx_edge_labels(G, pos, edge_labels=labels, font_size=8)
