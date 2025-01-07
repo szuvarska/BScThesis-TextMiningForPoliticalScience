@@ -4,4 +4,4 @@ App/nltk_data/
 .stats_cache
 /thesisenv/
 /env/
-.idea
+/.idea/
