@@ -1,0 +1,22 @@
+**/*__pycache__
+*.pyc
+*.pyo
+*.pyd
+.Python
+env
+venv
+ENV
+.git
+.gitignore
+.DS_Store
+rsconnect-python
+README.md
+App/tests
+**/*.ann
+**/*.conf
+BlameAndPraise
+BRAT_Data/*.conf
+**/*.ipynb
+Topics
+thesisenv
+'EDA plots'
