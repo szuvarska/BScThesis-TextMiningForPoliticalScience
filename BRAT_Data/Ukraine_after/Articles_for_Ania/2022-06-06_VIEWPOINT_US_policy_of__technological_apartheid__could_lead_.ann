@@ -13,7 +13,7 @@ T5	event 1538 1670	the economic policy behind such US schemes as the "alliance o
 A6	focus_Behavior T5
 A7	basis_Normality T5
 R3	refers Arg1:T4 Arg2:T5	
-T6	blame 1671 1760;1761 1880	But even the countries involved in these "select groups" are not there on an equal basis. If any of them were to deviate in any way from the will of the "hegemon," they would also be subject to the same policy
+T6	blame 1671 1760	But even the countries involved in these "select groups" are not there on an equal basis. If any of them were to deviate in any way from the will of the "hegemon," they would also be subject to the same policy
 A8	2 T6
 T7	geographic_location 1570 1580	US schemes
 A9	basis_Veracity T7

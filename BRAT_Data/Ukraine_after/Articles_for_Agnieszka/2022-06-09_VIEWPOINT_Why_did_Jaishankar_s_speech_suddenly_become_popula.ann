@@ -10,7 +10,7 @@ T5	blame 2189 2231	Europe's problems are the world's problems
 A3	2 T5
 R3	refers Arg1:T5 Arg2:T4	
 T6	group_of_countries 2453 2459	Europe
-T7	blame 2330 2441;2442 2512	the China-India dispute not only predated the Ukraine crisis, but also had been better managed than the latter. So, it was Europe that should be given a lecture on crisis management.
+T7	blame 2330 2441	the China-India dispute not only predated the Ukraine crisis, but also had been better managed than the latter. So, it was Europe that should be given a lecture on crisis management.
 A4	2 T7
 R4	refers Arg1:T7 Arg2:T6	
 T8	group_of_countries 3332 3340	the West

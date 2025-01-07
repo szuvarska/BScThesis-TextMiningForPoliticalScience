@@ -2,10 +2,10 @@ T1	blame 379 532	concerning issues related to China's Taiwan, Hong Kong, Macao a
 T2	event 342 378	report adopted by the European Union
 R1	refers Arg1:T1 Arg2:T2	
 T3	organization 549 568	European Parliament
-T4	blame 592 915;916 1171	adopted the report on the EU and the security challenges in the Indo-Pacific, claiming that China poses a threat to the EU's interests in the region, criticizing China's position on Ukraine, Taiwan, Hong Kong, Macao and Xinjiang-related issues, and calling for the EU to enhance the existing partnership with Taiwan island. The parliament's report, based on ideological bias, distorts China's policy and position, plays up the "China threat" ideology, denies China's legitimate right to safeguard its sovereignty and security, and grossly interferes with China's internal affairs
+T4	blame 592 915	adopted the report on the EU and the security challenges in the Indo-Pacific, claiming that China poses a threat to the EU's interests in the region, criticizing China's position on Ukraine, Taiwan, Hong Kong, Macao and Xinjiang-related issues, and calling for the EU to enhance the existing partnership with Taiwan island. The parliament's report, based on ideological bias, distorts China's policy and position, plays up the "China threat" ideology, denies China's legitimate right to safeguard its sovereignty and security, and grossly interferes with China's internal affairs
 R2	refers Arg1:T4 Arg2:T3	
 T5	event 2598 2625	China's position on Ukraine
-T6	praise 2626 2787;2788 2936	has been consistent and clear, as it has assumed an objective and impartial position all along and reached independent judgment based on the merits of the facts. China has been working actively and playing a constructive role in promoting peace talks and preventing conflict and large-scale humanitarian crisis
+T6	praise 2626 2787	has been consistent and clear, as it has assumed an objective and impartial position all along and reached independent judgment based on the merits of the facts. China has been working actively and playing a constructive role in promoting peace talks and preventing conflict and large-scale humanitarian crisis
 R3	refers Arg1:T6 Arg2:T5	
 T7	praise 2938 3025	Time will prove that China's position is responsible and withstands the test of history
 R4	refers Arg1:T7 Arg2:T5	

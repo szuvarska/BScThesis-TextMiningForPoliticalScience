@@ -1,6 +1,7 @@
 import pandas as pd
 import ast
 import plotly.express as px
+from colors import my_orange, my_red, my_green, my_blue, my_yellow, my_gray, my_purple, my_lightblue
 
 def calculate_mean_sentiment(df: pd.DataFrame):
     df_aggregated = df
@@ -85,6 +86,7 @@ def plot_topic_over_time(df: pd.DataFrame, top_n: int = 10):
                   x="published_time",
                   y="occurrences",
                   color="key_word",
+                  color_discrete_sequence=[my_orange, my_red, my_green, my_blue, my_yellow, my_gray, my_purple, my_lightblue],
                   title="Top Topics Over Time",
                   template="plotly_white")
 

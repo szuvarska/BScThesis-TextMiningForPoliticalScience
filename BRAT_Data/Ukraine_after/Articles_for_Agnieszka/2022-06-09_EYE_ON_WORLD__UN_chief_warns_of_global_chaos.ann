@@ -16,18 +16,17 @@ R4	refers Arg1:T5 Arg2:T1
 T6	blame 900 1091	It is amplifying the consequences of the many other crises the world faces: climate, COVID-19, and the severe global inequalities in the resources available for the recovery from the pandemic
 A7	3 T6
 R5	refers Arg1:T6 Arg2:T1	
-T7	blame 1269 1306;1307 1377	Food prices are at near-record highs. Fertilizer prices have more than doubled, sounding an alarm everywhere
+T7	blame 1269 1306	Food prices are at near-record highs. Fertilizer prices have more than doubled, sounding an alarm everywhere
 A8	3 T7
 R6	refers Arg1:T7 Arg2:T1	
-T8	blame 1379 1562;1563 1612;1613 1653;1654 1777	Without fertilizers, shortages will spread from corn and wheat to all staple crops, including rice, with a devastating impact on billions of people in Asia and South America, he said. "This year's food crisis is about lack of access. Next year's could be about lack of food. "Record high energy prices are also triggering blackouts and fuel shortages in all parts of the world, especially in Africa
+T8	blame 1379 1562	Without fertilizers, shortages will spread from corn and wheat to all staple crops, including rice, with a devastating impact on billions of people in Asia and South America, he said. "This year's food crisis is about lack of access. Next year's could be about lack of food. "Record high energy prices are also triggering blackouts and fuel shortages in all parts of the world, especially in Africa
 A9	3 T8
 R7	refers Arg1:T8 Arg2:T1	
 T9	blame 2069 2316	Now, both countries and individuals have no hope of balancing their budgets.
-Instead, families everywhere are being forced into impossible decisions: whether to shut down their businesses, sell their livestock, or take their children out of school
 A10	3 T9
 T10	event 2467 2485	the Ukraine crisis
 A11	basis_Responsability T10
 A12	focus_Outcome T10
-T11	blame 2069 2145;2146 2317;2318 2413	Now, both countries and individuals have no hope of balancing their budgets. Instead, families everywhere are being forced into impossible decisions: whether to shut down their businesses, sell their livestock, or take their children out of school. Women and girls are often the last to eat, and the first to miss meals as food shortages spread
+T11	blame 2069 2145	Now, both countries and individuals have no hope of balancing their budgets. Instead, families everywhere are being forced into impossible decisions: whether to shut down their businesses, sell their livestock, or take their children out of school. Women and girls are often the last to eat, and the first to miss meals as food shortages spread
 A13	3 T11
 R8	refers Arg1:T11 Arg2:T10	

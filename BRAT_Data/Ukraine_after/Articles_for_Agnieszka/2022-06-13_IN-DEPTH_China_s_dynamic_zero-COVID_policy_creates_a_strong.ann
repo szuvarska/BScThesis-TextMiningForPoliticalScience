@@ -3,7 +3,7 @@ T2	praise 8406 8472	plays a pivotal role in the world and should be back on trac
 A1	2 T2
 R1	refers Arg1:T2 Arg2:T1	
 T4	event 8787 8834	China's dominant position in the global economy
-T3	praise 8835 8861;8862 8990	is relatively outstanding. Especially in the context of the conflict between Russia and Ukraine, the world has placed higher expectations on a stable China
+T3	praise 8835 8861	is relatively outstanding. Especially in the context of the conflict between Russia and Ukraine, the world has placed higher expectations on a stable China
 A2	3 T3
 R2	refers Arg1:T3 Arg2:T4	
 T5	event 7117 7144	China's economic foundation

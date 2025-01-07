@@ -1,5 +1,5 @@
 T1	group_of_people 836 850	US politicians
-T2	blame 851 896;897 964	play the xenophobic card in an election year. What is astonishing is how awful this kind of political card can be
+T2	blame 851 896	play the xenophobic card in an election year. What is astonishing is how awful this kind of political card can be
 A1	3 T2
 R1	refers Arg1:T2 Arg2:T1	
 T3	event 1686 1697	US politics
@@ -11,11 +11,11 @@ T6	blame 1978 2008	has become a laughable country
 A3	2 T6
 R3	refers Arg1:T6 Arg2:T5	
 T7	event 2297 2319	The US' political soil
-T8	blame 2320 2388;2389 2440;2441 2541	is toxic as it has produced such extreme and irrational politicians. And this kind of politician is not in the minority. They can politicize almost all problems, which will inevitably trigger confusion in the China policy
+T8	blame 2320 2388	is toxic as it has produced such extreme and irrational politicians. And this kind of politician is not in the minority. They can politicize almost all problems, which will inevitably trigger confusion in the China policy
 A4	3 T8
 R4	refers Arg1:T8 Arg2:T7	
 T9	geographic_location 2564 2566	US
-T10	blame 2567 2605;2606 2671	won't be capable of tackling anything. This also indicates that the US' domestic problems will intensify
+T10	blame 2567 2605	won't be capable of tackling anything. This also indicates that the US' domestic problems will intensify
 A5	2 T10
 R5	refers Arg1:T10 Arg2:T9	
 T11	geographic_location 2745 2747	US

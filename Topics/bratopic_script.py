@@ -7,7 +7,6 @@ from nltk.tokenize import word_tokenize
 from sklearn.feature_extraction.text import CountVectorizer
 from sentence_transformers import SentenceTransformer
 from hdbscan import HDBSCAN
-import openai
 from bertopic.representation import KeyBERTInspired, MaximalMarginalRelevance, OpenAI, PartOfSpeech
 
 def perform_bratopic(df: pd.DataFrame):
@@ -33,3 +32,5 @@ def perform_bratopic(df: pd.DataFrame):
     topic_detailes_df = topic_model.get_topic_info()
 
     return topics, probs, topic_detailes_df, topic_model
+
+
