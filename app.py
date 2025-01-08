@@ -1,4 +1,6 @@
 import os
+import asyncio
+import glob
 
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'  # Suppress TensorFlow logging messages
 from pathlib import Path
@@ -77,20 +79,110 @@ def list_files_in_folder(folder_path):
     return file_list
 
 
-def analyze_file(file_path, article_analysis, entity_sentiments, sentiment_sentences):
-    with open(file_path, "r") as file:
-        lines = file.readlines()
-        if len(lines) >= 7:
-            article_text = "\n".join(line.strip() for line in lines[7:])
-            analysis, entities, sentences = analyse_single_article(article_text)
+def analyze_file(file_path_or_lines, is_uploaded, progress_callback=None):
+    """
+    Blocking file analysis function that updates progress.
+    Args:
+        file_path_or_lines: Lines of file (uploaded) or file path (selected).
+        is_uploaded: Whether the file is uploaded or selected.
+        progress_callback: Callable for updating progress.
+    Returns:
+        Analysis results, entity sentiments, and sentiment sentences.
+    """
+    if is_uploaded:
+        lines = file_path_or_lines
+    else:
+        with open(file_path_or_lines, "r") as file:
+            lines = file.readlines()
+
+    if not lines or len(lines) < 7:
+        raise ValueError("Invalid file format or insufficient lines in the file.")
+
+    # Start analysis
+    if progress_callback:
+        progress_callback(1, message="Reading and preparing file...")
+
+    article_text = "\n".join(line.strip() for line in lines[7:])
+    if progress_callback:
+        progress_callback(3, message="Analyzing text...")
+
+    # Call `analyse_single_article` directly (blocking)
+    return analyse_single_article(article_text, progress_callback)
+
+
+async def analyze_file_reactive(file_input, file_select, article_analysis, entity_sentiments, sentiment_sentences,
+                                progress_id):
+    """
+    Handles file analysis for uploaded or selected files reactively.
+
+    Args:
+        file_input: Reactive input for file upload.
+        file_select: Reactive input for file selection.
+        article_analysis: Reactive value to store article analysis results.
+        entity_sentiments: Reactive value to store entity sentiments.
+        sentiment_sentences: Reactive value to store sentiment sentences.
+        progress_id: ID for the progress bar UI.
+    """
+    if file_input() is not None:
+        # Handle uploaded file
+        _, lines = handle_file_upload(file_input)
+        if not lines:
+            ui.notification_show("Invalid uploaded file.", type="error")
+            return
+        file_path_or_lines = lines
+        is_uploaded = True
+    elif file_select() and file_select() != "None":
+        # Handle selected file
+        folder_path = here / "BRAT_Data"
+        file_choices = list_files_in_folder(folder_path)
+        selected_file = next(full for full, display in file_choices if display == file_select())
+        file_path_or_lines = folder_path / selected_file
+        is_uploaded = False
+    else:
+        # No file provided
+        return
+
+    with ui.Progress(min=1, max=100) as p:
+        try:
+            # Set progress at the beginning
+            p.set(message="Starting analysis...")
+
+            # Blocking function (ensure progress updates are in the main thread)
+            analysis, entities, sentences = analyze_file(
+                file_path_or_lines=file_path_or_lines,
+                is_uploaded=is_uploaded,
+                progress_callback=p.set  # Directly pass progress updates
+            )
+            # Store results
             article_analysis.set(analysis)
             entity_sentiments.set(entities)
             sentiment_sentences.set(sentences)
+        except ValueError as e:
+            ui.notification_show(str(e), type="error")
 
 
-def generate_header(file_input, file_select):
+def render_uploaded_text_content(article_analysis, view_full_text, file_upload, file_select):
+    if article_analysis.get():
+        # If analysis is complete, display the results
+        lines = article_analysis.get().split("<br>")
+        if view_full_text.get():
+            content_lines = lines
+        else:
+            content_lines = lines[:50]  # Show only the first 50 lines by default
+        return ui.HTML("<br>".join(content_lines))
+    elif file_upload() or file_select() != "None":
+        # Show the progress bar while analysis is ongoing
+        return ui.div(
+            ui.div("Analysis in progress...", class_="progress-message"),
+            class_="progress-container"
+        )
+    return "No file uploaded"
+
+
+def generate_header(file_input, file_select, article_analysis, current_header):
     header, _ = handle_file_upload(file_input)
     if header:
+        current_header.set(header)
         return header
     selected_file = file_select()
     if selected_file and selected_file != "None":
@@ -105,8 +197,18 @@ def generate_header(file_input, file_select):
                                   f"{lines[0].split(': ', 1)[1].strip()} -- "
                                   f"{lines[2].split(';')[0].split(': ', 1)[1].strip()} / "
                                   f"{lines[2].split(';')[1].split(': ', 1)[1].strip()}")
+                current_header.set(display_header)
                 return display_header
-    return "No file uploaded"
+    if not article_analysis():
+        return "No file uploaded"
+    return current_header()
+
+
+def remove_png_files():
+    png_files = glob.glob('App/www/*.png')
+    for file in png_files:
+        if 'logomini.png' not in file:
+            os.remove(file)
 
 
 single_module = ui.tags.div(
@@ -121,7 +223,7 @@ single_module = ui.tags.div(
         class_="main-left-container single-module"
     ),
     ui.output_ui("right_container_single"),
-    ui.busy_indicators.options(spinner_type="dots2", spinner_color=my_orange, spinner_size="50px"),
+    ui.busy_indicators.options(spinner_type="dots2", spinner_color=my_orange, spinner_size="50px", fade_opacity=1),
     class_="main-container",
 )
 
@@ -143,7 +245,7 @@ double_module = ui.tags.div(
         class_="main-left-container"
     ),
     ui.output_ui("right_container_double"),
-    ui.busy_indicators.options(spinner_type="dots2", spinner_color=my_orange, spinner_size="50px"),
+    ui.busy_indicators.options(spinner_type="dots2", spinner_color=my_orange, spinner_size="50px", fade_opacity=1),
     class_="main-container"
 )
 
@@ -230,6 +332,9 @@ def server(input, output, session):
     selected_file_value = reactive.Value("None")
     selected_file_value_1 = reactive.Value("None")
     selected_file_value_2 = reactive.Value("None")
+    article_header = reactive.Value("No file uploaded")
+    article_header_1 = reactive.Value("No file uploaded")
+    article_header_2 = reactive.Value("No file uploaded")
 
     @reactive.Effect
     @reactive.event(input.view_full_text)
@@ -252,89 +357,126 @@ def server(input, output, session):
         new_label = "View less" if view_full_text_2.get() else "View more"
         session.send_input_message("view_full_text_2", {"label": new_label})
 
-    @reactive.Effect
-    @reactive.event(input.file_upload)
-    def analyze_article():
-        _, lines = handle_file_upload(input.file_upload)
-        if lines:
-            article_text = "\n".join(line.strip() for line in lines[7:])
-            analysis, entities, sentences = analyse_single_article(article_text)
-            article_analysis.set(analysis)
-            entity_sentiments.set(entities)
-            sentiment_sentences.set(sentences)
+    # @reactive.Effect
+    # @reactive.event(input.file_upload)
+    # async def analyze_uploaded_file():
+    #     _, lines = handle_file_upload(input.file_upload)
+    #     if lines:
+    #         with ui.Progress(min=1, max=100, id="analysis_progress") as p:
+    #             try:
+    #                 analysis, entities, sentences = await analyze_file(
+    #                     file_path_or_lines=lines,
+    #                     is_uploaded=True,
+    #                     progress_callback=p.set
+    #                 )
+    #                 article_analysis.set(analysis)
+    #                 entity_sentiments.set(entities)
+    #                 sentiment_sentences.set(sentences)
+    #             except ValueError as e:
+    #                 ui.notification_show(str(e), type="error")
 
-    @reactive.Effect
-    @reactive.event(input.file_upload_1)
-    def analyze_article_1():
-        _, lines = handle_file_upload(input.file_upload_1)
-        if lines:
-            article_text = "\n".join(line.strip() for line in lines[7:])
-            analysis, entities, sentences = analyse_single_article(article_text)
-            article_analysis_1.set(analysis)
-            entity_sentiments_1.set(entities)
-            sentiment_sentences_1.set(sentences)
-
-    @reactive.Effect
-    @reactive.event(input.file_upload_2)
-    def analyze_article_2():
-        _, lines = handle_file_upload(input.file_upload_2)
-        if lines:
-            article_text = "\n".join(line.strip() for line in lines[7:])
-            analysis, entities, sentences = analyse_single_article(article_text)
-            article_analysis_2.set(analysis)
-            entity_sentiments_2.set(entities)
-            sentiment_sentences_2.set(sentences)
+    # @reactive.Effect
+    # @reactive.event(input.file_upload_1)
+    # def analyze_article_1():
+    #     _, lines = handle_file_upload(input.file_upload_1)
+    #     if lines:
+    #         article_text = "\n".join(line.strip() for line in lines[7:])
+    #         analysis, entities, sentences = analyse_single_article(article_text)
+    #         article_analysis_1.set(analysis)
+    #         entity_sentiments_1.set(entities)
+    #         sentiment_sentences_1.set(sentences)
+    #
+    # @reactive.Effect
+    # @reactive.event(input.file_upload_2)
+    # def analyze_article_2():
+    #     _, lines = handle_file_upload(input.file_upload_2)
+    #     if lines:
+    #         article_text = "\n".join(line.strip() for line in lines[7:])
+    #         analysis, entities, sentences = analyse_single_article(article_text)
+    #         article_analysis_2.set(analysis)
+    #         entity_sentiments_2.set(entities)
+    #         sentiment_sentences_2.set(sentences)
 
     @output
     @render.text
     def uploaded_text_header():
-        return generate_header(input.file_upload, input.file_select)
+        return generate_header(input.file_upload, input.file_select, article_analysis, article_header)
+
+    # @output
+    # @render.ui
+    # def uploaded_text_content():
+    #     if article_analysis.get():
+    #         lines = article_analysis.get().split("<br>")
+    #         if view_full_text.get():
+    #             content_lines = lines
+    #         else:
+    #             content_lines = lines[:50]
+    #         return ui.HTML("<br>".join(content_lines))
+    #     return "No file uploaded"
 
     @output
     @render.ui
     def uploaded_text_content():
-        if article_analysis.get():
-            lines = article_analysis.get().split("<br>")
-            if view_full_text.get():
-                content_lines = lines
-            else:
-                content_lines = lines[:50]
-            return ui.HTML("<br>".join(content_lines))
-        return "No file uploaded"
+        return render_uploaded_text_content(
+            article_analysis=article_analysis,
+            view_full_text=view_full_text,
+            file_upload=input.file_upload,
+            file_select=input.file_select
+        )
 
     @output
     @render.text
     def uploaded_text_header_1():
-        return generate_header(input.file_upload_1, input.file_select_1)
+        return generate_header(input.file_upload_1, input.file_select_1, article_analysis_1, article_header_1)
+
+    # @output
+    # @render.ui
+    # def uploaded_text_content_1():
+    #     if article_analysis_1.get():
+    #         lines = article_analysis_1.get().split("<br>")
+    #         if view_full_text_1.get():
+    #             content_lines = lines
+    #         else:
+    #             content_lines = lines[:50]
+    #         return ui.HTML("<br>".join(content_lines))
+    #     return "No file uploaded"
 
     @output
     @render.ui
     def uploaded_text_content_1():
-        if article_analysis_1.get():
-            lines = article_analysis_1.get().split("<br>")
-            if view_full_text_1.get():
-                content_lines = lines
-            else:
-                content_lines = lines[:50]
-            return ui.HTML("<br>".join(content_lines))
-        return "No file uploaded"
+        return render_uploaded_text_content(
+            article_analysis=article_analysis_1,
+            view_full_text=view_full_text_1,
+            file_upload=input.file_upload_1,
+            file_select=input.file_select_1
+        )
 
     @output
     @render.text
     def uploaded_text_header_2():
-        return generate_header(input.file_upload_2, input.file_select_2)
+        return generate_header(input.file_upload_2, input.file_select_2, article_analysis_2, article_header_2)
+
+    # @output
+    # @render.ui
+    # def uploaded_text_content_2():
+    #     if article_analysis_2.get():
+    #         lines = article_analysis_2.get().split("<br>")
+    #         if view_full_text_2.get():
+    #             content_lines = lines
+    #         else:
+    #             content_lines = lines[:50]
+    #         return ui.HTML("<br>".join(content_lines))
+    #     return "No file uploaded"
 
     @output
     @render.ui
     def uploaded_text_content_2():
-        if article_analysis_2.get():
-            lines = article_analysis_2.get().split("<br>")
-            if view_full_text_2.get():
-                content_lines = lines
-            else:
-                content_lines = lines[:50]
-            return ui.HTML("<br>".join(content_lines))
-        return "No file uploaded"
+        return render_uploaded_text_content(
+            article_analysis=article_analysis_2,
+            view_full_text=view_full_text_2,
+            file_upload=input.file_upload_2,
+            file_select=input.file_select_2
+        )
 
     @output
     @render.ui
@@ -880,41 +1022,41 @@ def server(input, output, session):
         # Return the styled HTML table
         return ui.HTML(table_html)
 
-    @reactive.Effect
-    @reactive.event(input.file_select)
-    def analyze_selected_file():
-        selected_display_file = input.file_select()
-        if selected_display_file and selected_display_file != "None":
-            selected_file_value.set(selected_display_file)
-            folder_path = here / "BRAT_Data"
-            file_choices = list_files_in_folder(folder_path)
-            selected_file = next(full for full, display in file_choices if display == selected_display_file)
-            file_path = folder_path / selected_file
-            analyze_file(file_path, article_analysis, entity_sentiments, sentiment_sentences)
+    # @reactive.Effect
+    # @reactive.event(input.file_select)
+    # def analyze_selected_file():
+    #     selected_display_file = input.file_select()
+    #     if selected_display_file and selected_display_file != "None":
+    #         selected_file_value.set(selected_display_file)
+    #         folder_path = here / "BRAT_Data"
+    #         file_choices = list_files_in_folder(folder_path)
+    #         selected_file = next(full for full, display in file_choices if display == selected_display_file)
+    #         file_path = folder_path / selected_file
+    #         analyze_file(file_path, article_analysis, entity_sentiments, sentiment_sentences)
 
-    @reactive.Effect
-    @reactive.event(input.file_select_1)
-    def analyze_selected_file_1():
-        selected_display_file_1 = input.file_select_1()
-        if selected_display_file_1 and selected_display_file_1 != "None":
-            selected_file_value_1.set(selected_display_file_1)
-            folder_path = here / "BRAT_Data"
-            file_choices = list_files_in_folder(folder_path)
-            selected_file_1 = next(full for full, display in file_choices if display == selected_display_file_1)
-            file_path_1 = folder_path / selected_file_1
-            analyze_file(file_path_1, article_analysis_1, entity_sentiments_1, sentiment_sentences_1)
-
-    @reactive.Effect
-    @reactive.event(input.file_select_2)
-    def analyze_selected_file_2():
-        selected_display_file_2 = input.file_select_2()
-        if selected_display_file_2 and selected_display_file_2 != "None":
-            selected_file_value_2.set(selected_display_file_2)
-            folder_path = here / "BRAT_Data"
-            file_choices = list_files_in_folder(folder_path)
-            selected_file_2 = next(full for full, display in file_choices if display == selected_display_file_2)
-            file_path_2 = folder_path / selected_file_2
-            analyze_file(file_path_2, article_analysis_2, entity_sentiments_2, sentiment_sentences_2)
+    # @reactive.Effect
+    # @reactive.event(input.file_select_1)
+    # def analyze_selected_file_1():
+    #     selected_display_file_1 = input.file_select_1()
+    #     if selected_display_file_1 and selected_display_file_1 != "None":
+    #         selected_file_value_1.set(selected_display_file_1)
+    #         folder_path = here / "BRAT_Data"
+    #         file_choices = list_files_in_folder(folder_path)
+    #         selected_file_1 = next(full for full, display in file_choices if display == selected_display_file_1)
+    #         file_path_1 = folder_path / selected_file_1
+    #         analyze_file(file_path_1, article_analysis_1, entity_sentiments_1, sentiment_sentences_1)
+    #
+    # @reactive.Effect
+    # @reactive.event(input.file_select_2)
+    # def analyze_selected_file_2():
+    #     selected_display_file_2 = input.file_select_2()
+    #     if selected_display_file_2 and selected_display_file_2 != "None":
+    #         selected_file_value_2.set(selected_display_file_2)
+    #         folder_path = here / "BRAT_Data"
+    #         file_choices = list_files_in_folder(folder_path)
+    #         selected_file_2 = next(full for full, display in file_choices if display == selected_display_file_2)
+    #         file_path_2 = folder_path / selected_file_2
+    #         analyze_file(file_path_2, article_analysis_2, entity_sentiments_2, sentiment_sentences_2)
 
     @output
     @render.ui
@@ -971,6 +1113,47 @@ def server(input, output, session):
                 </div>
             """)
         return ui.div()
+
+    @reactive.Effect
+    @reactive.event(input.file_upload, input.file_select)
+    async def analyze_single_file():
+        await analyze_file_reactive(
+            file_input=input.file_upload,
+            file_select=input.file_select,
+            article_analysis=article_analysis,
+            entity_sentiments=entity_sentiments,
+            sentiment_sentences=sentiment_sentences,
+            progress_id="analysis_progress_single"
+        )
+
+    @reactive.Effect
+    @reactive.event(input.file_upload_1, input.file_select_1)
+    async def analyze_first_file():
+        await analyze_file_reactive(
+            file_input=input.file_upload_1,
+            file_select=input.file_select_1,
+            article_analysis=article_analysis_1,
+            entity_sentiments=entity_sentiments_1,
+            sentiment_sentences=sentiment_sentences_1,
+            progress_id="analysis_progress_double_1"
+        )
+
+    @reactive.Effect
+    @reactive.event(input.file_upload_2, input.file_select_2)
+    async def analyze_second_file():
+        await analyze_file_reactive(
+            file_input=input.file_upload_2,
+            file_select=input.file_select_2,
+            article_analysis=article_analysis_2,
+            entity_sentiments=entity_sentiments_2,
+            sentiment_sentences=sentiment_sentences_2,
+            progress_id="analysis_progress_double_2"
+        )
+
+    @reactive.Effect
+    @reactive.event(input.dataset_filter)
+    def on_dataset_change():
+        remove_png_files()
 
 
 www_dir = Path(__file__).parent / "App/www"

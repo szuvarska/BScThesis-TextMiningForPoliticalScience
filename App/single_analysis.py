@@ -1,5 +1,5 @@
 import os
-
+import asyncio
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 import pandas as pd
 import spacy
@@ -65,39 +65,58 @@ def tsc_sentiment(sentence: str, target: str) -> str:
         return 'unknown'
 
 
-def analyse_single_article(article_text: str):
+def analyse_single_article(article_text: str, progress_callback=None):
     positive_emoji = "emoji_1"
     negative_emoji = "emoji_2"
     neutral_emoji = "emoji_3"
+
+    # Step 1: Split sentences
+    if progress_callback:
+        progress_callback(5, message="Splitting text into sentences...")
     sentences = [sent.text.strip() for sent in nlp(article_text).sents]
     sentiment_sentences = []
 
-    # Analyze sentiment for each sentence
+    # Step 2: Analyze sentiment for each sentence
     for i, sentence in enumerate(sentences):
+        if progress_callback and i % 10 == 0:
+            progress_callback(5 + i / len(sentences) * 30, message=f"Analysing sentiment for sentence {i+1}/{len(sentences)}...")
         sentiment = vader_sentiment(sentence)
-        sentiment_emoji = positive_emoji if sentiment == "positive" else negative_emoji if sentiment == "negative" else neutral_emoji
+        sentiment_emoji = (
+            positive_emoji if sentiment == "positive" else
+            negative_emoji if sentiment == "negative" else
+            neutral_emoji
+        )
         sentences[i] = sentence + ' ' + sentiment_emoji
         sentiment_sentences.append((sentence, sentiment))
 
+    # Step 3: Process the article text
+    if progress_callback:
+        progress_callback(40, message="Processing text with NLP model...")
     modified_text = " ".join(sentences)
-    # Process the article text with the spacy model for visualization
     doc = nlp(modified_text)
 
-    # Extract named entities
+    # Step 4: Extract named entities
+    if progress_callback:
+        progress_callback(60, message="Extracting named entities...")
     entities = [(ent.text, ent.label_) for ent in doc.ents if ent.label_ in entity_legend.keys()]
 
-    # Analyze sentiment for each entity
+    # Step 5: Analyze sentiment for each entity
     entity_sentiments = []
-    for entity, label in entities:
+    for i, (entity, label) in enumerate(entities):
+        if progress_callback and i % 5 == 0:
+            progress_callback(70 + i / len(entities) * 30, message=f"Analysing sentiment for entity {i+1}/{len(entities)}...")
         for sentence in sentences:
             if entity in sentence:
                 sentiment = tsc_sentiment(sentence, entity)
                 entity_sentiments.append((entity, label, sentiment))
                 break
 
-    # Visualize the named entities using displacy
+    # Step 6: Render HTML
+    if progress_callback:
+        progress_callback(95, message="Rendering visualisation...")
     options = {"ents": list(entity_legend.keys())}
     html = displacy.render(doc, style="ent", jupyter=False, options=options)
+
     html = html.replace(
         "emoji_1",
         '<a href="https://img.icons8.com/ios-filled/50/00FF00/happy--v1.png" target="_blank">'
@@ -150,7 +169,11 @@ def analyse_single_article(article_text: str):
     entity_sentiments = pd.DataFrame(entity_sentiments, columns=["Entity", "Entity Type", "Sentiment"])
     sentiment_sentences = pd.DataFrame(sentiment_sentences, columns=["Sentence", "Sentiment"])
 
+    if progress_callback:
+        progress_callback(100, message="Analysis complete!")
+
     return full_html, entity_sentiments, sentiment_sentences
+
 
 
 def entity_types_plot_single(entity_sentiments: pd.DataFrame):
