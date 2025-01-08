@@ -1,10 +1,10 @@
-version: '3'
 services:
-  global_times_analysis:
-    build: .
+  app:
+    image: szuvarska/globaltimesanalysis:latest
     ports:
       - "8000:8000"
-    volumes:
-      - .:/app
     environment:
       - NAME=GlobalTimesAnalysis
+    volumes:
+      - .:/app
+    command: ["shiny", "run", "app.py", "--host", "0.0.0.0", "--port", "8000"]
