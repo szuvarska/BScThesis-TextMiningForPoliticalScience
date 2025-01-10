@@ -74,26 +74,33 @@ def make_topic_over_time_df(df: pd.DataFrame):
 
     return topics_over_time_df
 
-def plot_topic_over_time(df: pd.DataFrame, top_n: int = 10):
+def plot_topic_over_time(df: pd.DataFrame, top_n: int = 10, dataset_name: str = ''):
 
     topics_over_time_df = make_topic_over_time_df(df)
     N = top_n
     total_occurrences = topics_over_time_df.groupby('key_word')['occurrences'].sum()
     top_words = total_occurrences.nlargest(N).index
-    top_topics_over_time_df = topics_over_time_df[topics_over_time_df['key_word'].isin(top_words)]
+    topics_over_time_df = topics_over_time_df[topics_over_time_df['key_word'].isin(top_words)]
+
+    max_occurrences = topics_over_time_df['occurrences'].max()
+    top_topics_over_time_df =topics_over_time_df
+    top_topics_over_time_df['occurrences'] = topics_over_time_df['occurrences'].apply(
+        lambda x: x / max_occurrences if max_occurrences > 0 else 0)
 
     fig = px.line(top_topics_over_time_df,
                   x="published_time",
                   y="occurrences",
                   color="key_word",
                   color_discrete_sequence=[my_orange, my_red, my_green, my_blue, my_yellow, my_gray, my_purple, my_lightblue],
-                  title="Top Topics Over Time",
+                  title= f"Key words trend - {dataset_name}",
                   template="plotly_white")
 
     # fig.update_traces(visible="legendonly")  # Initially hide all lines but keep them visible in the legend
+    
 
     fig.update_layout(
         xaxis=dict(
+            title="Publication Date",
             rangeselector=dict(
                 buttons=list([
                     dict(count=7, label="1w", step="day", stepmode="backward"),
@@ -103,6 +110,9 @@ def plot_topic_over_time(df: pd.DataFrame, top_n: int = 10):
             ),
             rangeslider=dict(visible=True),
             type="date"
+        ),
+        yaxis=dict(
+            title="Standardized frequency"
         ),
         updatemenus=[
             dict(
@@ -122,6 +132,58 @@ def plot_topic_over_time(df: pd.DataFrame, top_n: int = 10):
                 ]
             )
         ]
+    )
+
+    return fig
+
+def plot_stacked_topics_over_time(df:pd.DataFrame, my_words: list[str], seleted_aggragation: str = 'monthly', dataset_name: str = ''):
+
+    topics_over_time_df = make_topic_over_time_df(df)
+    topics_over_time_df['monthly'] = topics_over_time_df['published_time'].apply(lambda x: x[:7])
+    topics_over_time_df['daily'] = pd.to_datetime(topics_over_time_df['published_time'])
+    topics_over_time_df['week_of_year'] = topics_over_time_df['daily'].dt.isocalendar().week
+    topics_over_time_df['weekly'] = (
+            topics_over_time_df['daily'].dt.year.astype(str) +
+            "-W" +
+            topics_over_time_df['week_of_year'].astype(str)
+    )
+
+    topics_over_time_df = topics_over_time_df[topics_over_time_df['key_word'].isin(my_words)]
+
+    if seleted_aggragation == 'monthly':
+        topics_over_time_df = topics_over_time_df.groupby(['monthly', 'key_word'])['occurrences'].sum().reset_index()
+        max_occurrences = topics_over_time_df['occurrences'].max()
+        topics_to_plot = topics_over_time_df
+        topics_to_plot['occurrences'] = topics_over_time_df['occurrences'].apply(
+            lambda x: x / max_occurrences if max_occurrences > 0 else 0)
+    elif seleted_aggragation == 'weekly':
+        topics_over_time_df = topics_over_time_df.groupby(['weekly', 'key_word'])['occurrences'].sum().reset_index()
+        max_occurrences = topics_over_time_df['occurrences'].max()
+        topics_to_plot = topics_over_time_df
+        topics_to_plot['occurrences'] = topics_over_time_df['occurrences'].apply(
+            lambda x: x / max_occurrences if max_occurrences > 0 else 0)
+    else:
+        topics_over_time_df = topics_over_time_df.groupby(['daily', 'key_word'])['occurrences'].sum().reset_index()
+        max_occurrences = topics_over_time_df['occurrences'].max()
+        topics_to_plot = topics_over_time_df
+        topics_to_plot['occurrences'] = topics_over_time_df['occurrences'].apply(
+            lambda x: x / max_occurrences if max_occurrences > 0 else 0)
+
+    fig = px.bar(
+        topics_to_plot,
+        x=seleted_aggragation,
+        y='occurrences',
+        color='key_word',
+        title=f"Stacked keywords trend - {dataset_name}",
+        labels={'occurrences': 'standardized frequency', 'key_word': 'Keyword'},
+        barmode='stack',
+        template='plotly_white',
+        color_discrete_sequence=[my_blue, my_red, my_orange, my_green, my_yellow, my_gray, my_purple, my_lightblue]
+    )
+    fig.update_layout(
+        yaxis=dict(
+            title="Standardized frequency"
+        )
     )
 
     return fig

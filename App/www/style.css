@@ -90,7 +90,7 @@ body .nav-underline {
     height: 85vh;
     overflow: auto;
     padding: 20px;
-    background-color: var(--container-color);
+    background-color: var(--background-color);
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -103,19 +103,23 @@ body .nav-underline {
     box-shadow: 3px 3px 10px lightgray;
     padding: 10px;
     margin-bottom: 20px;
+    background: var(--container-color);
 }
 
 .main-left-container .article-container:first-child,
 .main-left-container .article-container:nth-child(2) {
     width: 48%;
+    background: var(--container-color);
 }
 
 .single-module .article-container.single-article-container {
     width: 100% !important;
+    background: var(--container-color);
 }
 
 .single-module .plots-container {
     margin-bottom: 30px;
+    background: var(--container-color);
 }
 
 .main-right-container {
@@ -350,6 +354,7 @@ img.entity-types-plot {
   overflow: hidden;
   width: 45%;
   box-shadow: 3px 3px 10px lightgray;
+    background: var(--container-color);
   padding: 10px;
   box-sizing: border-box;
   margin: 10px auto 30px;
@@ -358,7 +363,10 @@ img.entity-types-plot {
 .plots-row .plot-image, .plots-row .shiny-ipywidget-output {
     display: block;
     margin: 0 auto 30px;
+    background: var(--container-color); !important;
 }
+
+.shiny-
 
 .container-fluid {
     padding: 0;
@@ -498,7 +506,10 @@ table.concordance-table {
   margin: 20px auto;
   color: var(--app-title-color);
     box-shadow: 3px 3px 10px lightgray;
+}
 
+table.concordance-table body{
+    background-color: var(--container-color);
 }
 
 table.concordance-table th {
