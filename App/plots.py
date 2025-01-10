@@ -17,7 +17,7 @@ from Community_detection.community_graph_script import plot_community_graph
 
 from NGrams.NGrams_script import visualize_bigrams, concordance
 
-from Topics.topics_vis import make_topic_over_time_df, plot_topic_over_time,plot_stacked_topics_over_time
+from Topics.topics_vis import make_topic_over_time_df, plot_topic_over_time, plot_stacked_topics_over_time
 
 
 def generate_entity_types_plot(dataset_name: str):
@@ -153,6 +153,7 @@ def generate_bigrams_plot(dataset_name: str):
     plot.close()
     return image_path
 
+
 def generate_concordance(dataset_name: str, filter: list, ngram_number: int):
     dataset_name_to_display = dataset_name
     dataset_name = dataset_name.replace(' ', '_')[:-9].lower()
@@ -162,23 +163,27 @@ def generate_concordance(dataset_name: str, filter: list, ngram_number: int):
     return concordance(df, filter, ngram_number)
 
 
-def generate_topics_over_time_plot(dataset_name: str, top_n: int = 10):
+def generate_keywords_over_time_plot(dataset_name: str, top_n: int = 10):
+    dataset_name_to_display = dataset_name
     dataset_name = dataset_name.replace(' ', '_')[:-9].lower()
     dataset_name = dataset_name.replace('during', 'after')
     df = pd.read_csv(f"Data/Sentances_df/sentences_{dataset_name.lower()}.csv")
-    return plot_topic_over_time(df, top_n, dataset_name)
+    return plot_topic_over_time(df, top_n, dataset_name_to_display)
 
-def generate_stacked_topics_over_time_plot(dataset_name: str, my_words: list[str], aggregation: str = 'monthly'):
+
+def generate_stacked_keywords_over_time_plot(dataset_name: str, my_words: list[str], aggregation: str = 'monthly'):
+    dataset_name_to_display = dataset_name
     dataset_name = dataset_name.replace(' ', '_')[:-9].lower()
     dataset_name = dataset_name.replace('during', 'after')
     df = pd.read_csv(f"Data/Sentances_df/sentences_{dataset_name.lower()}.csv")
-    return plot_stacked_topics_over_time(df, my_words, aggregation, dataset_name)
+    return plot_stacked_topics_over_time(df, my_words, aggregation, dataset_name_to_display)
 
-def get_topic_to_choose(dataset_name: str):
+
+def generate_keywords(dataset_name: str):
     dataset_name = dataset_name.replace(' ', '_')[:-9].lower()
     dataset_name = dataset_name.replace('during', 'after')
     df = pd.read_csv(f"Data/Sentances_df/sentences_{dataset_name}.csv")
-    topics_over_time_df = make_topic_over_time_df(df)
-    topics_to_select = topics_over_time_df['key_word'].unique().tolist()
-    print(topics_to_select)
-    return topics_to_select
+    keywords_over_time_df = make_topic_over_time_df(df)
+    keywords_to_select = keywords_over_time_df['key_word'].unique().tolist()
+    keywords_to_select.sort()
+    return keywords_to_select

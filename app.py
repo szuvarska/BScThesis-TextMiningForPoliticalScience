@@ -16,7 +16,7 @@ from App.plots import (generate_entity_types_plot, generate_most_common_entities
                        generate_word_count_distribution_plot, generate_sentence_count_distribution_plot,
                        generate_top_N_common_words_plot, generate_top_N_common_pos_plot, generate_pos_wordclouds_plot,
                        generate_community_graph, generate_pos_choices, generate_bigrams_plot, generate_concordance,
-                       generate_topics_over_time_plot, generate_stacked_topics_over_time_plot, get_topic_to_choose)
+                       generate_keywords_over_time_plot, generate_stacked_keywords_over_time_plot, generate_keywords)
 from shinywidgets import output_widget, render_widget
 from App.single_analysis import analyse_single_article, entity_types_plot_single, most_common_entities_plot_single, \
     sentiment_dist_plot_single, most_common_words_plot_single
@@ -317,7 +317,7 @@ def server(input, output, session):
     ner_visible = reactive.Value(True)
     sentiment_visible = reactive.Value(True)
     communities_visible = reactive.Value(True)
-    keywords_trend_visible = reactive.Value(True)
+    keywords_trends_visible = reactive.Value(True)
     ngrams_visible = reactive.Value(True)
     introduction_visible = reactive.Value(True)
     guide_visible = reactive.Value(True)
@@ -337,6 +337,7 @@ def server(input, output, session):
     article_header = reactive.Value("No file uploaded")
     article_header_1 = reactive.Value("No file uploaded")
     article_header_2 = reactive.Value("No file uploaded")
+    keywords_choices = reactive.Value(generate_keywords("Gaza before conflict"))
 
     @reactive.Effect
     @reactive.event(input.view_full_text)
@@ -669,20 +670,17 @@ def server(input, output, session):
 
     @output
     @render_widget
-    def topics_over_time_plot():
+    def keywords_over_time_plot():
         dataset_name = input.dataset_filter()
-        return generate_topics_over_time_plot(dataset_name)
+        return generate_keywords_over_time_plot(dataset_name)
 
     @output
     @render_widget
-    def stacked_topics_over_time_plot():
+    def stacked_keywords_over_time_plot():
         dataset_name = input.dataset_filter()
-        selected_topics_widget = input.selected_topics()
+        selected_keywords_widget = input.selected_keywords()
         selected_date_agg = input.date_range()
-        if not selected_topics_widget:
-            return ui.HTML("<p>Please select or type at least one topic to generate the plot.</p>")
-        else:
-            return generate_stacked_topics_over_time_plot(dataset_name, selected_topics_widget, selected_date_agg)
+        return generate_stacked_keywords_over_time_plot(dataset_name, selected_keywords_widget, selected_date_agg)
 
     @output
     @render.plot
@@ -733,13 +731,12 @@ def server(input, output, session):
                 "ngrams_plots"
             ),
             collapsible_section(
-                "Key words trend",
-                "toggle_keywords_trend_button",
-                "keywords_trend_plots"
+                "Keywords trends",
+                "toggle_keywords_trends_button",
+                "keywords_trends_plots"
             ),
             class_="plots-container"
         )
-
 
     @reactive.Effect
     @reactive.event(input.hide_container_button_single)
@@ -830,17 +827,17 @@ def server(input, output, session):
                 ui.input_text("filter_words", "Filter Words (comma-separated)", value="US, China"),
                 ui.input_numeric("ngram_number", "N-gram Number", value=2, min=2),
                 ui.input_selectize(
-                    "selected_topics",
-                    "Select topics to analyze:",
-                    choices=['russia'],
-                    selected=['russia'],
+                    "selected_keywords",
+                    "Select keywords to analyze",
+                    choices=keywords_choices.get(),
+                    selected=keywords_choices.get()[0],
                     multiple=True,
-                    options={"create": False, "placeholder": "Select or type topics"}
+                    options={"create": False, "placeholder": "Select or type keywords"}
                 ),
 
                 ui.input_select(
                     "date_range",
-                    "Select date aggregation:",
+                    "Select date aggregation",
                     choices=['daily', 'weekly', 'monthly'],
                     selected='monthly'
                 ),
@@ -889,11 +886,13 @@ def server(input, output, session):
     def toggle_ngrams_visibility():
         ngrams_visible.set(not ngrams_visible.get())
         session.send_input_message("toggle_ngrams_button", {"label": "⯆" if ngrams_visible.get() else "⯈"})
+
     @reactive.Effect
-    @reactive.event(input.toggle_keywords_trend_button)
-    def toggle_keywords_trend_visibility():
-        keywords_trend_visible.set(not keywords_trend_visible.get())
-        session.send_input_message("toggle_keywords_trend_button", {"label": "⯆" if keywords_trend_visible.get() else "⯈"})
+    @reactive.event(input.toggle_keywords_trends_button)
+    def toggle_keywords_trends_visibility():
+        keywords_trends_visible.set(not keywords_trends_visible.get())
+        session.send_input_message("toggle_keywords_trends_button",
+                                   {"label": "⯆" if keywords_trends_visible.get() else "⯈"})
 
     @reactive.Effect
     @reactive.event(input.toggle_introduction_button)
@@ -1003,35 +1002,18 @@ def server(input, output, session):
                 ui.output_ui("concordance_table", class_="concordance-table"),
                 class_="plots-row"
             )
+        return ui.div()
+
     @output
     @render.ui
-    def keywords_trend_plots():
-        if keywords_trend_visible.get():
+    def keywords_trends_plots():
+        if keywords_trends_visible.get():
             return ui.div(
-                output_widget("topics_over_time_plot"),
-                output_widget("stacked_topics_over_time_plot"),
+                output_widget("keywords_over_time_plot"),
+                output_widget("stacked_keywords_over_time_plot"),
                 class_="plots-row"
             )
         return ui.div()
-
-
-
-    # @output
-    # @render.ui
-    # def concordance_table():
-    #     dataset_name = input.dataset_filter()
-    #     filter_words = [word.strip() for word in input.filter_words().split(",") if word.strip()]
-    #     ngram_number = input.ngram_number()
-    #     concordance_df = generate_concordance(dataset_name, filter_words, ngram_number)
-    #     concordance_df = concordance_df[["formated_ngram", "count"]]
-    #
-    #     if concordance_df.empty:
-    #         return ui.div("No concordance results found.")
-    #
-    #     formatted_text = "Concordance Results:\n\n"
-    #     formatted_text += "\n".join(
-    #         [f"{row['formated_ngram']} \t Count: {row['count']}" for _, row in concordance_df.iterrows()])
-    #     return ui.HTML(f"<pre>{formatted_text}</pre>")
 
     @output
     @render.ui
@@ -1213,10 +1195,9 @@ def server(input, output, session):
 
     @reactive.Effect
     @reactive.event(input.dataset_filter)
-    def update_topic_choices():
+    def update_keywords_choices():
         dataset_name = input.dataset_filter()
-        topics = get_topic_to_choose(dataset_name)
-        session.send_input_message("selected_topics", {"choices": list(topics), "selected": topics[0]})
+        keywords_choices.set(generate_keywords(dataset_name))
 
 
 www_dir = Path(__file__).parent / "App/www"

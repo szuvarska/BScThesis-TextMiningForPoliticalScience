@@ -310,8 +310,13 @@ img.entity-types-plot {
     background-color: var(--container-color);
 }
 
-#topics_over_time_plot {
-    width: 110% !important;
+#keywords_over_time_plot {
+    width: 100%;
+    background-color: var(--container-color);
+}
+
+#stacked_keywords_over_time_plot {
+    width: 100%;
     background-color: var(--container-color);
 }
 
@@ -328,7 +333,7 @@ img.entity-types-plot {
 }
 
 #community_graph img {
-    width: 100%;
+    width: 100% !important;
     margin-bottom: 30px;
     background-color: var(--container-color);
 }
