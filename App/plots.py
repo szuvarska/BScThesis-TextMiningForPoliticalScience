@@ -167,3 +167,18 @@ def generate_topics_over_time_plot(dataset_name: str, top_n: int = 10):
     dataset_name = dataset_name.replace('during', 'after')
     df = pd.read_csv(f"Data/Sentances_df/sentences_{dataset_name.lower()}.csv")
     return plot_topic_over_time(df, top_n, dataset_name)
+
+def generate_stacked_topics_over_time_plot(dataset_name: str, my_words: list[str], aggregation: str = 'monthly'):
+    dataset_name = dataset_name.replace(' ', '_')[:-9].lower()
+    dataset_name = dataset_name.replace('during', 'after')
+    df = pd.read_csv(f"Data/Sentances_df/sentences_{dataset_name.lower()}.csv")
+    return plot_stacked_topics_over_time(df, my_words, aggregation, dataset_name)
+
+def get_topic_to_choose(dataset_name: str):
+    dataset_name = dataset_name.replace(' ', '_')[:-9].lower()
+    dataset_name = dataset_name.replace('during', 'after')
+    df = pd.read_csv(f"Data/Sentances_df/sentences_{dataset_name}.csv")
+    topics_over_time_df = make_topic_over_time_df(df)
+    topics_to_select = topics_over_time_df['key_word'].unique().tolist()
+    print(topics_to_select)
+    return topics_to_select

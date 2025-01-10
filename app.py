@@ -16,7 +16,7 @@ from App.plots import (generate_entity_types_plot, generate_most_common_entities
                        generate_word_count_distribution_plot, generate_sentence_count_distribution_plot,
                        generate_top_N_common_words_plot, generate_top_N_common_pos_plot, generate_pos_wordclouds_plot,
                        generate_community_graph, generate_pos_choices, generate_bigrams_plot, generate_concordance,
-                       generate_topics_over_time_plot)
+                       generate_topics_over_time_plot, generate_stacked_topics_over_time_plot, get_topic_to_choose)
 from shinywidgets import output_widget, render_widget
 from App.single_analysis import analyse_single_article, entity_types_plot_single, most_common_entities_plot_single, \
     sentiment_dist_plot_single, most_common_words_plot_single
@@ -674,6 +674,17 @@ def server(input, output, session):
         return generate_topics_over_time_plot(dataset_name)
 
     @output
+    @render_widget
+    def stacked_topics_over_time_plot():
+        dataset_name = input.dataset_filter()
+        selected_topics_widget = input.selected_topics()
+        selected_date_agg = input.date_range()
+        if not selected_topics_widget:
+            return ui.HTML("<p>Please select or type at least one topic to generate the plot.</p>")
+        else:
+            return generate_stacked_topics_over_time_plot(dataset_name, selected_topics_widget, selected_date_agg)
+
+    @output
     @render.plot
     def most_common_words_double_plot_1():
         if isinstance(sentiment_sentences_1.get(), pd.DataFrame):
@@ -818,6 +829,21 @@ def server(input, output, session):
                                    options={"create": False, "searchField": ["label"]}),
                 ui.input_text("filter_words", "Filter Words (comma-separated)", value="US, China"),
                 ui.input_numeric("ngram_number", "N-gram Number", value=2, min=2),
+                ui.input_selectize(
+                    "selected_topics",
+                    "Select topics to analyze:",
+                    choices=['russia'],
+                    selected=['russia'],
+                    multiple=True,
+                    options={"create": False, "placeholder": "Select or type topics"}
+                ),
+
+                ui.input_select(
+                    "date_range",
+                    "Select date aggregation:",
+                    choices=['daily', 'weekly', 'monthly'],
+                    selected='monthly'
+                ),
                 ui.input_action_button("hide_container_button_all", "Hide Menu", class_="btn btn-secondary"),
                 class_="main-right-container",
                 id="main-right-container-all"
@@ -983,9 +1009,12 @@ def server(input, output, session):
         if keywords_trend_visible.get():
             return ui.div(
                 output_widget("topics_over_time_plot"),
+                output_widget("stacked_topics_over_time_plot"),
                 class_="plots-row"
             )
         return ui.div()
+
+
 
     # @output
     # @render.ui
@@ -1181,6 +1210,13 @@ def server(input, output, session):
     @reactive.event(input.dataset_filter)
     def on_dataset_change():
         remove_png_files()
+
+    @reactive.Effect
+    @reactive.event(input.dataset_filter)
+    def update_topic_choices():
+        dataset_name = input.dataset_filter()
+        topics = get_topic_to_choose(dataset_name)
+        session.send_input_message("selected_topics", {"choices": list(topics), "selected": topics[0]})
 
 
 www_dir = Path(__file__).parent / "App/www"
