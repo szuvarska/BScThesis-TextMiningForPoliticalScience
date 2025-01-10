@@ -17,6 +17,8 @@ from Community_detection.community_graph_script import plot_community_graph
 
 from NGrams.NGrams_script import visualize_bigrams, concordance
 
+from Topics.topics_vis import make_topic_over_time_df, plot_topic_over_time,plot_stacked_topics_over_time
+
 
 def generate_entity_types_plot(dataset_name: str):
     dataset_name_to_display = dataset_name
@@ -158,3 +160,10 @@ def generate_concordance(dataset_name: str, filter: list, ngram_number: int):
     df = pd.read_csv(f"Preparations/Data_for_EDA/df_{dataset_name}.csv")
     df = df[(df['article_category_one'] != "PHOTO") & (df['article_text'].notnull())]
     return concordance(df, filter, ngram_number)
+
+
+def generate_topics_over_time_plot(dataset_name: str, top_n: int = 10):
+    dataset_name = dataset_name.replace(' ', '_')[:-9].lower()
+    dataset_name = dataset_name.replace('during', 'after')
+    df = pd.read_csv(f"Data/Sentances_df/sentences_{dataset_name.lower()}.csv")
+    return plot_topic_over_time(df, top_n, dataset_name)

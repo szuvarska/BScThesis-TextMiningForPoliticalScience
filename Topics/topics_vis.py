@@ -101,14 +101,6 @@ def plot_topic_over_time(df: pd.DataFrame, top_n: int = 10, dataset_name: str = 
     fig.update_layout(
         xaxis=dict(
             title="Publication Date",
-            rangeselector=dict(
-                buttons=list([
-                    dict(count=7, label="1w", step="day", stepmode="backward"),
-                    dict(count=1, label="1m", step="month", stepmode="backward"),
-                    dict(step="all")
-                ])
-            ),
-            rangeslider=dict(visible=True),
             type="date"
         ),
         yaxis=dict(

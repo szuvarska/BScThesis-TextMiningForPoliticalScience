@@ -15,7 +15,8 @@ from App.plots import (generate_entity_types_plot, generate_most_common_entities
                        generate_sentiment_over_time_per_target_plot, generate_sentiment_dist_over_time_by_target_plot,
                        generate_word_count_distribution_plot, generate_sentence_count_distribution_plot,
                        generate_top_N_common_words_plot, generate_top_N_common_pos_plot, generate_pos_wordclouds_plot,
-                       generate_community_graph, generate_pos_choices, generate_bigrams_plot, generate_concordance)
+                       generate_community_graph, generate_pos_choices, generate_bigrams_plot, generate_concordance,
+                       generate_topics_over_time_plot)
 from shinywidgets import output_widget, render_widget
 from App.single_analysis import analyse_single_article, entity_types_plot_single, most_common_entities_plot_single, \
     sentiment_dist_plot_single, most_common_words_plot_single
@@ -316,6 +317,7 @@ def server(input, output, session):
     ner_visible = reactive.Value(True)
     sentiment_visible = reactive.Value(True)
     communities_visible = reactive.Value(True)
+    keywords_trend_visible = reactive.Value(True)
     ngrams_visible = reactive.Value(True)
     introduction_visible = reactive.Value(True)
     guide_visible = reactive.Value(True)
@@ -666,6 +668,12 @@ def server(input, output, session):
             return sentiment_dist_plot_double(entity_sentiments_1.get(), entity_sentiments_2.get(), base="Entities")
 
     @output
+    @render_widget
+    def topics_over_time_plot():
+        dataset_name = input.dataset_filter()
+        return generate_topics_over_time_plot(dataset_name)
+
+    @output
     @render.plot
     def most_common_words_double_plot_1():
         if isinstance(sentiment_sentences_1.get(), pd.DataFrame):
@@ -713,8 +721,14 @@ def server(input, output, session):
                 "toggle_ngrams_button",
                 "ngrams_plots"
             ),
+            collapsible_section(
+                "Key words trend",
+                "toggle_keywords_trend_button",
+                "keywords_trend_plots"
+            ),
             class_="plots-container"
         )
+
 
     @reactive.Effect
     @reactive.event(input.hide_container_button_single)
@@ -849,6 +863,11 @@ def server(input, output, session):
     def toggle_ngrams_visibility():
         ngrams_visible.set(not ngrams_visible.get())
         session.send_input_message("toggle_ngrams_button", {"label": "⯆" if ngrams_visible.get() else "⯈"})
+    @reactive.Effect
+    @reactive.event(input.toggle_keywords_trend_button)
+    def toggle_keywords_trend_visibility():
+        keywords_trend_visible.set(not keywords_trend_visible.get())
+        session.send_input_message("toggle_keywords_trend_button", {"label": "⯆" if keywords_trend_visible.get() else "⯈"})
 
     @reactive.Effect
     @reactive.event(input.toggle_introduction_button)
@@ -956,6 +975,14 @@ def server(input, output, session):
             return ui.div(
                 ui.output_image("bigrams_plot"),
                 ui.output_ui("concordance_table", class_="concordance-table"),
+                class_="plots-row"
+            )
+    @output
+    @render.ui
+    def keywords_trend_plots():
+        if keywords_trend_visible.get():
+            return ui.div(
+                output_widget("topics_over_time_plot"),
                 class_="plots-row"
             )
         return ui.div()

@@ -210,22 +210,27 @@ img.entity-types-plot {
 
 #entity_types_plot {
     width: 80%;
+    background-color: var(--container-color);
 }
 
 #most_common_entities_plot {
     width: 100%;
+    background-color: var(--container-color);
 }
 
 #sentiment_dist_single_plot {
     width: 75%;
+    background-color: var(--container-color);
 }
 
 #sentiment_dist_plot {
     width: 80%;
+    background-color: var(--container-color);
 }
 
 #sentiment_over_time_plot {
     width: 85%;
+    background-color: var(--container-color);
 }
 
 #sentiment_word_cloud_plot {
@@ -235,26 +240,32 @@ img.entity-types-plot {
     /*border: 2px solid black;*/
     box-shadow: 3px 3px 10px lightgray;
     padding: 1px;
+    background-color: var(--container-color);
 }
 
 #sentiment_dist_per_target_plot {
     width: 100%;
+    background-color: var(--container-color);
 }
 
 #sentiment_over_time_per_target_plot {
     width: 100%;
+    background-color: var(--container-color);
 }
 
 #sentiment_dist_over_time_by_target_plot {
     width: 100%;
+    background-color: var(--container-color);
 }
 
 #word_count_distribution_plot {
     width: 100%;
+    background-color: var(--container-color);
 }
 
 #sentence_count_distribution_plot {
     width: 100%;
+    background-color: var(--container-color);
 }
 
 #top_N_common_words_plot {
@@ -264,6 +275,7 @@ img.entity-types-plot {
     /*border: 2px solid black;*/
     box-shadow: 3px 3px 10px lightgray;
     padding: 1px;
+    background-color: var(--container-color);
 }
 
 #most_common_words_single_plot, #most_common_words_double_plot_1, #most_common_words_double_plot_2 {
@@ -273,16 +285,19 @@ img.entity-types-plot {
     /*border: 2px solid black;*/
     box-shadow: 3px 3px 10px lightgray;
     padding: 1px;
+    background-color: var(--container-color);
 }
 
 #most_common_words_single_plot img, #most_common_words_double_plot_1 img, #most_common_words_double_plot_2 img {
     width: 100%;
     margin-bottom: 30px;
+    background-color: var(--container-color);
 }
 
 
 #top_N_common_pos_plot{
     width: 100%;
+    background-color: var(--container-color);
 }
 
 #pos_wordclouds_plot {
@@ -292,7 +307,14 @@ img.entity-types-plot {
     /*border: 2px solid black;*/
     box-shadow: 3px 3px 10px lightgray;
     padding: 1px;
+    background-color: var(--container-color);
 }
+
+#topics_over_time_plot {
+    width: 110% !important;
+    background-color: var(--container-color);
+}
+
 
 #community_graph {
     width: 87% !important;
@@ -302,11 +324,13 @@ img.entity-types-plot {
     /*border: 2px solid black;*/
     box-shadow: 3px 3px 10px lightgray;
     padding: 1px;
+    background-color: var(--container-color);
 }
 
 #community_graph img {
     width: 100%;
     margin-bottom: 30px;
+    background-color: var(--container-color);
 }
 
 #bigrams_plot {
@@ -317,26 +341,32 @@ img.entity-types-plot {
     /*border: 2px solid black;*/
     box-shadow: 3px 3px 10px lightgray;
     padding: 1px;
+    background-color: var(--container-color);
 }
 
 #bigrams_plot img {
     width: 100%;
     margin-bottom: 30px;
+    background-color: var(--container-color);
 }
 
 #entity_types_double_plot {
     width: 75%;
+    background-color: var(--container-color);
 }
 
 #most_common_entities_double_plot {
     width: 100%;
+    background-color: var(--container-color);
 }
 
 #sentiment_dist_sentence_double_plot {
     width: 75%;
+    background-color: var(--container-color);
 }
 #sentiment_dist_entity_double_plot {
     width: 75%;
+    background-color: var(--container-color);
 }
 
 .plot-image {
@@ -348,6 +378,7 @@ img.entity-types-plot {
     margin: 10px 10px 30px;
     flex: 1 1 30%;
     display: block;
+    background-color: var(--container-color);
 }
 
 .shiny-ipywidget-output {
@@ -364,8 +395,9 @@ img.entity-types-plot {
 .plots-row .plot-image, .plots-row .shiny-ipywidget-output {
     display: block;
     margin: 0 auto 30px;
-    background-color: var(--container-color);!important;
+    background-color: var(--container-color);
 }
+
 
 .container-fluid {
     padding: 0;
