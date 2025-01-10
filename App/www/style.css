@@ -119,7 +119,7 @@ body .nav-underline {
 
 .single-module .plots-container {
     margin-bottom: 30px;
-    background: var(--container-color);
+    background: var(--background-color);
 }
 
 .main-right-container {
@@ -354,19 +354,18 @@ img.entity-types-plot {
   overflow: hidden;
   width: 45%;
   box-shadow: 3px 3px 10px lightgray;
-    background: var(--container-color);
+  background-color: var(--container-color);!important;
   padding: 10px;
   box-sizing: border-box;
   margin: 10px auto 30px;
+
 }
 
 .plots-row .plot-image, .plots-row .shiny-ipywidget-output {
     display: block;
     margin: 0 auto 30px;
-    background: var(--container-color); !important;
+    background-color: var(--container-color);!important;
 }
-
-.shiny-
 
 .container-fluid {
     padding: 0;
@@ -506,10 +505,11 @@ table.concordance-table {
   margin: 20px auto;
   color: var(--app-title-color);
     box-shadow: 3px 3px 10px lightgray;
+    background-color: var(--container-color);!important;
 }
 
 table.concordance-table body{
-    background-color: var(--container-color);
+    background-color: var(--container-color);!important;
 }
 
 table.concordance-table th {
@@ -528,6 +528,7 @@ table.concordance-table tbody td {
     /*background-color: #fff;*/
     text-align: left;
     word-wrap: break-word;
+    background-color: var(--container-color);!important;
 }
 
 table.concordance-table td.column-lefts {
