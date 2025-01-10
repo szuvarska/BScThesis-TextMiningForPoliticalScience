@@ -45,14 +45,14 @@ def handle_file_upload(file_input):
         return "File encoding error", None
 
 
-def generate_histogram():
-    data = np.random.randn(1000)
-    plt.figure(figsize=(6, 4))
-    sns.histplot(data, color="blue", kde=True)
-    plt.xlabel('Value')
-    plt.ylabel('Frequency')
-    plt.title('Example Histogram')
-    return plt
+# def generate_histogram():
+#     data = np.random.randn(1000)
+#     plt.figure(figsize=(6, 4))
+#     sns.histplot(data, color="blue", kde=True)
+#     plt.xlabel('Value')
+#     plt.ylabel('Frequency')
+#     plt.title('Example Histogram')
+#     return plt
 
 
 def collapsible_section(header, button_id, plot_id):
@@ -111,19 +111,7 @@ def analyze_file(file_path_or_lines, is_uploaded, progress_callback=None):
     return analyse_single_article(article_text, progress_callback)
 
 
-async def analyze_file_reactive(file_input, file_select, article_analysis, entity_sentiments, sentiment_sentences,
-                                progress_id):
-    """
-    Handles file analysis for uploaded or selected files reactively.
-
-    Args:
-        file_input: Reactive input for file upload.
-        file_select: Reactive input for file selection.
-        article_analysis: Reactive value to store article analysis results.
-        entity_sentiments: Reactive value to store entity sentiments.
-        sentiment_sentences: Reactive value to store sentiment sentences.
-        progress_id: ID for the progress bar UI.
-    """
+async def analyze_file_reactive(file_input, file_select, article_analysis, entity_sentiments, sentiment_sentences):
     if file_input() is not None:
         # Handle uploaded file
         _, lines = handle_file_upload(file_input)
@@ -360,62 +348,10 @@ def server(input, output, session):
         new_label = "View less" if view_full_text_2.get() else "View more"
         session.send_input_message("view_full_text_2", {"label": new_label})
 
-    # @reactive.Effect
-    # @reactive.event(input.file_upload)
-    # async def analyze_uploaded_file():
-    #     _, lines = handle_file_upload(input.file_upload)
-    #     if lines:
-    #         with ui.Progress(min=1, max=100, id="analysis_progress") as p:
-    #             try:
-    #                 analysis, entities, sentences = await analyze_file(
-    #                     file_path_or_lines=lines,
-    #                     is_uploaded=True,
-    #                     progress_callback=p.set
-    #                 )
-    #                 article_analysis.set(analysis)
-    #                 entity_sentiments.set(entities)
-    #                 sentiment_sentences.set(sentences)
-    #             except ValueError as e:
-    #                 ui.notification_show(str(e), type="error")
-
-    # @reactive.Effect
-    # @reactive.event(input.file_upload_1)
-    # def analyze_article_1():
-    #     _, lines = handle_file_upload(input.file_upload_1)
-    #     if lines:
-    #         article_text = "\n".join(line.strip() for line in lines[7:])
-    #         analysis, entities, sentences = analyse_single_article(article_text)
-    #         article_analysis_1.set(analysis)
-    #         entity_sentiments_1.set(entities)
-    #         sentiment_sentences_1.set(sentences)
-    #
-    # @reactive.Effect
-    # @reactive.event(input.file_upload_2)
-    # def analyze_article_2():
-    #     _, lines = handle_file_upload(input.file_upload_2)
-    #     if lines:
-    #         article_text = "\n".join(line.strip() for line in lines[7:])
-    #         analysis, entities, sentences = analyse_single_article(article_text)
-    #         article_analysis_2.set(analysis)
-    #         entity_sentiments_2.set(entities)
-    #         sentiment_sentences_2.set(sentences)
-
     @output
     @render.text
     def uploaded_text_header():
         return generate_header(input.file_upload, input.file_select, article_analysis, article_header)
-
-    # @output
-    # @render.ui
-    # def uploaded_text_content():
-    #     if article_analysis.get():
-    #         lines = article_analysis.get().split("<br>")
-    #         if view_full_text.get():
-    #             content_lines = lines
-    #         else:
-    #             content_lines = lines[:50]
-    #         return ui.HTML("<br>".join(content_lines))
-    #     return "No file uploaded"
 
     @output
     @render.ui
@@ -432,18 +368,6 @@ def server(input, output, session):
     def uploaded_text_header_1():
         return generate_header(input.file_upload_1, input.file_select_1, article_analysis_1, article_header_1)
 
-    # @output
-    # @render.ui
-    # def uploaded_text_content_1():
-    #     if article_analysis_1.get():
-    #         lines = article_analysis_1.get().split("<br>")
-    #         if view_full_text_1.get():
-    #             content_lines = lines
-    #         else:
-    #             content_lines = lines[:50]
-    #         return ui.HTML("<br>".join(content_lines))
-    #     return "No file uploaded"
-
     @output
     @render.ui
     def uploaded_text_content_1():
@@ -458,18 +382,6 @@ def server(input, output, session):
     @render.text
     def uploaded_text_header_2():
         return generate_header(input.file_upload_2, input.file_select_2, article_analysis_2, article_header_2)
-
-    # @output
-    # @render.ui
-    # def uploaded_text_content_2():
-    #     if article_analysis_2.get():
-    #         lines = article_analysis_2.get().split("<br>")
-    #         if view_full_text_2.get():
-    #             content_lines = lines
-    #         else:
-    #             content_lines = lines[:50]
-    #         return ui.HTML("<br>".join(content_lines))
-    #     return "No file uploaded"
 
     @output
     @render.ui
@@ -1032,7 +944,8 @@ def server(input, output, session):
             return ui.div("No concordance results found.")
 
         table_html = (
-            f'<h3 style="text-align: center;">Concordance Results with {ngram_number}-Grams for {input.filter_words()} - {dataset_name}</h3>'
+            f'<h3 style="text-align: center;">Concordance Results with {ngram_number}-Grams for {input.filter_words()} '
+            f'- {dataset_name}</h3>'
             '<table id="concordance-table" class="concordance-table">'
             '<tbody>'
             '<tr>'
@@ -1060,49 +973,14 @@ def server(input, output, session):
         # Return the styled HTML table
         return ui.HTML(table_html)
 
-    # @reactive.Effect
-    # @reactive.event(input.file_select)
-    # def analyze_selected_file():
-    #     selected_display_file = input.file_select()
-    #     if selected_display_file and selected_display_file != "None":
-    #         selected_file_value.set(selected_display_file)
-    #         folder_path = here / "BRAT_Data"
-    #         file_choices = list_files_in_folder(folder_path)
-    #         selected_file = next(full for full, display in file_choices if display == selected_display_file)
-    #         file_path = folder_path / selected_file
-    #         analyze_file(file_path, article_analysis, entity_sentiments, sentiment_sentences)
-
-    # @reactive.Effect
-    # @reactive.event(input.file_select_1)
-    # def analyze_selected_file_1():
-    #     selected_display_file_1 = input.file_select_1()
-    #     if selected_display_file_1 and selected_display_file_1 != "None":
-    #         selected_file_value_1.set(selected_display_file_1)
-    #         folder_path = here / "BRAT_Data"
-    #         file_choices = list_files_in_folder(folder_path)
-    #         selected_file_1 = next(full for full, display in file_choices if display == selected_display_file_1)
-    #         file_path_1 = folder_path / selected_file_1
-    #         analyze_file(file_path_1, article_analysis_1, entity_sentiments_1, sentiment_sentences_1)
-    #
-    # @reactive.Effect
-    # @reactive.event(input.file_select_2)
-    # def analyze_selected_file_2():
-    #     selected_display_file_2 = input.file_select_2()
-    #     if selected_display_file_2 and selected_display_file_2 != "None":
-    #         selected_file_value_2.set(selected_display_file_2)
-    #         folder_path = here / "BRAT_Data"
-    #         file_choices = list_files_in_folder(folder_path)
-    #         selected_file_2 = next(full for full, display in file_choices if display == selected_display_file_2)
-    #         file_path_2 = folder_path / selected_file_2
-    #         analyze_file(file_path_2, article_analysis_2, entity_sentiments_2, sentiment_sentences_2)
-
     @output
     @render.ui
     def introduction_content():
         if introduction_visible.get():
             return ui.HTML("""
             <div class="collapsible-section-content">
-                <h3>This application provides an analysis of articles from the Global Times. It includes various modules:</h3>
+                <h3>This application provides an analysis of articles from the Global Times. 
+                It includes various modules:</h3>
                 <br>
                 <ul>
                     <li><strong>Single:</strong> Analyze a single article.</li>
@@ -1121,18 +999,30 @@ def server(input, output, session):
                 <div class="collapsible-section-content">
                     <h3>Instructions on how to use the application:</h3><br>
                     <ul>
-                        <li><strong style="color: #333;">Select a file:</strong> Use the dropdown to select a file from the list.</li>
-                        <li><strong style="color: #333;">Upload a file:</strong> Click the "UPLOAD ARTICLE" button to upload a new file.</li>
-                        <li><strong style="color: #333;">View more/less:</strong> Click the "View more" button to expand the text, and "View less" to collapse it.</li>
-                        <li><strong style="color: #333;">Hide/Show Menu:</strong> Click the "Hide Menu" button to hide the right container, and "Show Menu" to display it again.</li>
-                        <li><strong style="color: #333;">Select Dataset:</strong> Use the dropdown to select a dataset for analysis.</li>
-                        <li><strong style="color: #333;">Select Sentiment:</strong> Use the dropdown to filter by sentiment (Positive, Neutral, Negative).</li>
-                        <li><strong style="color: #333;">Select Entity Type:</strong> Use the dropdown to filter by entity type (Person, Organisation, Location, Miscellaneous).</li>
-                        <li><strong style="color: #333;">Select Sentiment Model:</strong> Use the dropdown to select a sentiment model (TSC, VADER).</li>
-                        <li><strong style="color: #333;">Number of Words in Word Cloud:</strong> Use the numeric input to specify the number of words in the word cloud.</li>
-                        <li><strong style="color: #333;">Select Part of Speech:</strong> Use the dropdown to filter by part of speech.</li>
-                        <li><strong style="color: #333;">Filter Words:</strong> Use the text input to filter words (comma-separated).</li>
-                        <li><strong style="color: #333;">N-gram Number:</strong> Use the numeric input to specify the n-gram number.</li>
+                        <li><strong style="color: #333;">Select a file:</strong> Use the dropdown to select a file from
+                         the list.</li>
+                        <li><strong style="color: #333;">Upload a file:</strong> Click the "UPLOAD ARTICLE" button to
+                         upload a new file.</li>
+                        <li><strong style="color: #333;">View more/less:</strong> Click the "View more" button to expand
+                         the text, and "View less" to collapse it.</li>
+                        <li><strong style="color: #333;">Hide/Show Menu:</strong> Click the "Hide Menu" button to hide
+                         the right container, and "Show Menu" to display it again.</li>
+                        <li><strong style="color: #333;">Select Dataset:</strong> Use the dropdown to select a dataset
+                         for analysis.</li>
+                        <li><strong style="color: #333;">Select Sentiment:</strong> Use the dropdown to filter by
+                         sentiment (Positive, Neutral, Negative).</li>
+                        <li><strong style="color: #333;">Select Entity Type:</strong> Use the dropdown to filter by
+                         entity type (Person, Organisation, Location, Miscellaneous).</li>
+                        <li><strong style="color: #333;">Select Sentiment Model:</strong> Use the dropdown to select
+                         a sentiment model (TSC, VADER).</li>
+                        <li><strong style="color: #333;">Number of Words in Word Cloud:</strong> Use the numeric input
+                         to specify the number of words in the word cloud.</li>
+                        <li><strong style="color: #333;">Select Part of Speech:</strong> Use the dropdown to filter by
+                         part of speech.</li>
+                        <li><strong style="color: #333;">Filter Words:</strong> Use the text input to filter words
+                         (comma-separated).</li>
+                        <li><strong style="color: #333;">N-gram Number:</strong> Use the numeric input to specify the
+                         n-gram number.</li>
                     </ul>
                 </div>
             """)
@@ -1144,10 +1034,14 @@ def server(input, output, session):
         if authors_visible.get():
             return ui.HTML("""
                 <div class="collapsible-section-content">
-                    <p><strong style="color: #333;">Authors:</strong> Łukasz Grabarski & Marta Szuwarska (Warsaw University of Technology)</p>
-                    <p><strong style="color: #333;">Supervisor:</strong> Dr. Anna Wróblewska (Warsaw University of Technology)</p>
-                    <p><strong style="color: #333;">Co-supervisor:</strong> Prof. Agnieszka Kaliska (Adam Mickiewicz University in Poznań)</p>
-                    <p><strong style="color: #333;">Co-operations:</strong> Prof. Anna Rudakowska (Tamkang University in Taiwan), Dr. Daniel Dan (Modul University in Vienna)</p>
+                    <p><strong style="color: #333;">Authors:</strong> Łukasz Grabarski & Marta Szuwarska
+                     (Warsaw University of Technology)</p>
+                    <p><strong style="color: #333;">Supervisor:</strong> Dr. Anna Wróblewska
+                     (Warsaw University of Technology)</p>
+                    <p><strong style="color: #333;">Co-supervisor:</strong> Prof. Agnieszka Kaliska
+                     (Adam Mickiewicz University in Poznań)</p>
+                    <p><strong style="color: #333;">Co-operations:</strong> Prof. Anna Rudakowska
+                     (Tamkang University in Taiwan), Dr. Daniel Dan (Modul University in Vienna)</p>
                 </div>
             """)
         return ui.div()
@@ -1160,8 +1054,7 @@ def server(input, output, session):
             file_select=input.file_select,
             article_analysis=article_analysis,
             entity_sentiments=entity_sentiments,
-            sentiment_sentences=sentiment_sentences,
-            progress_id="analysis_progress_single"
+            sentiment_sentences=sentiment_sentences
         )
 
     @reactive.Effect
@@ -1172,8 +1065,7 @@ def server(input, output, session):
             file_select=input.file_select_1,
             article_analysis=article_analysis_1,
             entity_sentiments=entity_sentiments_1,
-            sentiment_sentences=sentiment_sentences_1,
-            progress_id="analysis_progress_double_1"
+            sentiment_sentences=sentiment_sentences_1
         )
 
     @reactive.Effect
@@ -1184,8 +1076,7 @@ def server(input, output, session):
             file_select=input.file_select_2,
             article_analysis=article_analysis_2,
             entity_sentiments=entity_sentiments_2,
-            sentiment_sentences=sentiment_sentences_2,
-            progress_id="analysis_progress_double_2"
+            sentiment_sentences=sentiment_sentences_2
         )
 
     @reactive.Effect
