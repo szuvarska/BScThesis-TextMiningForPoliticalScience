@@ -1,9 +1,7 @@
 import pandas as pd
 import plotly.graph_objects as go
-from plotly.subplots import make_subplots
-from App.single_analysis import entity_legend, analyse_single_article, most_common_words_plot_single
-import plotly.express as px
-from colors import main_color,my_red,my_blue,my_gray,my_green,my_yellow, my_orange, my_purple, my_lightblue
+from App.single_module.single_analysis import entity_legend, analyse_single_article
+from colors import my_red,my_blue,my_gray,my_green,my_yellow, my_orange, my_purple, my_lightblue
 
 
 color_palette = [

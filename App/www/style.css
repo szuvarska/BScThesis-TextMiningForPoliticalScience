@@ -361,7 +361,7 @@ img.entity-types-plot {
 }
 
 #most_common_entities_double_plot {
-    width: 100%;
+    width: 85%;
     background-color: var(--container-color);
 }
 
