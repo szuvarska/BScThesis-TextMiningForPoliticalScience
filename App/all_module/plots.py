@@ -125,7 +125,8 @@ def generate_community_graph(dataset_name: str):
     df_entities = pd.read_csv(f"NER_and_ED/Results/{dataset_name}_top_40_entities.csv")
     df_entities = df_entities[~df_entities.Word.isin(["U", "B", "N", "19", "G", "S"])].head(120)
     suptitle = f"{dataset_name_to_display}\n Co-occurrence in Same Sentence Relationship Graph"
-    title = "Nodes represent entities. Edges represent co-occurrence within the same sentence.\nNodes size indicates the node strength.\nEdge width indicates the frequency of co-occurrence. Spring Layout"
+    title = ("Nodes represent entities. Edges represent co-occurrence within the same sentence.\n"
+             "Nodes size indicates the node strength.\nEdge width indicates the frequency of co-occurrence. Spring Layout")
     plot = plot_community_graph(df_ner, df_entities, suptitle=suptitle, title=title,
                                 nodes_displayed=25, layout="spring", edge="std")
     plot.tight_layout()

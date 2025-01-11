@@ -8,6 +8,7 @@ from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 import matplotlib.colors as mcolors
 from colors import main_color, my_red, my_blue, my_gray, my_green, my_yellow
 import matplotlib.gridspec as gridspec
+from matplotlib import rcParams
 
 
 # from Sentiment.sentiment_script import vader_sentiment
@@ -95,6 +96,7 @@ def plot_community_graph(df_ner: pd.DataFrame, df_entities: pd.DataFrame, suptit
     gs = gridspec.GridSpec(1, 2, width_ratios=[15, 1])
     ax = plt.subplot(gs[0])
     cax = plt.subplot(gs[1])
+
     if layout == 'spring':
         pos = nx.spring_layout(G, k=0.5)
     elif layout == 'circular':
@@ -152,6 +154,7 @@ def plot_community_graph(df_ner: pd.DataFrame, df_entities: pd.DataFrame, suptit
     # nx.draw_networkx_edge_labels(G, pos, edge_labels=labels, font_size=8)
 
     # title
-    plt.suptitle(suptitle, fontsize=20)
-    plt.title(title, fontsize=15)
+    fig.suptitle(suptitle, fontsize=20)
+    ax.set_title("\n\n\n", fontsize=15)
+    fig.text(0.5, 0.83, title, horizontalalignment="center", fontdict={'fontsize': 15})
     return plt
