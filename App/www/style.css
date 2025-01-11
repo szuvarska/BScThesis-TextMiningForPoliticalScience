@@ -599,6 +599,32 @@ table.concordance-table thead th.sticky {
 
 .collapsible-section-content h3 {
     margin-top: 20px;
+    counter-reset: subsection;
+    font-size: 20px;
+}
+
+.collapsible-section-content h4 {
+    font-size: 17px;
+    counter-reset: subsubsection;
+}
+
+.collapsible-section-content h5 {
+    font-size: 16px;
+}
+
+.collapsible-section-content h3:before {
+    counter-increment:section;
+    content:counter(section) ". ";
+}
+
+.collapsible-section-content h4:before {
+    counter-increment:subsection;
+    content:counter(section) "." counter(subsection) " ";
+}
+
+.collapsible-section-content h5:before {
+    counter-increment:subsubsection;
+    content:counter(section) "." counter(subsection) "." counter(subsubsection) " ";
 }
 
 .collapsible-section-content strong {
@@ -607,6 +633,10 @@ table.concordance-table thead th.sticky {
 
 .about-module .collapsible-section{
     align-items: baseline;
+}
+
+.collapsible-section-content {
+    counter-reset: section;
 }
 
 
