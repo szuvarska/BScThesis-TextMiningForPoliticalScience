@@ -639,4 +639,16 @@ table.concordance-table thead th.sticky {
     counter-reset: section;
 }
 
+label#dataset_name-label {
+    display: none;
+}
+
+#analyze_dataset_button {
+    margin-bottom: 20px;
+}
+
+.plots-row {
+    text-align: center;
+}
+
 

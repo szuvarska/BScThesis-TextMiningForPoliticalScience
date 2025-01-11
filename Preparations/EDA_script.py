@@ -37,7 +37,7 @@ def load_pos_dict(file_path='Preparations/Data_for_EDA/pos_dict.csv', key='abbr'
     return pos_dict
 
 
-def perpare_df_for_eda(df: pd.DataFrame) -> [pd.DataFrame, pd.DataFrame]:
+def prepare_df_for_eda(df: pd.DataFrame) -> [pd.DataFrame, pd.DataFrame]:
     df['sentence_count'] = df['article_text'].apply(lambda x: len(x.split('.')) - 1)
     df['word_count'] = df['article_text'].apply(lambda x: len([word for word in word_tokenize(x) if word.isalpha()]))
     nltk.download('averaged_perceptron_tagger')
@@ -63,7 +63,8 @@ def plot_word_count_distribution(df: pd.DataFrame, df_name: str):
     # plt.show()
     #plt.savefig(f"EDA_plots/{df_name}_word_count_dist_.png")
     # Filtr danych
-    filtered_data = df.loc[(df['article_category_one'] != "PHOTO") & (df['word_count'] < 2000), 'word_count']
+    # filtered_data = df.loc[(df['article_text'].notnull()) & (df['word_count'] < 2000), 'word_count']
+    filtered_data = df['word_count']
 
     # Histogram z Plotly Express
     fig = px.histogram(
@@ -131,7 +132,8 @@ def sentance_count_distribution(df: pd.DataFrame, df_name: str):
     #plt.savefig(f"EDA_plots/{df_name}_sentace_count_dist_.png")
 
     # Filtr danych
-    filtered_data = df.loc[(df['article_category_one'] != "PHOTO") & (df['word_count'] < 2000), 'sentence_count']
+    # filtered_data = df.loc[(df['article_text'].notnull()) & (df['word_count'] < 2000), 'sentence_count']
+    filtered_data = df['sentence_count']
 
     # Histogram z Plotly Express
     fig = px.histogram(

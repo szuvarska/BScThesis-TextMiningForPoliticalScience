@@ -10,7 +10,7 @@ from collections import Counter
 import seaborn as sns
 import plotly.express as px
 import plotly.graph_objects as go
-from colors import main_color,my_red,my_blue,my_gray,my_green,my_yellow
+from colors import main_color, my_red, my_blue, my_gray, my_green, my_yellow
 
 
 def standardize_text(text: str, word_dict: dict):
@@ -156,6 +156,7 @@ def perform_ner_for_sentences(source: pd.DataFrame, dict_name: str):
     df['NER'] = ner_results_list
 
     return df
+
 
 # words distribution named entities and non-entities
 def count_words_distribution(text):
@@ -357,36 +358,37 @@ def find_most_common_entities_per_type(df: pd.DataFrame, dataset_name: str, outp
     df_top_words = pd.DataFrame(data)
 
     df_top_words.to_csv(output_file, index=False)
-    print(f"Top words by entity type have been saved to {output_file}.")
 
-    # Generate separate interactive visualizations for each entity type
-    for entity_type in entity_words_dict:
-        entity_data = df_top_words[df_top_words['Entity Type'] == entity_type].nlargest(15, 'Count')
-        fig = px.bar(
-            entity_data,
-            x='Word',
-            y='Count',
-            title=f'Top 15 Words for {entity_type} - {dataset_name}',
-            labels={'Word': 'Word', 'Count': 'Frequency'},
-            color_discrete_sequence=[my_blue]
-        )
+    if not for_shiny:
+        print(f"Top words by entity type have been saved to {output_file}.")
 
-        fig.update_layout(
-            xaxis=dict(title='Word', tickangle=60),
-            yaxis_title='Frequency',
-            title=dict(x=0.5),  # Center-align the title
-            coloraxis_showscale=False,  # Hide color scale
-        )
+        # Generate separate interactive visualizations for each entity type
+        for entity_type in entity_words_dict:
+            entity_data = df_top_words[df_top_words['Entity Type'] == entity_type].nlargest(15, 'Count')
+            fig = px.bar(
+                entity_data,
+                x='Word',
+                y='Count',
+                title=f'Top 15 Words for {entity_type} - {dataset_name}',
+                labels={'Word': 'Word', 'Count': 'Frequency'},
+                color_discrete_sequence=[my_blue]
+            )
 
-        # add theme
-        fig.update_layout(
-            template="plotly_white"
-        )
+            fig.update_layout(
+                xaxis=dict(title='Word', tickangle=60),
+                yaxis_title='Frequency',
+                title=dict(x=0.5),  # Center-align the title
+                coloraxis_showscale=False,  # Hide color scale
+            )
 
-        fig.show()
+            # add theme
+            fig.update_layout(
+                template="plotly_white"
+            )
 
-    print(f"Visualizations for the top words per entity type have been displayed.")
+            fig.show()
 
+        print(f"Visualizations for the top words per entity type have been displayed.")
 
 
 def find_most_common_entities_per_type_for_shiny(dataset_name: str, output_file: str, entity_type_name: str,

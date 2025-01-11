@@ -77,6 +77,10 @@ def plot_community_graph(df_ner: pd.DataFrame, df_entities: pd.DataFrame, suptit
     # calculate node strength -- the sum of the weights of edges connected to them
     node_strength = {node: sum(data['weight'] for _, _, data in G.edges(node, data=True)) for node in G.nodes}
 
+    if node_strength == {} or max(node_strength.values()) == 0:
+        print("No nodes to display.")
+        return None
+
     # select top displayed nodes
     nodes_above_top = sorted(node_strength.items(), key=lambda x: x[1], reverse=True)[nodes_displayed:]
     G.remove_nodes_from([node for node, _ in nodes_above_top])

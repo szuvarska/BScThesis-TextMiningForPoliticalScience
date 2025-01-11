@@ -3,6 +3,7 @@ from shinywidgets import output_widget, render_widget
 from App.all_module.plots import generate_pos_choices, generate_keywords, generate_concordance
 from App.all_module.render_plots import setup_plot_outputs
 from App.all_module.render_ui import setup_ui_outputs
+from App.all_module.dataset_analysis import analyze_dataset_reactive
 from App.utils import collapsible_section, remove_png_files
 from colors import my_orange
 
@@ -27,6 +28,8 @@ def all_module_server(input, output, session):
     ngrams_visible = reactive.Value(True)
     keywords = generate_keywords("Gaza before conflict")
     keywords_choices = reactive.Value(keywords)
+    dataset_choices = reactive.Value(
+        ["Gaza before conflict", "Gaza during conflict", "Ukraine before conflict", "Ukraine during conflict"])
     dataset_filter_value = reactive.Value("Gaza before conflict")
     sentiment_filter_value = reactive.Value("Positive")
     entity_type_filter_value = reactive.Value("Person")
@@ -37,7 +40,8 @@ def all_module_server(input, output, session):
     ngram_number_value = reactive.Value(3)
     selected_keywords_value = reactive.Value(keywords[:2])
     date_range_value = reactive.Value("daily")
-
+    not_enough_data = reactive.Value(False)
+    not_enough_data_error = "Some plots might not be available due to the small dataset size."
     setup_plot_outputs(input, output, session)
     setup_ui_outputs(input, output, session)
 
@@ -99,10 +103,7 @@ def all_module_server(input, output, session):
                 ui.input_select(
                     "dataset_filter",
                     "Select Dataset",
-                    choices=[
-                        "Gaza before conflict", "Gaza during conflict",
-                        "Ukraine before conflict", "Ukraine during conflict"
-                    ],
+                    choices=dataset_choices.get(),
                     selected=dataset_filter_value.get()
                 ),
                 ui.input_select(
@@ -160,6 +161,18 @@ def all_module_server(input, output, session):
                     choices=['daily', 'weekly', 'monthly'],
                     selected=date_range_value.get()
                 ),
+                ui.input_file(
+                    "upload_folder",
+                    "Upload Dataset",
+                    multiple=True,
+                    accept=[".txt", ".zip"]
+                ),
+                ui.input_text(
+                    "dataset_name",
+                    "",
+                    placeholder="Enter dataset name",
+                ),
+                ui.input_action_button("analyze_dataset_button", "Analyze Dataset", class_="btn btn-file"),
                 ui.input_action_button("hide_container_button_all", "Hide Menu", class_="btn btn-secondary"),
                 class_="main-right-container",
                 id="main-right-container-all"
@@ -258,6 +271,12 @@ def all_module_server(input, output, session):
     @render.ui
     def community_plots():
         if communities_visible.get():
+            if not_enough_data.get():
+                return ui.div(
+                    ui.div(not_enough_data_error),
+                    ui.output_image("community_graph"),
+                    class_="plots-row"
+                )
             return ui.div(
                 ui.output_image("community_graph"),
                 class_="plots-row"
@@ -268,6 +287,13 @@ def all_module_server(input, output, session):
     @render.ui
     def ngrams_plots():
         if ngrams_visible.get():
+            if not_enough_data.get():
+                return ui.div(
+                    ui.div(not_enough_data_error),
+                    ui.output_image("bigrams_plot"),
+                    ui.output_ui("concordance_table", class_="concordance-table"),
+                    class_="plots-row"
+                )
             return ui.div(
                 ui.output_image("bigrams_plot"),
                 ui.output_ui("concordance_table", class_="concordance-table"),
@@ -279,6 +305,13 @@ def all_module_server(input, output, session):
     @render.ui
     def keywords_trends_plots():
         if keywords_trends_visible.get():
+            if not_enough_data.get():
+                return ui.div(
+                    ui.div(not_enough_data_error),
+                    output_widget("keywords_over_time_plot"),
+                    output_widget("stacked_keywords_over_time_plot"),
+                    class_="plots-row"
+                )
             return ui.div(
                 output_widget("keywords_over_time_plot"),
                 output_widget("stacked_keywords_over_time_plot"),
@@ -298,3 +331,14 @@ def all_module_server(input, output, session):
         keywords_list = generate_keywords(dataset_name)
         keywords_choices.set(keywords_list)
         selected_keywords_value.set(keywords_list[:2])
+
+    @reactive.Effect
+    @reactive.event(input.analyze_dataset_button)
+    async def analyze_dataset():
+        await analyze_dataset_reactive(
+            files=input.upload_folder(),
+            dataset_choices=dataset_choices,
+            dataset_filter_value=dataset_filter_value,
+            dataset_name=input.dataset_name(),
+            not_enough_data=not_enough_data
+        )

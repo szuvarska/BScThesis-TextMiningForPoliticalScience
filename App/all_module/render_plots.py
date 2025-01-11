@@ -118,6 +118,8 @@ def setup_plot_outputs(input, output, session):
     def community_graph():
         dataset_name = input.dataset_filter()
         image_path = generate_community_graph(dataset_name)
+        if image_path is None:
+            return None
         return {"src": image_path, "alt": "Community Graph", "width": "100%"}
 
     @output
@@ -139,4 +141,6 @@ def setup_plot_outputs(input, output, session):
     def bigrams_plot():
         dataset_name = input.dataset_filter()
         image_path = generate_bigrams_plot(dataset_name)
+        if image_path is None:
+            return None
         return {"src": image_path, "alt": "Bigrams Plot", "width": "100%"}

@@ -32,7 +32,7 @@ def split_into_sentences(article):
     return [sent.text for sent in doc.sents]
 
 
-def perform_sentiment_analysis(file_name: str, target_entities: list, dataset_name: str) -> tuple[pd.DataFrame,
+def perform_sentiment_analysis(file_name: str, target_entities: list, dataset_name: str, output_directory_path: str = None) -> tuple[pd.DataFrame,
 pd.DataFrame]:
     # load dataset
     df = pd.read_csv(file_name)
@@ -42,7 +42,6 @@ pd.DataFrame]:
     df = df[~check_condition]
 
     tsc = TargetSentimentClassifier()
-    # TODO: moving preprocessing to a different script (it recurs in NER)
 
     # initialize lists for comparison results
     vader_results = []
@@ -109,8 +108,12 @@ pd.DataFrame]:
     vader_results_df = pd.DataFrame(vader_results)
 
     # save results
-    tsc_results_df.to_csv(f'..\\Sentiment\\Results\\tsc_{dataset_name}.csv', index=False)
-    vader_results_df.to_csv(f'..\\Sentiment\\Results\\vader_{dataset_name}.csv', index=False)
+    if output_directory_path:
+        tsc_results_df.to_csv(f'{output_directory_path}/tsc_{dataset_name}.csv', index=False)
+        vader_results_df.to_csv(f'{output_directory_path}/vader_{dataset_name}.csv', index=False)
+    else:
+        tsc_results_df.to_csv(f'..\\Sentiment\\Results\\tsc_{dataset_name}.csv', index=False)
+        vader_results_df.to_csv(f'..\\Sentiment\\Results\\vader_{dataset_name}.csv', index=False)
 
     return tsc_results_df, vader_results_df
 
@@ -334,6 +337,20 @@ def generate_word_clouds(results_df: pd.DataFrame, dataset_name: str, for_shiny=
     else:
         plt.show()
     # plt.savefig(f"Plots/{sentiment_to_use}_{model_name}_wordcloud_{dataset_name}.png")
+
+
+def calculate_sentiment_dist_per_target_without_plot(tsc_results_df: pd.DataFrame, dataset_name: str):
+    overall_sentiment_per_target = tsc_results_df.groupby(['Target', 'Sentiment']).size().unstack(fill_value=0)
+
+    # Calculate sentiment proportions per target
+    overall_sentiment_per_target_proportion = overall_sentiment_per_target.div(
+        overall_sentiment_per_target.sum(axis=1),
+        axis=0)
+    overall_sentiment_per_target_proportion['Overall Sentiment'] = overall_sentiment_per_target_proportion[
+        ['positive', 'negative', 'neutral']].idxmax(axis=1)
+
+    # Save results to a CSV file
+    overall_sentiment_per_target_proportion.to_csv(f'Sentiment/Results/overall_sentiment_per_target_{dataset_name}.csv')
 
 
 def calculate_sentiment_dist_per_target(tsc_results_df: pd.DataFrame, dataset_name: str, for_shiny=False):

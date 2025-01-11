@@ -141,6 +141,8 @@ def visualize_bigrams(df: pd.DataFrame, top_n: int = 10, dataset_name: str = '')
     # Compute node size based on degree (incoming + outgoing edges)
     node_size = {node: (G.in_degree(node, weight='weight') + G.out_degree(node, weight='weight')) * 50 for node in
                  G.nodes}
+    if node_size == {} or max(node_size.values()) == 0:
+        return None
 
     # Plot the graph
     plt.figure(figsize=(15, 15))

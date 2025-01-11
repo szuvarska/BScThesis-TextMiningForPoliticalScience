@@ -1,6 +1,6 @@
 import pandas as pd
 import os
-from Preparations.EDA_script import perpare_df_for_eda
+from Preparations.EDA_script import prepare_df_for_eda
 from Data.Sentances_df.sentences_script import make_sentences_df
 from NER_and_ED.NER_ED_script import perform_ner, calculate_entity_distribution, find_most_common_entity_types, find_most_common_entities_per_type
 from Sentiment.sentiment_script import perform_sentiment_analysis
@@ -47,7 +47,7 @@ def Prepare_dataset(directory_path: str):
 
     #prepare EDA
     print("Preparing EDA dataframes...")
-    df_name, df_pos_name = perpare_df_for_eda(name_textcontain_new_preprocessed)
+    df_name, df_pos_name = prepare_df_for_eda(name_textcontain_new_preprocessed)
     print("EDA preparation complete. Saving dataframes to CSV files...")
     df_name.to_csv(f"..\\Preparations\\Data_for_EDA\\df_{dataset_name}.csv", index=False)
     df_pos_name.to_csv(f"..\\Preparations\\Data_for_EDA\\df_pos_{dataset_name}.csv", index=False)
@@ -69,14 +69,14 @@ def Prepare_dataset(directory_path: str):
 
     name_target_entities = list(name_top_40_entities.sort_values(by='Count', ascending=False)["Word"].head(20))
 
-    filename_textcontian = f"..\\Data\\{dataset_name}_textcontain_new_preprocessed.csv"
+    filename_textcontain = f"..\\Data\\{dataset_name}_textcontain_new_preprocessed.csv"
 
-    tsc_results_df, vader_results_df = perform_sentiment_analysis(filename_textcontian, name_target_entities,
+    tsc_results_df, vader_results_df = perform_sentiment_analysis(filename_textcontain, name_target_entities,
                                                                   dataset_name)
 
     print("Performing sentiment analysis...")
 
-    tsc_results_df, vader_results_df = perform_sentiment_analysis(filename_textcontian, name_target_entities,
+    tsc_results_df, vader_results_df = perform_sentiment_analysis(filename_textcontain, name_target_entities,
                                                                   dataset_name)
     print("Sentiment analysis complete.")
 
