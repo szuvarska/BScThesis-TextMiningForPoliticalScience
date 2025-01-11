@@ -5,7 +5,7 @@ from NER_and_ED.NER_ED_script import perform_ner_for_sentences
 from Topics.bratopic_script import perform_bratopic
 dict_name = "../../NER_and_ED/dict_ukraine.csv"
 
-def make_sentences_df(df: pd.DataFrame, dict_name: str):
+def make_sentences_df(df: pd.DataFrame, dict_name: str = None):
     article_text = []
     article_id = []
     dates = []
