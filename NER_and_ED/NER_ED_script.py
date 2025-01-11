@@ -97,10 +97,11 @@ def perform_ner(file_name: str, dict_name: str, output_file: str):
     check_condition = (df['article_text'].isna()) | (df['article_text'] == "")
     df = df[~check_condition]
 
-    # Entity Disambiguation
-    dict_df = pd.read_csv(dict_name)
-    word_dict = pd.Series(dict_df.standard.values, index=dict_df.variation).to_dict()
-    df['article_text'] = df['article_text'].apply(lambda x: standardize_text(x, word_dict))
+    if not dict_name is None:
+        # Entity Disambiguation
+        dict_df = pd.read_csv(dict_name)
+        word_dict = pd.Series(dict_df.standard.values, index=dict_df.variation).to_dict()
+        df['article_text'] = df['article_text'].apply(lambda x: standardize_text(x, word_dict))
 
     # load pretrained model and tokenizer
     model_name = "dbmdz/bert-large-cased-finetuned-conll03-english"
@@ -130,10 +131,11 @@ def perform_ner_for_sentences(source: pd.DataFrame, dict_name: str):
     check_condition = (df['article_text'].isna()) | (df['article_text'] == "")
     df = df[~check_condition]
 
-    # Entity Disambiguation
-    dict_df = pd.read_csv(dict_name)
-    word_dict = pd.Series(dict_df.standard.values, index=dict_df.variation).to_dict()
-    df['article_text'] = df['article_text'].apply(lambda x: standardize_text(x, word_dict))
+    if not dict_name is None:
+        # Entity Disambiguation
+        dict_df = pd.read_csv(dict_name)
+        word_dict = pd.Series(dict_df.standard.values, index=dict_df.variation).to_dict()
+        df['article_text'] = df['article_text'].apply(lambda x: standardize_text(x, word_dict))
 
     # load pretrained model and tokenizer
     model_name = "dbmdz/bert-large-cased-finetuned-conll03-english"
@@ -384,6 +386,7 @@ def find_most_common_entities_per_type(df: pd.DataFrame, dataset_name: str, outp
         fig.show()
 
     print(f"Visualizations for the top words per entity type have been displayed.")
+
 
 
 def find_most_common_entities_per_type_for_shiny(dataset_name: str, output_file: str, entity_type_name: str,

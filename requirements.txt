@@ -7,6 +7,7 @@ shiny>=1.2.1
 spacy>=3.8.0,<3.9.0
 transformers==4.24.0
 sentence-transformers==2.2.2
+huggingface-hub==0.11.1
 vaderSentiment>=3.3.2
 wordcloud>=1.9.4
 htmltools>=0.6.0

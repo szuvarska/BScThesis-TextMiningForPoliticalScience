@@ -109,8 +109,8 @@ pd.DataFrame]:
     vader_results_df = pd.DataFrame(vader_results)
 
     # save results
-    tsc_results_df.to_csv(f'Results/tsc_{dataset_name}.csv', index=False)
-    vader_results_df.to_csv(f'Results/vader_{dataset_name}.csv', index=False)
+    tsc_results_df.to_csv(f'..\\Sentiment\\Results\\tsc_{dataset_name}.csv', index=False)
+    vader_results_df.to_csv(f'..\\Sentiment\\Results\\vader_{dataset_name}.csv', index=False)
 
     return tsc_results_df, vader_results_df
 
