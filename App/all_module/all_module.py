@@ -1,15 +1,8 @@
 from shiny import reactive, render, ui
 from shinywidgets import output_widget, render_widget
-from App.all_module.plots import (generate_entity_types_plot, generate_most_common_entities_plot,
-                                  generate_sentiment_dist_plot, generate_sentiment_over_time_plot,
-                                  generate_sentiment_word_cloud_plot, generate_sentiment_dist_per_target_plot,
-                                  generate_sentiment_over_time_per_target_plot,
-                                  generate_sentiment_dist_over_time_by_target_plot,
-                                  generate_word_count_distribution_plot, generate_sentence_count_distribution_plot,
-                                  generate_top_N_common_words_plot, generate_top_N_common_pos_plot,
-                                  generate_pos_wordclouds_plot, generate_community_graph, generate_pos_choices,
-                                  generate_bigrams_plot, generate_concordance, generate_keywords_over_time_plot,
-                                  generate_stacked_keywords_over_time_plot, generate_keywords)
+from App.all_module.plots import generate_pos_choices, generate_keywords, generate_concordance
+from App.all_module.render_plots import setup_plot_outputs
+from App.all_module.render_ui import setup_ui_outputs
 from App.utils import collapsible_section, remove_png_files
 from colors import my_orange
 
@@ -45,170 +38,8 @@ def all_module_server(input, output, session):
     selected_keywords_value = reactive.Value(keywords[:2])
     date_range_value = reactive.Value("daily")
 
-    @output
-    @render_widget
-    def entity_types_plot():
-        dataset_name = input.dataset_filter()
-        plot = generate_entity_types_plot(dataset_name)
-        return plot
-
-    @output
-    @render_widget
-    def most_common_entities_plot():
-        dataset_name = input.dataset_filter()
-        entity_type = input.entity_type_filter()
-        plot = generate_most_common_entities_plot(dataset_name, entity_type)
-        return plot
-
-    @output
-    @render_widget
-    def sentiment_dist_plot():
-        dataset_name = input.dataset_filter()
-        plot = generate_sentiment_dist_plot(dataset_name)
-        return plot
-
-    @output
-    @render_widget
-    def sentiment_over_time_plot():
-        dataset_name = input.dataset_filter()
-        model_name = input.sentiment_model_filter().lower()
-        plot = generate_sentiment_over_time_plot(dataset_name, model_name)
-        return plot
-
-    @output
-    @render.plot
-    def sentiment_word_cloud_plot():
-        dataset_name = input.dataset_filter()
-        model_name = input.sentiment_model_filter().lower()
-        sentiment = input.sentiment_filter()
-        plot = generate_sentiment_word_cloud_plot(dataset_name, model_name, sentiment)
-        return plot
-
-    @output
-    @render_widget
-    def sentiment_dist_per_target_plot():
-        dataset_name = input.dataset_filter()
-        plot = generate_sentiment_dist_per_target_plot(dataset_name)
-        return plot
-
-    @output
-    @render_widget
-    def sentiment_over_time_per_target_plot():
-        dataset_name = input.dataset_filter()
-        plot = generate_sentiment_over_time_per_target_plot(dataset_name)
-        return plot
-
-    @output
-    @render_widget
-    def sentiment_dist_over_time_by_target_plot():
-        dataset_name = input.dataset_filter()
-        sentiment = input.sentiment_filter()
-        plot = generate_sentiment_dist_over_time_by_target_plot(dataset_name, sentiment)
-        return plot
-
-    @output
-    @render_widget
-    def word_count_distribution_plot():
-        dataset_name = input.dataset_filter()
-        plot = generate_word_count_distribution_plot(dataset_name)
-        return plot
-
-    @output
-    @render_widget
-    def sentence_count_distribution_plot():
-        dataset_name = input.dataset_filter()
-        plot = generate_sentence_count_distribution_plot(dataset_name)
-        return plot
-
-    @output
-    @render.plot
-    def top_N_common_words_plot():
-        dataset_name = input.dataset_filter()
-        N = input.word_cloud_n()
-        plot = generate_top_N_common_words_plot(dataset_name, N)
-        return plot
-
-    @output
-    @render_widget
-    def top_N_common_pos_plot():
-        dataset_name = input.dataset_filter()
-        N = input.word_cloud_n()
-        plot = generate_top_N_common_pos_plot(dataset_name, N)
-        return plot
-
-    @output
-    @render.plot
-    def pos_wordclouds_plot():
-        dataset_name = input.dataset_filter()
-        N = input.word_cloud_n()
-        pos = input.pos_filter()
-        plot = generate_pos_wordclouds_plot(dataset_name, N, pos)
-        return plot
-
-    @output
-    @render.image
-    def community_graph():
-        dataset_name = input.dataset_filter()
-        image_path = generate_community_graph(dataset_name)
-        return {"src": image_path, "alt": "Community Graph", "width": "100%"}
-
-    @output
-    @render_widget
-    def keywords_over_time_plot():
-        dataset_name = input.dataset_filter()
-        return generate_keywords_over_time_plot(dataset_name)
-
-    @output
-    @render_widget
-    def stacked_keywords_over_time_plot():
-        dataset_name = input.dataset_filter()
-        selected_keywords_widget = input.selected_keywords()
-        selected_date_agg = input.date_range()
-        return generate_stacked_keywords_over_time_plot(dataset_name, selected_keywords_widget, selected_date_agg)
-
-    @output
-    @render.image
-    def bigrams_plot():
-        dataset_name = input.dataset_filter()
-        image_path = generate_bigrams_plot(dataset_name)
-        return {"src": image_path, "alt": "Bigrams Plot", "width": "100%"}
-
-    @output
-    @render.ui
-    def all_mode_plots():
-        return ui.div(
-            collapsible_section(
-                "Exploratory Data Analysis",
-                "toggle_eda_button",
-                "eda_plots"
-            ),
-            collapsible_section(
-                "Named Entity Recognition",
-                "toggle_ner_button",
-                "ner_plots"
-            ),
-            collapsible_section(
-                "Sentiment",
-                "toggle_sentiment_button",
-                "sentiment_plots"
-            ),
-            collapsible_section(
-                "Community Graphs",
-                "toggle_community_button",
-                "community_plots"
-            ),
-            collapsible_section(
-                "N-grams",
-                "toggle_ngrams_button",
-                "ngrams_plots"
-            ),
-            collapsible_section(
-                "Keywords trends",
-                "toggle_keywords_trends_button",
-                "keywords_trends_plots"
-            ),
-            class_="plots-container"
-        )
+    setup_plot_outputs(input, output, session)
+    setup_ui_outputs(input, output, session)
 
     @reactive.Effect
     @reactive.event(input.dataset_filter)
@@ -454,52 +285,6 @@ def all_module_server(input, output, session):
                 class_="plots-row"
             )
         return ui.div()
-
-    @output
-    @render.ui
-    def concordance_table():
-        dataset_name = input.dataset_filter()
-        filter_words = [word.strip() for word in input.filter_words().split(",") if word.strip()]
-        ngram_number = input.ngram_number()
-
-        # Generate concordance DataFrame
-        concordance_df = generate_concordance(dataset_name, filter_words, ngram_number)
-
-        # Ensure only the required columns are used
-        concordance_df = concordance_df[["lefts", "center", "rights", "count"]]
-
-        if concordance_df.empty:
-            return ui.div("No concordance results found.")
-
-        table_html = (
-            f'<h3 style="text-align: center;">Concordance Results with {ngram_number}-Grams for {input.filter_words()} '
-            f'- {dataset_name}</h3>'
-            '<table id="concordance-table" class="concordance-table">'
-            '<tbody>'
-            '<tr>'
-            '<th>Index</th>'
-            '<th>Lefts</th>'
-            '<th>Center</th>'
-            '<th>Rights</th>'
-            '<th>Count</th>'
-            '</tr>'
-        )
-
-        for idx, row in concordance_df.iterrows():
-            table_html += (
-                f'<tr>'
-                f'<td>{idx + 1}</td>'
-                f'<td class="column-lefts">{row["lefts"]}</td>'
-                f'<td class="column-center">{row["center"]}</td>'
-                f'<td class="column-rights">{row["rights"]}</td>'
-                f'<td class="column-count">{row["count"]}</td>'
-                f'</tr>'
-            )
-
-        table_html += '</tbody></table>'
-
-        # Return the styled HTML table
-        return ui.HTML(table_html)
 
     @reactive.Effect
     @reactive.event(input.dataset_filter)
