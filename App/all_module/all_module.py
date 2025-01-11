@@ -32,7 +32,18 @@ def all_module_server(input, output, session):
     communities_visible = reactive.Value(True)
     keywords_trends_visible = reactive.Value(True)
     ngrams_visible = reactive.Value(True)
-    keywords_choices = reactive.Value(generate_keywords("Gaza before conflict"))
+    keywords = generate_keywords("Gaza before conflict")
+    keywords_choices = reactive.Value(keywords)
+    dataset_filter_value = reactive.Value("Gaza before conflict")
+    sentiment_filter_value = reactive.Value("Positive")
+    entity_type_filter_value = reactive.Value("Person")
+    sentiment_model_filter_value = reactive.Value("TSC")
+    word_cloud_n_value = reactive.Value(100)
+    pos_filter_value = reactive.Value("Common Singular Nouns")
+    filter_words_value = reactive.Value("US, China")
+    ngram_number_value = reactive.Value(3)
+    selected_keywords_value = reactive.Value(keywords[:2])
+    date_range_value = reactive.Value("daily")
 
     @output
     @render_widget
@@ -199,39 +210,124 @@ def all_module_server(input, output, session):
             class_="plots-container"
         )
 
+    @reactive.Effect
+    @reactive.event(input.dataset_filter)
+    def update_dataset_filter():
+        dataset_filter_value.set(input.dataset_filter())
+
+    @reactive.Effect
+    @reactive.event(input.sentiment_filter)
+    def update_sentiment_filter():
+        sentiment_filter_value.set(input.sentiment_filter())
+
+    @reactive.Effect
+    @reactive.event(input.entity_type_filter)
+    def update_entity_type_filter():
+        entity_type_filter_value.set(input.entity_type_filter())
+
+    @reactive.Effect
+    @reactive.event(input.sentiment_model_filter)
+    def update_sentiment_model_filter():
+        sentiment_model_filter_value.set(input.sentiment_model_filter())
+
+    @reactive.Effect
+    @reactive.event(input.word_cloud_n)
+    def update_word_cloud_n():
+        word_cloud_n_value.set(input.word_cloud_n())
+
+    @reactive.Effect
+    @reactive.event(input.pos_filter)
+    def update_pos_filter():
+        pos_filter_value.set(input.pos_filter())
+
+    @reactive.Effect
+    @reactive.event(input.filter_words)
+    def update_filter_words():
+        filter_words_value.set(input.filter_words())
+
+    @reactive.Effect
+    @reactive.event(input.ngram_number)
+    def update_ngram_number():
+        ngram_number_value.set(input.ngram_number())
+
+    @reactive.Effect
+    @reactive.event(input.selected_keywords)
+    def update_selected_keywords():
+        selected_keywords_value.set(list(input.selected_keywords()))
+
+    @reactive.Effect
+    @reactive.event(input.date_range)
+    def update_date_range():
+        date_range_value.set(input.date_range())
+
     @output
     @render.ui
     def right_container_all():
         if right_container_visible_all.get():
             return ui.div(
-                ui.input_select("dataset_filter", "Select Dataset", choices=[
-                    "Gaza before conflict", "Gaza during conflict",
-                    "Ukraine before conflict", "Ukraine during conflict"
-                ]),
-                ui.input_select("sentiment_filter", "Select Sentiment", choices=["Positive", "Neutral", "Negative"]),
-                ui.input_select("entity_type_filter", "Select Entity Type",
-                                choices=["Person", "Organisation", "Location", "Miscellaneous"]),
-                ui.input_select("sentiment_model_filter", "Select Sentiment Model", choices=["TSC", "VADER"]),
-                ui.input_numeric("word_cloud_n", "Number of Words in Word Cloud", value=100, min=1),
-                ui.input_selectize("pos_filter", "Select Part of Speech", choices=generate_pos_choices(),
-                                   multiple=False, selected="Common Singular Nouns",
-                                   options={"create": False, "searchField": ["label"]}),
-                ui.input_text("filter_words", "Filter Words (comma-separated)", value="US, China"),
-                ui.input_numeric("ngram_number", "N-gram Number", value=2, min=2),
+                ui.input_select(
+                    "dataset_filter",
+                    "Select Dataset",
+                    choices=[
+                        "Gaza before conflict", "Gaza during conflict",
+                        "Ukraine before conflict", "Ukraine during conflict"
+                    ],
+                    selected=dataset_filter_value.get()
+                ),
+                ui.input_select(
+                    "sentiment_filter",
+                    "Select Sentiment",
+                    choices=["Positive", "Neutral", "Negative"],
+                    selected=sentiment_filter_value.get()
+                ),
+                ui.input_select(
+                    "entity_type_filter",
+                    "Select Entity Type",
+                    choices=["Person", "Organisation", "Location", "Miscellaneous"],
+                    selected=entity_type_filter_value.get()
+                ),
+                ui.input_select(
+                    "sentiment_model_filter",
+                    "Select Sentiment Model",
+                    choices=["TSC", "VADER"],
+                    selected=sentiment_model_filter_value.get()
+                ),
+                ui.input_numeric(
+                    "word_cloud_n",
+                    "Number of Words in Word Cloud",
+                    value=word_cloud_n_value.get(),
+                    min=1
+                ),
+                ui.input_selectize(
+                    "pos_filter",
+                    "Select Part of Speech",
+                    choices=generate_pos_choices(),
+                    multiple=False,
+                    selected=pos_filter_value.get()
+                ),
+                ui.input_text(
+                    "filter_words",
+                    "Filter Words (comma-separated)",
+                    value=filter_words_value.get()
+                ),
+                ui.input_numeric(
+                    "ngram_number",
+                    "N-gram Number",
+                    value=ngram_number_value.get(),
+                    min=2
+                ),
                 ui.input_selectize(
                     "selected_keywords",
                     "Select keywords to analyze",
                     choices=keywords_choices.get(),
-                    selected=keywords_choices.get()[0],
-                    multiple=True,
-                    options={"create": False, "placeholder": "Select or type keywords"}
+                    selected=selected_keywords_value.get(),
+                    multiple=True
                 ),
-
                 ui.input_select(
                     "date_range",
                     "Select date aggregation",
                     choices=['daily', 'weekly', 'monthly'],
-                    selected='monthly'
+                    selected=date_range_value.get()
                 ),
                 ui.input_action_button("hide_container_button_all", "Hide Menu", class_="btn btn-secondary"),
                 class_="main-right-container",
@@ -316,13 +412,6 @@ def all_module_server(input, output, session):
     @render.ui
     def sentiment_plots():
         if sentiment_visible.get():
-            # dataset_name = input.dataset_filter()
-            # sentiment = input.sentiment_filter().lower()
-            # sentiment_over_time_by_target = f'Sentiment/{sentiment}_sentiment_over_time_by_target_{dataset_name}.png'
-            # return ui.div(
-            #     ui.img(src=sentiment_over_time_by_target, class_="plot-image sentiment-plot"),
-            #     class_="plots-row"
-            # )
             return ui.div(
                 output_widget("sentiment_dist_plot"),
                 output_widget("sentiment_over_time_plot"),
@@ -340,8 +429,6 @@ def all_module_server(input, output, session):
         if communities_visible.get():
             return ui.div(
                 ui.output_image("community_graph"),
-                # output_widget("community_graph"),
-                # ui.img(src='plot1.png', class_="plot-image eda-plot"),
                 class_="plots-row"
             )
         return ui.div()
@@ -423,4 +510,6 @@ def all_module_server(input, output, session):
     @reactive.event(input.dataset_filter)
     def update_keywords_choices():
         dataset_name = input.dataset_filter()
-        keywords_choices.set(generate_keywords(dataset_name))
+        keywords_list = generate_keywords(dataset_name)
+        keywords_choices.set(keywords_list)
+        selected_keywords_value.set(keywords_list[:2])
