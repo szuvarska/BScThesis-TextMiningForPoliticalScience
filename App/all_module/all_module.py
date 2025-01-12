@@ -102,68 +102,13 @@ def all_module_server(input, output, session):
             return ui.div(
                 ui.input_select(
                     "dataset_filter",
-                    "Select Dataset",
+                    "Select dataset",
                     choices=dataset_choices.get(),
                     selected=dataset_filter_value.get()
                 ),
-                ui.input_select(
-                    "sentiment_filter",
-                    "Select Sentiment",
-                    choices=["Positive", "Neutral", "Negative"],
-                    selected=sentiment_filter_value.get()
-                ),
-                ui.input_select(
-                    "entity_type_filter",
-                    "Select Entity Type",
-                    choices=["Person", "Organisation", "Location", "Miscellaneous"],
-                    selected=entity_type_filter_value.get()
-                ),
-                ui.input_select(
-                    "sentiment_model_filter",
-                    "Select Sentiment Model",
-                    choices=["TSC", "VADER"],
-                    selected=sentiment_model_filter_value.get()
-                ),
-                ui.input_numeric(
-                    "word_cloud_n",
-                    "Number of Words in Word Cloud",
-                    value=word_cloud_n_value.get(),
-                    min=1
-                ),
-                ui.input_selectize(
-                    "pos_filter",
-                    "Select Part of Speech",
-                    choices=generate_pos_choices(),
-                    multiple=False,
-                    selected=pos_filter_value.get()
-                ),
-                ui.input_text(
-                    "filter_words",
-                    "Filter Words (comma-separated)",
-                    value=filter_words_value.get()
-                ),
-                ui.input_numeric(
-                    "ngram_number",
-                    "N-gram Number",
-                    value=ngram_number_value.get(),
-                    min=2
-                ),
-                ui.input_selectize(
-                    "selected_keywords",
-                    "Select keywords to analyze",
-                    choices=keywords_choices.get(),
-                    selected=selected_keywords_value.get(),
-                    multiple=True
-                ),
-                ui.input_select(
-                    "date_range",
-                    "Select date aggregation",
-                    choices=['daily', 'weekly', 'monthly'],
-                    selected=date_range_value.get()
-                ),
                 ui.input_file(
                     "upload_folder",
-                    "Upload Dataset",
+                    "Upload dataset",
                     multiple=True,
                     accept=[".txt", ".zip"]
                 ),
@@ -173,6 +118,61 @@ def all_module_server(input, output, session):
                     placeholder="Enter dataset name",
                 ),
                 ui.input_action_button("analyze_dataset_button", "Analyze Dataset", class_="btn btn-file"),
+                ui.input_numeric(
+                    "word_cloud_n",
+                    "Enter Number of most common words in word clouds",
+                    value=word_cloud_n_value.get(),
+                    min=1
+                ),
+                ui.input_selectize(
+                    "pos_filter",
+                    "Select part of speech for word cloud",
+                    choices=generate_pos_choices(),
+                    multiple=False,
+                    selected=pos_filter_value.get()
+                ),
+                ui.input_select(
+                    "entity_type_filter",
+                    "Select entity type",
+                    choices=["Person", "Organisation", "Location", "Miscellaneous"],
+                    selected=entity_type_filter_value.get()
+                ),
+                ui.input_select(
+                    "sentiment_model_filter",
+                    "Select sentiment model",
+                    choices=["TSC", "VADER"],
+                    selected=sentiment_model_filter_value.get()
+                ),
+                ui.input_select(
+                    "sentiment_filter",
+                    "Select sentiment type for word cloud and sentiment by target",
+                    choices=["Positive", "Neutral", "Negative"],
+                    selected=sentiment_filter_value.get()
+                ),
+                ui.input_text(
+                    "filter_words",
+                    "Enter words for concordance (comma-separated)",
+                    value=filter_words_value.get()
+                ),
+                ui.input_numeric(
+                    "ngram_number",
+                    "Enter N-gram number",
+                    value=ngram_number_value.get(),
+                    min=2
+                ),
+                ui.input_selectize(
+                    "selected_keywords",
+                    "Select keywords for trends",
+                    choices=keywords_choices.get(),
+                    selected=selected_keywords_value.get(),
+                    multiple=True
+                ),
+                ui.input_select(
+                    "date_range",
+                    "Select date aggregation for keywords trends",
+                    choices=['daily', 'weekly', 'monthly'],
+                    selected=date_range_value.get()
+                ),
                 ui.input_action_button("hide_container_button_all", "Hide Menu", class_="btn btn-secondary"),
                 class_="main-right-container",
                 id="main-right-container-all"

@@ -15,6 +15,7 @@ def split_text_into_chunks(text: str, max_tokens: int = 1000) -> list:
 
     no_of_chunks = total_tokens // max_tokens + 1
     avg_tokens_per_chunk = total_tokens // no_of_chunks
+    print(f"Splitting into {no_of_chunks} chunks with {avg_tokens_per_chunk} tokens each")
 
     chunks = []
     chunk = []
@@ -27,7 +28,6 @@ def split_text_into_chunks(text: str, max_tokens: int = 1000) -> list:
         chunk.append(sentence)
         current_tokens += len(tokens)
 
-
     return chunks
 
 def download_summary_model():
@@ -39,10 +39,12 @@ def download_summary_model():
 
 def summarize_text(text: str) -> str:
     global summarizer
+    print(f"Lenght of text: {len(text)}")
     chunks = split_text_into_chunks(text)
     summaries = []
     print(f"Summarizing {len(chunks)} chunks...")
     for chunk in chunks:
+        print(f"Chunk len: {len(chunk)}")
         summary = summarizer(chunk, max_length=150, min_length=30, do_sample=False)
         summaries.append(summary[0]["summary_text"])
     return " ".join(summaries)

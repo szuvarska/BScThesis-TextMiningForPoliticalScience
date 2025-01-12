@@ -158,7 +158,7 @@ def plot_community_graph(df_ner: pd.DataFrame, df_entities: pd.DataFrame, suptit
     # nx.draw_networkx_edge_labels(G, pos, edge_labels=labels, font_size=8)
 
     # title
-    fig.suptitle(suptitle, fontsize=20)
+    fig.suptitle(suptitle, fontsize=20, fontweight='bold')
     ax.set_title("\n\n\n", fontsize=15)
     fig.text(0.5, 0.83, title, horizontalalignment="center", fontdict={'fontsize': 15})
     return plt

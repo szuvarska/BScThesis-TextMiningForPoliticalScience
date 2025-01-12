@@ -162,7 +162,7 @@ def calculate_sentiment_dist(tsc_results_df: pd.DataFrame, vader_results_df: pd.
     # Update layout
     fig.update_layout(
         barmode='group',  # Group bars side by side
-        title=f'Comparison of Overall Sentiment Distribution (TSC vs VADER) - {dataset_name}',
+        title=f'Comparison of overall sentiment distribution (TSC vs VADER) - {dataset_name}',
         xaxis_title='Model',
         yaxis=dict(
             title='Count',
@@ -245,7 +245,7 @@ def calculate_sentiment_over_time(model_results_df: pd.DataFrame, dataset_name: 
 
     fig.update_layout(
         barmode='stack',
-        title=f'{model_name.upper()} Sentiment Proportions Over Time (Monthly) - {dataset_name}',
+        title=f'{model_name.upper()} Sentiment proportions over time (monthly) - {dataset_name}',
         xaxis=dict(
             title='Month',
             tickmode='array',
@@ -255,7 +255,7 @@ def calculate_sentiment_over_time(model_results_df: pd.DataFrame, dataset_name: 
         ),
         # yaxis=dict(title='Proportion of Sentiment'),
         yaxis=dict(
-            title='Proportion of Sentiment',
+            title='Proportion of sentiment',
             ticklabelposition='outside',
             ticks='outside',
             tickcolor='#fdfdfd',
@@ -420,7 +420,7 @@ def calculate_sentiment_dist_per_target(tsc_results_df: pd.DataFrame, dataset_na
     # Update layout
     fig.update_layout(
         barmode='stack',  # Stacked bars
-        title=f'Overall Sentiment Distribution per Target (TSC) - {dataset_name}',
+        title=f'Overall sentiment distribution per target (TSC) - {dataset_name}',
         xaxis_title='Proportion of Sentiment',
         # yaxis_title='Target',
         yaxis=dict(
@@ -514,11 +514,11 @@ def calculate_sentiment_over_time_per_target(tsc_results_df: pd.DataFrame, datas
         # Update layout for the chart
         fig.update_layout(
             barmode='stack',  # Stacked bars
-            title=f'Sentiment Over Time for {target} (Monthly) - {dataset_name}',
+            title=f'Sentiment over time for {target} (Monthly) - {dataset_name}',
             xaxis_title='Month',
             # yaxis_title='Proportion of Sentiment',
             yaxis=dict(
-                title='Proportion of Sentiment',
+                title='Proportion of sentiment',
                 ticklabelposition='outside',
                 ticks='outside',
                 tickcolor='#fdfdfd',
@@ -570,7 +570,7 @@ def calculate_sentiment_dist_over_time_by_target(tsc_results_df: pd.DataFrame, d
     # Update layout to ensure date labels are correctly displayed
     print(heatmap_data_positive.columns)
     fig_positive.update_layout(
-        title=f'Proportion of Positive Sentiment by Target Over Time (Monthly) - {dataset_name}',
+        title=f'Proportion of positive sentiment by target over time (monthly) - {dataset_name}',
         xaxis_title='Month',
         yaxis_title='Target',
         xaxis=dict(
@@ -597,7 +597,7 @@ def calculate_sentiment_dist_over_time_by_target(tsc_results_df: pd.DataFrame, d
     ))
 
     fig_negative.update_layout(
-        title=f'Proportion of Negative Sentiment by Target Over Time (Monthly) - {dataset_name}',
+        title=f'Proportion of negative sentiment by target over time (monthly) - {dataset_name}',
         xaxis_title='Month',
         yaxis_title='Target',
         xaxis=dict(
@@ -620,7 +620,7 @@ def calculate_sentiment_dist_over_time_by_target(tsc_results_df: pd.DataFrame, d
 
 
     fig_neutral.update_layout(
-        title=f'Proportion of Neutral Sentiment by Target Over Time (Monthly) - {dataset_name}',
+        title=f'Proportion of neutral sentiment by target over time (monthly) - {dataset_name}',
         xaxis_title='Month',
         yaxis_title='Target',
         xaxis=dict(
@@ -685,7 +685,7 @@ def calculate_sentiment_dist_over_time_by_target_for_shiny(tsc_results_df: pd.Da
 
     # Update layout to ensure date labels are correctly displayed
     fig.update_layout(
-        title=f'Proportion of {sentiment.capitalize()} Sentiment by Target Over Time (Monthly) - {dataset_name}',
+        title=f'Proportion of {sentiment.capitalize()} sentiment by target over time (monthly) - {dataset_name}',
         xaxis_title='Month',
         xaxis=dict(
             tickmode='array',

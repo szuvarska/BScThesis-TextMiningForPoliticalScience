@@ -150,7 +150,7 @@ body .nav-underline {
     text-align: center;
     font-weight: 600;
     font-size: 20px;
-    text-transform: uppercase;
+    /*text-transform: uppercase;*/
 }
 
 .control-label {
@@ -162,7 +162,7 @@ body .nav-underline {
     cursor: pointer;
     font-weight: bold;
     transition: background-color 0.3s ease;
-    text-transform: uppercase;
+    /*text-transform: uppercase;*/
 }
 
 .right-tab {

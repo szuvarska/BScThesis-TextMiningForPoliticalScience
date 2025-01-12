@@ -115,7 +115,7 @@ def single_module_server(input, output, session):
             return ui.div(
                 ui.input_select("file_select", "Select article", choices=display_choices,
                                 selected=selected_file_value.get()),
-                ui.input_file("file_upload", "UPLOAD ARTICLE"),
+                ui.input_file("file_upload", "Upload article"),
                 ui.input_action_button("hide_container_button_single", "Hide Menu", class_="btn btn-secondary"),
                 class_="main-right-container",
                 id="main-right-container-single"

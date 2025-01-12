@@ -153,5 +153,10 @@ def visualize_bigrams(df: pd.DataFrame, top_n: int = 10, dataset_name: str = '')
                                    width=[G[u][v]['weight'] for u, v in G.edges], connectionstyle='arc3,rad=0.05',
                                    arrowsize=20)
     nx.draw_networkx_labels(G, pos, font_size=10, font_weight='bold')
-    plt.title(f"Bigram Graph Visualization - {dataset_name}")
+    
+    # Add title and subtitle
+    plt.title(f"Most common words in bigrams graph - {dataset_name} \n\n\n", fontsize=25, fontweight='bold')
+    plt.suptitle("Edges represent bigram connections strength. Arrows indicate the order of words in the bigram",
+                 fontsize=20, fontweight='regular', y=0.92)
+
     return plt

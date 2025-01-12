@@ -70,7 +70,7 @@ def plot_word_count_distribution(df: pd.DataFrame, df_name: str):
     fig = px.histogram(
         filtered_data,
         nbins=25,
-        title=f'Word Count Distribution - {df_name}',
+        title=f'Number of words in articles distribution - {df_name}',
         labels={'value': 'Word Count'},
         height=600,
         width=800,
@@ -139,7 +139,7 @@ def sentance_count_distribution(df: pd.DataFrame, df_name: str):
     fig = px.histogram(
         filtered_data,
         nbins=20,
-        title=f'Sentence Count Distribution - {df_name}',
+        title=f'Number of sentences in articles distribution - {df_name}',
         labels={'value': 'Sentence Count'},
         height=600,
         width=800,
@@ -199,7 +199,7 @@ def plot_top_N_common_words(df: pd.DataFrame, df_name: str, N=100):
     # plt.figure(figsize=(12, 10))
     plt.imshow(wordcloud, interpolation='bilinear')
     plt.axis('off')
-    plt.title(f'Top {N} Most Common Words - {df_name}')
+    plt.title(f'Top {N} most common words - {df_name}')
     # plt.show()
     plt.tight_layout()
     return plt.gcf()
@@ -274,8 +274,8 @@ def plot_top_N_common_pos(df_pos: pd.DataFrame, df_name: str, N=10):
         x='Count',
         y='POS',
         orientation='h',
-        title=f'Top {N} Most Common Part of Speech - {df_name}',
-        labels={'Count': 'Count', 'POS': 'Part of Speech'},
+        title=f'Most common part of speech - {df_name}',
+        labels={'Count': 'Count', 'POS': 'Part of speech'},
         color_discrete_sequence=[my_blue]
     )
 
@@ -283,7 +283,7 @@ def plot_top_N_common_pos(df_pos: pd.DataFrame, df_name: str, N=10):
     fig.update_layout(
         xaxis=dict(title="Count", tickangle=45),
         yaxis=dict(
-            title='Part of Speech',
+            title='Part of speech',
             ticklabelposition='outside',
             ticks='outside',
             tickcolor='#fdfdfd',
@@ -413,6 +413,6 @@ def plot_pos_wordclouds_for_shiny(df: pd.DataFrame, df_name: str, N=100, pos="Co
     # plt.figure(figsize=(6, 6))
     plt.imshow(wordcloud, interpolation='bilinear')
     plt.axis('off')
-    plt.title(f'Top {N} Most Common {pos} - {df_name}')
+    plt.title(f'Top {N} most common {pos} - {df_name}')
     plt.tight_layout()
     return plt.gcf()

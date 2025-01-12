@@ -278,14 +278,14 @@ def find_most_common_entity_types(df: pd.DataFrame, dataset_name: str, for_shiny
         entity_types_df,
         x='Entity Type',
         y='Frequency',
-        title=f'Most Frequently Mentioned Named Entity Types - {dataset_name}',
+        title=f'Most frequently mentioned Named Entity types - {dataset_name}',
         labels={'Entity Type': 'Entity Type', 'Frequency': 'Frequency'},
         color_discrete_sequence=[my_blue]
     )
 
     # Update layout for better readability
     fig.update_layout(
-        xaxis=dict(title="Entity Type", tickangle=45),  # Rotate x-axis labels
+        xaxis=dict(title="Entity type", tickangle=45),  # Rotate x-axis labels
         yaxis_title="Frequency",
         title=dict(x=0.5),  # Center-align the title
         coloraxis_showscale=False,  # Hide the color scale legend
@@ -369,7 +369,7 @@ def find_most_common_entities_per_type(df: pd.DataFrame, dataset_name: str, outp
                 entity_data,
                 x='Word',
                 y='Count',
-                title=f'Top 15 Words for {entity_type} - {dataset_name}',
+                title=f'Top 15 words for {entity_type} - {dataset_name}',
                 labels={'Word': 'Word', 'Count': 'Frequency'},
                 color_discrete_sequence=[my_blue]
             )
@@ -403,7 +403,7 @@ def find_most_common_entities_per_type_for_shiny(dataset_name: str, output_file:
         x='Count',  # Horizontal bars
         y='Word',
         orientation='h',
-        title=f'Top 15 Words for {entity_type_name} - {dataset_name}',
+        title=f'Top 15 words for {entity_type_name} - {dataset_name}',
         labels={'Word': 'Word', 'Count': 'Frequency'},
         color_discrete_sequence=[my_blue]
     )
