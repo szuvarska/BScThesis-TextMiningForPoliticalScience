@@ -1,28 +1,34 @@
-from transformers import pipeline
 from transformers import AutoTokenizer
+from transformers import pipeline
+
 summarizer = None
+
 
 def split_text_into_chunks(text: str, max_tokens: int = 1000) -> list:
     tokenizer = AutoTokenizer.from_pretrained("facebook/bart-large-cnn")
-    sentences = []
-    current_chunk = []
-    current_length = 0
-    for sentence in text.split(". "):
-        sentence = sentence.strip()
-        if not sentence:
-            continue
-        sentence_tokens = tokenizer.encode(sentence, add_special_tokens=False)
-        sentence_length = len(sentence_tokens)
-        if current_length + sentence_length > max_tokens:
-            sentences.append(" ".join(current_chunk))
-            current_chunk = [sentence]
-            current_length = sentence_length
-        else:
-            current_chunk.append(sentence)
-            current_length += sentence_length
-    if current_chunk:
-        sentences.append(" ".join(current_chunk))
-    return sentences
+    sentences = [sentence.strip() for sentence in text.split(". ") if sentence.strip()]
+    sentence_tokens = [tokenizer.encode(sentence, add_special_tokens=False) for sentence in sentences]
+    total_tokens = sum(len(tokens) for tokens in sentence_tokens)
+
+    if total_tokens <= max_tokens:
+        return [" ".join(sentences)]
+
+    no_of_chunks = total_tokens // max_tokens + 1
+    avg_tokens_per_chunk = total_tokens // no_of_chunks
+
+    chunks = []
+    chunk = []
+    current_tokens = 0
+    for sentence, tokens in zip(sentences, sentence_tokens):
+        if current_tokens + len(tokens) > avg_tokens_per_chunk:
+            chunks.append(" ".join(chunk))
+            chunk = []
+            current_tokens = 0
+        chunk.append(sentence)
+        current_tokens += len(tokens)
+
+
+    return chunks
 
 def download_summary_model():
     global summarizer
