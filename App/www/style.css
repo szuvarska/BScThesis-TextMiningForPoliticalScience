@@ -56,7 +56,7 @@ body .nav-underline {
     font-size: 22px;
 }
 
-.navbar-nav .nav-item .nav-link:hover {
+.navbar-nav .nav-item .nav-link:hover, .control-label:hover {
     background-color: var(--secondary-color);
 }
 
@@ -74,16 +74,6 @@ body .nav-underline {
     transition: all 0.3s ease;
     margin: 0;
 }
-
-/*.main-left-container {*/
-/*    width: 100%;*/
-/*    padding: 20px;*/
-/*    background-color: var(--container-color);*/
-/*    display: flex;*/
-/*    flex-direction: row;*/
-/*    flex-wrap: wrap;*/
-/*    gap: 4%;*/
-/*}*/
 
 .main-left-container {
     width: 100%;
@@ -132,12 +122,12 @@ body .nav-underline {
     align-items: center;
     text-align: center;
     transition: all 0.3s ease;
-    height: 85vh;  /* Set a fixed height */
+    height: 85vh; /* Set a fixed height */
     overflow-y: auto;
 }
 
 .main-right-container .btn-secondary {
-    margin-bottom: 20px;  /* Add margin below the button */
+    margin-bottom: 20px; /* Add margin below the button */
 }
 
 .text-content {
@@ -149,7 +139,6 @@ body .nav-underline {
 #uploaded_text_content, #uploaded_text_content_1, #uploaded_text_content_2 {
     width: 100%;
     word-wrap: break-word;
-    /*white-space: pre-wrap;*/
     overflow-x: hidden;
 }
 
@@ -174,10 +163,6 @@ body .nav-underline {
     font-weight: bold;
     transition: background-color 0.3s ease;
     text-transform: uppercase;
-}
-
-.control-label:hover {
-    background-color: var(--secondary-color);
 }
 
 .right-tab {
@@ -209,58 +194,43 @@ img.entity-types-plot {
 }
 
 #entity_types_plot {
-    width: 80%;
-    max-width: 600px;
-    background-color: var(--container-color);
+    width: 90%;
+    max-width: 650px;
 }
 
 #most_common_entities_plot {
     width: 100%;
     max-width: 700px;
-    background-color: var(--container-color);
 }
 
-#entity_types_single_plot {
+#entity_types_single_plot, #most_common_entities_single_plot {
     max-width: 550px;
 }
 
-#most_common_entities_single_plot {
-    max-width: 550px;
-}
-
-#sentiment_dist_single_plot {
+#sentiment_dist_single_plot, #entity_types_double_plot, #sentiment_dist_sentence_double_plot,
+#sentiment_dist_entity_double_plot {
     width: 75%;
-    background-color: var(--container-color);
     max-width: 850px;
 }
 
 #sentiment_dist_plot {
     width: 80%;
     max-width: 850px;
-    background-color: var(--container-color);
 }
 
 #sentiment_over_time_plot {
     width: 87%;
     max-width: 900px;
-    background-color: var(--container-color);
 }
 
-#sentiment_dist_per_target_plot, #sentiment_over_time_per_target_plot, #sentiment_dist_over_time_by_target_plot {
+#sentiment_dist_per_target_plot, #sentiment_over_time_per_target_plot, #sentiment_dist_over_time_by_target_plot,
+#keywords_over_time_plot, #stacked_keywords_over_time_plot {
     width: 100%;
     max-width: 1050px;
-    background-color: var(--container-color);
 }
 
 #word_count_distribution_plot, #sentence_count_distribution_plot {
     width: 100%;
-    background-color: var(--container-color);
-    max-width: 850px;
-}
-
-#sentence_count_distribution_plot {
-    width: 100%;
-    background-color: var(--container-color);
     max-width: 850px;
 }
 
@@ -271,7 +241,6 @@ img.entity-types-plot {
     margin: 0 auto 30px;
     box-shadow: 3px 3px 10px lightgray;
     padding: 1px;
-    background-color: var(--container-color);
 }
 
 #most_common_words_single_plot, #most_common_words_double_plot_1, #most_common_words_double_plot_2, #sentiment_word_cloud_plot {
@@ -279,99 +248,42 @@ img.entity-types-plot {
     max-width: 750px;
     display: block;
     margin: 0 auto 30px;
-    /*border: 2px solid black;*/
     box-shadow: 3px 3px 10px lightgray;
     padding: 1px;
-    background-color: var(--container-color);
 }
 
-#most_common_words_single_plot img, #most_common_words_double_plot_1 img, #most_common_words_double_plot_2 img {
+#most_common_words_single_plot img, #most_common_words_double_plot_1 img, #most_common_words_double_plot_2 img,
+#bigrams_plot img {
     width: 100%;
     margin-bottom: 30px;
-    background-color: var(--container-color);
 }
 
-
-#top_N_common_pos_plot{
+#top_N_common_pos_plot {
     width: 100%;
-    background-color: var(--container-color);
 }
 
-#keywords_over_time_plot {
-    width: 100%;
-    max-width: 1050px;
-    background-color: var(--container-color);
-}
-
-#stacked_keywords_over_time_plot {
-    width: 100%;
-    max-width: 1050px;
-    background-color: var(--container-color);
-}
-
-
-#community_graph {
+#community_graph, #bigrams_plot {
     width: 87% !important;
     max-width: 1050px;
     height: auto !important;
     display: block;
     margin: 0 auto 30px;
-    /*border: 2px solid black;*/
     box-shadow: 3px 3px 10px lightgray;
     padding: 1px;
-    background-color: var(--container-color);
 }
 
 #community_graph img {
     width: 100% !important;
     margin-bottom: 30px;
-    background-color: var(--container-color);
-}
-
-#bigrams_plot {
-    width: 87% !important;
-    max-width: 1050px;
-    height: auto !important;
-    display: block;
-    margin: 0 auto 30px;
-    /*border: 2px solid black;*/
-    box-shadow: 3px 3px 10px lightgray;
-    padding: 1px;
-    background-color: var(--container-color);
-}
-
-#bigrams_plot img {
-    width: 100%;
-    margin-bottom: 30px;
-    background-color: var(--container-color);
-}
-
-#entity_types_double_plot {
-    width: 75%;
-    background-color: var(--container-color);
-    max-width: 850px;
 }
 
 #most_common_entities_double_plot {
     width: 85%;
-    background-color: var(--container-color);
     max-width: 970px;
-}
-
-#sentiment_dist_sentence_double_plot {
-    width: 75%;
-    background-color: var(--container-color);
-    max-width: 850px;
-}
-#sentiment_dist_entity_double_plot {
-    width: 75%;
-    background-color: var(--container-color);
-    max-width: 850px;
 }
 
 .plot-image {
     width: 45%;
-    /*border: 2px solid black;*/
     box-shadow: 3px 3px 10px lightgray;
     padding: 10px;
     box-sizing: border-box;
@@ -381,15 +293,14 @@ img.entity-types-plot {
     background-color: var(--container-color);
 }
 
-.shiny-ipywidget-output {
-  overflow: hidden;
-  width: 45%;
-  box-shadow: 3px 3px 10px lightgray;
-  background-color: var(--container-color);!important;
-  padding: 10px;
-  box-sizing: border-box;
-  margin: 10px auto 30px;
-
+.shiny-ipywidget-output, .shiny-image-output {
+    overflow: hidden;
+    width: 45%;
+    box-shadow: 3px 3px 10px lightgray;
+    background-color: var(--container-color) !important;
+    padding: 10px;
+    box-sizing: border-box;
+    margin: 10px auto 30px;
 }
 
 .plots-row .plot-image, .plots-row .shiny-ipywidget-output {
@@ -397,7 +308,6 @@ img.entity-types-plot {
     margin: 0 auto 30px;
     background-color: var(--container-color);
 }
-
 
 .container-fluid {
     padding: 0;
@@ -437,7 +347,6 @@ img.entity-types-plot {
     display: flex;
     flex-direction: column;
     align-items: center;
-
 }
 
 .collapsible-section-header {
@@ -445,7 +354,7 @@ img.entity-types-plot {
     border-bottom: var(--primary-color) 1px solid;
 }
 
-.hidden {
+.hidden, label#dataset_name-label, .shiny-ipywidget-output .js-plotly-plot:nth-child(n+2) {
     display: none;
 }
 
@@ -459,7 +368,7 @@ img.entity-types-plot {
 }
 
 .toggle-button.collapsed {
-    transform: rotate(-90deg);  /* Rotate to show right arrow */
+    transform: rotate(-90deg); /* Rotate to show right arrow */
 }
 
 .collapsible-section h3 {
@@ -496,11 +405,11 @@ img.entity-types-plot {
     z-index: 10;
     white-space: pre-wrap;
     width: 250px;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);  /* Adds a shadow for better visibility */
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3); /* Adds a shadow for better visibility */
 }
 
 .view-button {
-    margin-top: 20px;  /* Add space before the button */
+    margin-top: 20px; /* Add space before the button */
 }
 
 .icon-container {
@@ -530,24 +439,25 @@ a {
 }
 
 table.concordance-table {
-  width: auto;
-  border-collapse: collapse;
-  font-size: 14px;
-  line-height: 1.5;
-  margin: 20px auto;
-  color: var(--app-title-color);
+    width: auto;
+    border-collapse: collapse;
+    font-size: 14px;
+    line-height: 1.5;
+    margin: 20px auto;
+    color: var(--app-title-color);
     box-shadow: 3px 3px 10px lightgray;
-    background-color: var(--container-color);!important;
+    background-color: var(--container-color);
+!important;
 }
 
-table.concordance-table body{
-    background-color: var(--container-color);!important;
+table.concordance-table body {
+    background-color: var(--container-color);
+!important;
 }
 
 table.concordance-table th {
     text-align: center;
-    padding: 12px;
-    padding-bottom: 8px;
+    padding: 12px 12px 8px;
     border-bottom: 3px solid var(--primary-color);
     font-size: 16px;
     font-weight: bold;
@@ -557,10 +467,10 @@ table.concordance-table tbody td {
     padding: 10px;
     border: none;
     border-bottom: 1px solid var(--primary-color);
-    /*background-color: #fff;*/
     text-align: left;
     word-wrap: break-word;
-    background-color: var(--container-color);!important;
+    background-color: var(--container-color);
+!important;
 }
 
 table.concordance-table td.column-lefts {
@@ -569,8 +479,8 @@ table.concordance-table td.column-lefts {
 }
 
 table.concordance-table td.column-center {
-  text-align: center;
-  font-weight: bold;
+    text-align: center;
+    font-weight: bold;
 }
 
 table.concordance-table td.column-rights {
@@ -579,13 +489,13 @@ table.concordance-table td.column-rights {
 }
 
 table.concordance-table td.column-count {
-  text-align: left;
+    text-align: left;
 }
 
 table.concordance-table thead th.sticky {
-  position: sticky;
-  top: 0;
-  z-index: 2;
+    position: sticky;
+    top: 0;
+    z-index: 2;
 }
 
 .collapsible-section-content {
@@ -608,34 +518,30 @@ table.concordance-table thead th.sticky {
 }
 
 .collapsible-section-content h3:before {
-    counter-increment:section;
-    content:counter(section) ". ";
+    counter-increment: section;
+    content: counter(section) ". ";
 }
 
 .collapsible-section-content h4:before {
-    counter-increment:subsection;
-    content:counter(section) "." counter(subsection) " ";
+    counter-increment: subsection;
+    content: counter(section) "." counter(subsection) " ";
 }
 
 .collapsible-section-content h5:before {
-    counter-increment:subsubsection;
-    content:counter(section) "." counter(subsection) "." counter(subsubsection) " ";
+    counter-increment: subsubsection;
+    content: counter(section) "." counter(subsection) "." counter(subsubsection) " ";
 }
 
 .collapsible-section-content strong {
     color: #333;
 }
 
-.about-module .collapsible-section{
+.about-module .collapsible-section {
     align-items: baseline;
 }
 
 .collapsible-section-content {
     counter-reset: section;
-}
-
-label#dataset_name-label {
-    display: none;
 }
 
 #analyze_dataset_button {
@@ -646,8 +552,8 @@ label#dataset_name-label {
     text-align: center;
 }
 
-.shiny-ipywidget-output .js-plotly-plot:nth-child(n+2) {
-    display: none;
+.form-group:has(input[id="upload_folder"]) {
+    margin: 0 !important;
 }
 
 
