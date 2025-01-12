@@ -17,7 +17,7 @@ import matplotlib.pyplot as plt
 import plotly.express as px
 import plotly.graph_objects as go
 from colors import main_color, my_red, my_blue, my_gray, my_green, my_yellow
-from Summary.Summary_script import summarizer, summarize_text, download_summary_model
+from Summary.Summary_script import summarize_text, download_summary_model
 
 warnings.filterwarnings("ignore", category=FutureWarning, module="huggingface_hub.file_download")
 
@@ -114,7 +114,7 @@ def analyse_single_article(article_text: str, progress_callback=None):
         progress_callback(90, message="Summarizing the article...")
     download_summary_model()
     try:
-        summary = summarize_text(article_text)
+        summary = summarize_text(article_text.replace('\n', ' '))
     except Exception as e:
         summary = str(e)
         if summary == "index out of range in self":
