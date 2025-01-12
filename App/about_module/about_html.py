@@ -107,7 +107,8 @@ An escalation of Israeli military operations in Gaza could see the US bogged dow
     <p>After the analysis is completed, the <strong>right menu</strong> automatically hides to provide more space for displaying the results. The left container updates with the following elements:</p>
     <ul>
         <li><strong>Header:</strong> The article's header is displayed in the format: <code>title -- published date -- category 1 / category 2</code></li>
-        <li><strong>Legends:</strong> Below the header, two legends are shown:</li>
+        <li><strong>Summary:</strong> Summarized content of the article is provided at the top.</li>
+        <li><strong>Legends:</strong> Below the summary, two legends are shown:</li>
         <ul>
             <li>The <strong>entity legend</strong> explains the abbreviations used for entity types.</li>
             <li>The <strong>sentiment legend</strong> explains the meaning of sentiment-based colours (e.g., green for positive, grey for neutral, red for negative).</li>
@@ -208,6 +209,50 @@ An escalation of Israeli military operations in Gaza could see the US bogged dow
     <li><strong>Select Part of Speech:</strong> Choose a part of speech (e.g., Personal Pronouns, Verbs in Non-3rd Person Singular Present Form) for word cloud analysis. Parts of speech can be searched.</li>
     <li><strong>Filter Words:</strong> Enter a comma-separated list of words to use for concordance analysis.</li>
     <li><strong>N-gram Number:</strong> Specify the number of grams for concordance analysis (an integer greater than or equal to 2).</li>
+</ul>
+
+<h4>Dataset Upload</h4>
+<p>At the end of the right menu, there is a button <strong>Upload Dataset</strong>. This button allows users to upload a new dataset for analysis. The following upload options are available:</p>
+
+<ul>
+    <li>Multiple <code>.txt</code> files.</li>
+    <li>A single compressed <code>.zip</code> file containing multiple <code>.txt</code> files.</li>
+</ul>
+
+<p>All files, including those within a <code>.zip</code>, must adhere to the format described in the <em>File Upload Format</em> section to be successfully analyzed.</p>
+
+<p>Below the <strong>Upload Dataset</strong> button, there is a field <strong>Enter Dataset Name</strong>. Users can specify a name for the uploaded dataset here. If no name is provided:</p>
+
+<ul>
+    <li>If a compressed folder is uploaded, the folder's name will be used as the dataset name.</li>
+    <li>Otherwise, a random name will be generated.</li>
+</ul>
+
+<h5>Dataset Analysis</h5>
+
+<p>Once a dataset is uploaded, users can initiate its analysis by clicking the <strong>Analyze Dataset</strong> button. The analysis process includes the following features:</p>
+
+<ul>
+    <li>A small progress window appears in the bottom-right corner of the interface, displaying:
+        <ul>
+            <li>A progress bar indicating the percentage of completion.</li>
+            <li>Informative text about the current stage of the analysis.</li>
+        </ul>
+    </li>
+    <li>The duration of the analysis depends on the dataset size. For instance:
+        <ul>
+            <li>A dataset with 150 articles takes approximately one hour to analyze.</li>
+        </ul>
+    </li>
+</ul>
+
+<h5>Post-Analysis Features</h5>
+
+<p>After the analysis is completed:</p>
+
+<ul>
+    <li>New plots and visualizations are generated based on the dataset.</li>
+    <li>The uploaded dataset appears as a selectable option under <strong>Select Dataset</strong> in the right menu. Users can return to this dataset for further exploration at any time.</li>
 </ul>
 
 <h4>Visualizations</h4>
