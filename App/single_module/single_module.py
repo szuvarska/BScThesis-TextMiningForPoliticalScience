@@ -60,7 +60,7 @@ def single_module_server(input, output, session):
     @output
     @render.ui
     def single_mode_plots():
-        if input.file_upload() or input.file_select() != "None":
+        if (input.file_upload() or input.file_select() != "None") or article_analysis.get() is not None:
             return ui.div(
                 output_widget("entity_types_single_plot"),
                 output_widget("most_common_entities_single_plot"),
@@ -144,3 +144,8 @@ def single_module_server(input, output, session):
             entity_sentiments=entity_sentiments,
             sentiment_sentences=sentiment_sentences
         )
+
+    @reactive.Effect
+    @reactive.event(input.file_select)
+    def update_selected_file_value():
+        selected_file_value.set(input.file_select())

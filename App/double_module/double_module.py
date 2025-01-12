@@ -32,6 +32,7 @@ double_module_ui = ui.tags.div(
     class_="main-container"
 )
 
+
 def double_module_server(input, output, session):
     view_full_text_1 = reactive.Value(False)
     view_full_text_2 = reactive.Value(False)
@@ -108,8 +109,10 @@ def double_module_server(input, output, session):
     @output
     @render.ui
     def double_mode_plots():
-        if (input.file_upload_1() or input.file_select_1() != "None") and (
-                input.file_upload_2() or input.file_select_2() != "None"):
+        if ((input.file_upload_1() or input.file_select_1() != "None") and (
+                input.file_upload_2() or input.file_select_2() != "None")) or (
+                article_analysis_1.get() is not None and article_analysis_2.get() is not None
+        ):
             return ui.div(
                 output_widget("entity_types_double_plot"),
                 output_widget("most_common_entities_double_plot"),
@@ -165,9 +168,10 @@ def double_module_server(input, output, session):
         right_container_visible_double.set(not right_container_visible_double.get())
 
     @reactive.Effect
-    @reactive.event(input.file_upload_1, input.file_upload_2)
+    @reactive.event(input.file_upload_1, input.file_upload_2, input.file_select_1, input.file_select_2)
     def auto_hide_container_double():
-        if input.file_upload_1() and input.file_upload_2():
+        if (input.file_upload_1() or (input.file_select_1() != "None")) and (
+                input.file_upload_2() or (input.file_select_2() != "None")):
             right_container_visible_double.set(False)
 
     @output
@@ -217,3 +221,12 @@ def double_module_server(input, output, session):
             sentiment_sentences=sentiment_sentences_2
         )
 
+    @reactive.Effect
+    @reactive.event(input.file_select_1)
+    def set_selected_file_value_1():
+        selected_file_value_1.set(input.file_select_1())
+
+    @reactive.Effect
+    @reactive.event(input.file_select_2)
+    def set_selected_file_value_2():
+        selected_file_value_2.set(input.file_select_2())
