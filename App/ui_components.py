@@ -4,7 +4,6 @@ from App.double_module.double_module import double_module_ui
 from App.all_module.all_module import all_module_ui
 from App.about_module.about_module import about_module_ui
 
-
 page_dependencies = ui.head_content(
     ui.tags.link(rel="stylesheet", type="text/css", href="style.css"),
     ui.tags.link(rel="icon", type="image/png", href="logomini.png")

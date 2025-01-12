@@ -210,76 +210,73 @@ img.entity-types-plot {
 
 #entity_types_plot {
     width: 80%;
+    max-width: 600px;
     background-color: var(--container-color);
 }
 
 #most_common_entities_plot {
     width: 100%;
+    max-width: 700px;
     background-color: var(--container-color);
+}
+
+#entity_types_single_plot {
+    max-width: 550px;
+}
+
+#most_common_entities_single_plot {
+    max-width: 550px;
 }
 
 #sentiment_dist_single_plot {
     width: 75%;
     background-color: var(--container-color);
+    max-width: 850px;
 }
 
 #sentiment_dist_plot {
     width: 80%;
+    max-width: 850px;
     background-color: var(--container-color);
 }
 
 #sentiment_over_time_plot {
-    width: 85%;
+    width: 87%;
+    max-width: 900px;
     background-color: var(--container-color);
 }
 
-#sentiment_word_cloud_plot {
-    width: 67% !important;
-    display: block;
-    margin: 0 auto 30px;
-    /*border: 2px solid black;*/
-    box-shadow: 3px 3px 10px lightgray;
-    padding: 1px;
+#sentiment_dist_per_target_plot, #sentiment_over_time_per_target_plot, #sentiment_dist_over_time_by_target_plot {
+    width: 100%;
+    max-width: 1050px;
     background-color: var(--container-color);
 }
 
-#sentiment_dist_per_target_plot {
+#word_count_distribution_plot, #sentence_count_distribution_plot {
     width: 100%;
     background-color: var(--container-color);
-}
-
-#sentiment_over_time_per_target_plot {
-    width: 100%;
-    background-color: var(--container-color);
-}
-
-#sentiment_dist_over_time_by_target_plot {
-    width: 100%;
-    background-color: var(--container-color);
-}
-
-#word_count_distribution_plot {
-    width: 100%;
-    background-color: var(--container-color);
+    max-width: 850px;
 }
 
 #sentence_count_distribution_plot {
     width: 100%;
     background-color: var(--container-color);
+    max-width: 850px;
 }
 
-#top_N_common_words_plot {
+#top_N_common_words_plot, #pos_wordclouds_plot {
     width: 87% !important;
+    max-width: 800px;
     display: block;
     margin: 0 auto 30px;
-    /*border: 2px solid black;*/
     box-shadow: 3px 3px 10px lightgray;
     padding: 1px;
     background-color: var(--container-color);
 }
 
-#most_common_words_single_plot, #most_common_words_double_plot_1, #most_common_words_double_plot_2 {
+#most_common_words_single_plot, #most_common_words_double_plot_1, #most_common_words_double_plot_2, #sentiment_word_cloud_plot {
     width: 67% !important;
+    max-width: 750px;
     display: block;
     margin: 0 auto 30px;
     /*border: 2px solid black;*/
@@ -300,29 +297,22 @@ img.entity-types-plot {
     background-color: var(--container-color);
 }
 
-#pos_wordclouds_plot {
-    width: 87% !important;
-    display: block;
-    margin: 0 auto 30px;
-    /*border: 2px solid black;*/
-    box-shadow: 3px 3px 10px lightgray;
-    padding: 1px;
-    background-color: var(--container-color);
-}
-
 #keywords_over_time_plot {
     width: 100%;
+    max-width: 1050px;
     background-color: var(--container-color);
 }
 
 #stacked_keywords_over_time_plot {
     width: 100%;
+    max-width: 1050px;
     background-color: var(--container-color);
 }
 
 
 #community_graph {
     width: 87% !important;
+    max-width: 1050px;
     height: auto !important;
     display: block;
     margin: 0 auto 30px;
@@ -340,6 +330,7 @@ img.entity-types-plot {
 
 #bigrams_plot {
     width: 87% !important;
+    max-width: 1050px;
     height: auto !important;
     display: block;
     margin: 0 auto 30px;
@@ -358,20 +349,24 @@ img.entity-types-plot {
 #entity_types_double_plot {
     width: 75%;
     background-color: var(--container-color);
+    max-width: 850px;
 }
 
 #most_common_entities_double_plot {
     width: 85%;
     background-color: var(--container-color);
+    max-width: 970px;
 }
 
 #sentiment_dist_sentence_double_plot {
     width: 75%;
     background-color: var(--container-color);
+    max-width: 850px;
 }
 #sentiment_dist_entity_double_plot {
     width: 75%;
     background-color: var(--container-color);
+    max-width: 850px;
 }
 
 .plot-image {
@@ -649,6 +644,10 @@ label#dataset_name-label {
 
 .plots-row {
     text-align: center;
+}
+
+.shiny-ipywidget-output .js-plotly-plot:nth-child(n+2) {
+    display: none;
 }
 
 

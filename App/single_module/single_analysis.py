@@ -207,7 +207,6 @@ def entity_types_plot_single(entity_sentiments: pd.DataFrame):
         title=dict(x=0.5),  # Center-align the title
         coloraxis_showscale=False,  # Hide the color scale legend
     )
-    # temmplate
     fig.update_layout(template='plotly_white')
 
     return fig
@@ -239,11 +238,10 @@ def most_common_entities_plot_single(entity_sentiments: pd.DataFrame):
             ticklen=10,
             automargin=True,
         ),
-        # margin=dict(l=150),
         title=dict(x=0.5),  # Center-align the title
-        coloraxis_showscale=False,  # Hide the color scale
+        coloraxis_showscale=False,  # Hide the color scale,
+        template='plotly_white',
     )
-    fig.update_layout(template='plotly_white')
 
     return fig
 
