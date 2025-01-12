@@ -79,7 +79,7 @@ def analyze_dataset(file_paths: list, dataset_name: str, not_enough_data: bool, 
         sencences_name, _, _ = make_sentences_df(name_textcontain_new_preprocessed, perform_topics=False,
                                                  progress_callback=progress_callback)
     else:
-        sencences_name, _, _ = make_sentences_df(name_textcontain_new_preprocessed)
+        sencences_name, _, _ = make_sentences_df(name_textcontain_new_preprocessed, progress_callback=progress_callback)
     print("Sentences dataframe created. Saving to CSV file...")
     sencences_name.to_csv(f"Data/Sentances_df/sentences_{dataset_name.lower()}.csv", index=False)
     print("Sentences dataframe saved successfully.")

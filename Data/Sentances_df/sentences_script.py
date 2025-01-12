@@ -13,6 +13,8 @@ def make_sentences_df(df: pd.DataFrame, dict_name: str = None, perform_topics: b
     dates = []
     # prepare ID
     for i in range(len(df)):
+        if progress_callback:
+            progress_callback(8+i/len(df)*5, message=f"Reading meta data from article {i+1}/{len(df)}")
         article_text.append(str(df['article_text'][i]))
         date = str(df['published_time'][i])
         title = str(df['article_text'][i]).replace(" ", "_")
@@ -23,8 +25,13 @@ def make_sentences_df(df: pd.DataFrame, dict_name: str = None, perform_topics: b
     sentences_id_all = []
     senteces_date_all = []
 
+
     # split article into sentences
+    j = 0
     for article, id, date in tqdm(zip(article_text, article_id, df['published_time'])):
+        if progress_callback:
+            progress_callback(14+j/len(df)*5, message=f"Saving to data frame sentences from article {j+1}/{len(df)}")
+        j += 1
         sentences = split_into_sentences(article)
         sentences_id = []
         for i in range(len(sentences)):
