@@ -1,6 +1,6 @@
 from shiny import reactive, render, ui
 from shinywidgets import output_widget, render_widget
-from App.all_module.plots import generate_pos_choices, generate_keywords, generate_concordance
+from App.all_module.plots import generate_pos_choices, generate_keywords, generate_concordance, generate_target_choices
 from App.all_module.render_plots import setup_plot_outputs
 from App.all_module.render_ui import setup_ui_outputs
 from App.all_module.dataset_analysis import analyze_dataset_reactive
@@ -34,6 +34,12 @@ def all_module_server(input, output, session):
     sentiment_filter_value = reactive.Value("Positive")
     entity_type_filter_value = reactive.Value("Person")
     sentiment_model_filter_value = reactive.Value("TSC")
+    sentiment_targets = generate_target_choices("Gaza before conflict")
+    sentiment_targets_choices = reactive.Value(sentiment_targets)
+    if 'China' in sentiment_targets:
+        sentiment_target_filter_value = reactive.Value("China")
+    else:
+        sentiment_target_filter_value = reactive.Value(sentiment_targets[0])
     word_cloud_n_value = reactive.Value(100)
     pos_filter_value = reactive.Value("Common Singular Nouns")
     filter_words_value = reactive.Value("US, China")
@@ -95,6 +101,11 @@ def all_module_server(input, output, session):
     def update_date_range():
         date_range_value.set(input.date_range())
 
+    @reactive.Effect
+    @reactive.event(input.sentiment_target_filter)
+    def update_sentiment_target_filter():
+        sentiment_target_filter_value.set(input.sentiment_target_filter())
+
     @output
     @render.ui
     def right_container_all():
@@ -148,6 +159,12 @@ def all_module_server(input, output, session):
                     "Select sentiment type for word cloud and sentiment by target",
                     choices=["Positive", "Neutral", "Negative"],
                     selected=sentiment_filter_value.get()
+                ),
+                ui.input_select(
+                    "target_filter",
+                    "Select target for sentiment over time",
+                    choices=sentiment_targets_choices.get(),
+                    selected=sentiment_target_filter_value.get()
                 ),
                 ui.input_text(
                     "filter_words",
@@ -331,6 +348,14 @@ def all_module_server(input, output, session):
         keywords_list = generate_keywords(dataset_name)
         keywords_choices.set(keywords_list)
         selected_keywords_value.set(keywords_list[:2])
+
+    @reactive.Effect
+    @reactive.event(input.dataset_filter)
+    def update_sentiment_targets_choices():
+        dataset_name = input.dataset_filter()
+        sentiment_targets_list = generate_target_choices(dataset_name)
+        sentiment_targets_choices.set(sentiment_targets_list)
+        sentiment_target_filter_value.set(sentiment_targets_list[0])
 
     @reactive.Effect
     @reactive.event(input.analyze_dataset_button)
