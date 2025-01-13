@@ -9,7 +9,7 @@ from App.all_module.plots import (generate_entity_types_plot, generate_most_comm
                                   generate_top_N_common_words_plot, generate_top_N_common_pos_plot,
                                   generate_pos_wordclouds_plot, generate_community_graph, generate_pos_choices,
                                   generate_bigrams_plot, generate_concordance, generate_keywords_over_time_plot,
-                                  generate_stacked_keywords_over_time_plot, generate_keywords)
+                                  generate_stacked_keywords_over_time_plot, generate_keywords, generate_target_choices)
 
 
 def setup_plot_outputs(input, output, session):
@@ -64,6 +64,9 @@ def setup_plot_outputs(input, output, session):
     def sentiment_over_time_per_target_plot():
         dataset_name = input.dataset_filter()
         target = input.target_filter()
+        valid_targets = generate_target_choices(dataset_name)
+        if target not in valid_targets:
+            return None
         plot = generate_sentiment_over_time_per_target_plot(dataset_name, target)
         return plot
 

@@ -63,8 +63,8 @@ def plot_word_count_distribution(df: pd.DataFrame, df_name: str):
     # plt.show()
     #plt.savefig(f"EDA_plots/{df_name}_word_count_dist_.png")
     # Filtr danych
-    # filtered_data = df.loc[(df['article_text'].notnull()) & (df['word_count'] < 2000), 'word_count']
-    filtered_data = df['word_count']
+    filtered_data = df.loc[(df['article_text'].notnull()) & (df['word_count'] < 2000), 'word_count']
+    # filtered_data = df['word_count']
 
     # Histogram z Plotly Express
     fig = px.histogram(
@@ -132,14 +132,14 @@ def sentance_count_distribution(df: pd.DataFrame, df_name: str):
     #plt.savefig(f"EDA_plots/{df_name}_sentace_count_dist_.png")
 
     # Filtr danych
-    # filtered_data = df.loc[(df['article_text'].notnull()) & (df['word_count'] < 2000), 'sentence_count']
-    filtered_data = df['sentence_count']
+    filtered_data = df.loc[(df['article_text'].notnull()) & (df['word_count'] < 2000), 'sentence_count']
+    # filtered_data = df['sentence_count']
 
     # Histogram z Plotly Express
     fig = px.histogram(
         filtered_data,
         nbins=20,
-        title=f'Number of sentences in articles distribution - dataset: {df_name}',
+        title=f"Number of sentences in articles distribution - dataset: {df_name}",
         labels={'value': 'Sentence Count'},
         height=600,
         width=800,
@@ -176,10 +176,20 @@ def sentance_count_distribution(df: pd.DataFrame, df_name: str):
         legend=dict(
             orientation="h",
             yanchor="bottom",
-            y=0.98,
+            y=0.97,
             xanchor="right",
             x=1
         ),
+        annotations=[
+            dict(
+                text='',  # Invisible text
+                showarrow=False,  # No arrow
+                xref='paper',  # Relative to the plot
+                yref='paper',
+                x=0.5,  # Centered
+                y=1.05,  # Position above the plot, just below the title
+            )
+        ]
     )
     #add theme
     fig.update_layout(

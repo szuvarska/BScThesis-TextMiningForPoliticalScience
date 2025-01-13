@@ -6,6 +6,7 @@ from App.all_module.render_ui import setup_ui_outputs
 from App.all_module.dataset_analysis import analyze_dataset_reactive
 from App.utils import collapsible_section, remove_png_files
 from colors import my_orange
+import asyncio
 
 all_module_ui = ui.tags.div(
     ui.tags.div(
@@ -36,20 +37,17 @@ def all_module_server(input, output, session):
     sentiment_model_filter_value = reactive.Value("TSC")
     sentiment_targets = generate_target_choices("Gaza before conflict")
     sentiment_targets_choices = reactive.Value(sentiment_targets)
-    if 'China' in sentiment_targets:
-        sentiment_target_filter_value = reactive.Value("China")
-    else:
-        sentiment_target_filter_value = reactive.Value(sentiment_targets[0])
+    sentiment_target_filter_value = reactive.Value("China")
     word_cloud_n_value = reactive.Value(100)
     pos_filter_value = reactive.Value("Common Singular Nouns")
     filter_words_value = reactive.Value("US, China")
     ngram_number_value = reactive.Value(3)
     selected_keywords_value = reactive.Value(keywords[:2])
     date_range_value = reactive.Value("daily")
+    # not_enough_data = {"Gaza before conflict": False, "Gaza during conflict": False, "Ukraine before conflict": False}
+    # not_enough_data = reactive.Value(not_enough_data[dataset_filter_value.get()])
     not_enough_data = reactive.Value(False)
     not_enough_data_error = "Some plots might not be available due to the small dataset size."
-    setup_plot_outputs(input, output, session)
-    setup_ui_outputs(input, output, session)
 
     @reactive.Effect
     @reactive.event(input.dataset_filter)
@@ -115,7 +113,7 @@ def all_module_server(input, output, session):
                     "dataset_filter",
                     "Select dataset",
                     choices=dataset_choices.get(),
-                    selected=dataset_filter_value.get()
+                    selected='Gaza before conflict'
                 ),
                 ui.input_file(
                     "upload_folder",
@@ -128,11 +126,12 @@ def all_module_server(input, output, session):
                     "",
                     placeholder="Enter dataset name",
                 ),
-                ui.input_action_button("analyze_dataset_button", "Analyze Dataset", class_="btn btn-file"),
+                ui.input_task_button("analyze_dataset_button", "Analyse Dataset", label_busy='Analysing...',
+                                     class_="btn btn-file"),
                 ui.input_numeric(
                     "word_cloud_n",
                     "Enter number of most common words in word clouds",
-                    value=word_cloud_n_value.get(),
+                    value=100,
                     min=1
                 ),
                 ui.input_selectize(
@@ -140,55 +139,55 @@ def all_module_server(input, output, session):
                     "Select part of speech for word cloud",
                     choices=generate_pos_choices(),
                     multiple=False,
-                    selected=pos_filter_value.get()
+                    selected='Common Singular Nouns'
                 ),
                 ui.input_select(
                     "entity_type_filter",
                     "Select entity type",
                     choices=["Person", "Organisation", "Location", "Miscellaneous"],
-                    selected=entity_type_filter_value.get()
+                    selected='Person'
                 ),
                 ui.input_select(
                     "sentiment_model_filter",
                     "Select sentiment model",
                     choices=["TSC", "VADER"],
-                    selected=sentiment_model_filter_value.get()
+                    selected='TSC'
                 ),
                 ui.input_select(
                     "sentiment_filter",
                     "Select sentiment type for word cloud and sentiment by target",
                     choices=["Positive", "Neutral", "Negative"],
-                    selected=sentiment_filter_value.get()
+                    selected='Positive'
                 ),
                 ui.input_select(
                     "target_filter",
                     "Select target for sentiment over time",
-                    choices=sentiment_targets_choices.get(),
-                    selected=sentiment_target_filter_value.get()
+                    choices=sentiment_targets,
+                    selected='China'
                 ),
                 ui.input_text(
                     "filter_words",
                     "Enter words for concordance (comma-separated)",
-                    value=filter_words_value.get()
+                    value="US, China"
                 ),
                 ui.input_numeric(
                     "ngram_number",
                     "Enter N-gram number",
-                    value=ngram_number_value.get(),
+                    value=3,
                     min=2
                 ),
                 ui.input_selectize(
                     "selected_keywords",
                     "Select keywords for trends",
-                    choices=keywords_choices.get(),
-                    selected=selected_keywords_value.get(),
+                    choices=keywords,
+                    selected=keywords[:2],
                     multiple=True
                 ),
                 ui.input_select(
                     "date_range",
                     "Select date aggregation for keywords trends",
                     choices=['daily', 'weekly', 'monthly'],
-                    selected=date_range_value.get()
+                    selected='daily'
                 ),
                 ui.input_action_button("hide_container_button_all", "Hide Menu", class_="btn btn-secondary"),
                 class_="main-right-container",
@@ -201,10 +200,25 @@ def all_module_server(input, output, session):
                 id="main-right-container-all"
             )
 
+    setup_plot_outputs(input, output, session)
+    setup_ui_outputs(input, output, session)
+
     @reactive.Effect
     @reactive.event(input.hide_container_button_all)
     def toggle_container_visibility_all():
         right_container_visible_all.set(not right_container_visible_all.get())
+        ui.update_select("dataset_filter", selected=dataset_filter_value.get())
+        ui.update_text("filter_words", value=filter_words_value.get())
+        ui.update_select("pos_filter", selected=pos_filter_value.get())
+        ui.update_select("entity_type_filter", selected=entity_type_filter_value.get())
+        ui.update_select("sentiment_model_filter", selected=sentiment_model_filter_value.get())
+        ui.update_select("sentiment_filter", selected=sentiment_filter_value.get())
+        ui.update_select("target_filter", choices=sentiment_targets_choices.get(),
+                         selected=sentiment_target_filter_value.get())
+        ui.update_numeric("word_cloud_n", value=word_cloud_n_value.get())
+        ui.update_numeric("ngram_number", value=ngram_number_value.get())
+        ui.update_selectize("selected_keywords", choices=keywords_choices.get(), selected=selected_keywords_value.get())
+        ui.update_select("date_range", selected=date_range_value.get())
 
     @reactive.Effect
     @reactive.event(input.toggle_ner_button)
@@ -348,6 +362,7 @@ def all_module_server(input, output, session):
         keywords_list = generate_keywords(dataset_name)
         keywords_choices.set(keywords_list)
         selected_keywords_value.set(keywords_list[:2])
+        ui.update_selectize("selected_keywords", choices=keywords_list, selected=keywords_list[:2])
 
     @reactive.Effect
     @reactive.event(input.dataset_filter)
@@ -355,7 +370,14 @@ def all_module_server(input, output, session):
         dataset_name = input.dataset_filter()
         sentiment_targets_list = generate_target_choices(dataset_name)
         sentiment_targets_choices.set(sentiment_targets_list)
-        sentiment_target_filter_value.set(sentiment_targets_list[0])
+        ui.update_select("target_filter", choices=sentiment_targets_list)
+
+        if 'China' in sentiment_targets_list:
+            sentiment_target_filter_value.set("China")
+            ui.update_select("target_filter", selected="China")
+        else:
+            sentiment_target_filter_value.set(sentiment_targets_list[0])
+            ui.update_select("target_filter", selected=sentiment_targets_list[0])
 
     @reactive.Effect
     @reactive.event(input.analyze_dataset_button)
