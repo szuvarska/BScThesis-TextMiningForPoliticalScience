@@ -10,7 +10,7 @@ from Preparations.EDA_script import plot_word_count_distribution, sentance_count
     plot_top_N_common_pos, plot_pos_wordclouds_for_shiny, load_pos_dict
 
 from Sentiment.sentiment_script import calculate_sentiment_dist, calculate_sentiment_over_time, \
-    generate_word_clouds, calculate_sentiment_dist_per_target, calculate_sentiment_over_time_per_target, \
+    generate_word_clouds, calculate_sentiment_dist_per_target, calculate_sentiment_over_time_per_target_for_shiny, \
     calculate_sentiment_dist_over_time_by_target_for_shiny
 
 from Community_detection.community_graph_script import plot_community_graph
@@ -71,9 +71,9 @@ def generate_sentiment_dist_per_target_plot(dataset_name: str):
     return calculate_sentiment_dist_per_target(tsc_results_df, dataset_name, for_shiny=True)
 
 
-def generate_sentiment_over_time_per_target_plot(dataset_name: str):
+def generate_sentiment_over_time_per_target_plot(dataset_name: str, target: str):
     tsc_results_df = pd.read_csv(f"Sentiment/Results/tsc_{dataset_name}.csv")
-    return calculate_sentiment_over_time_per_target(tsc_results_df, dataset_name, for_shiny=True)
+    return calculate_sentiment_over_time_per_target_for_shiny(tsc_results_df, dataset_name, target=target)
 
 
 def generate_sentiment_dist_over_time_by_target_plot(dataset_name: str, sentiment: str):
@@ -199,3 +199,12 @@ def generate_keywords(dataset_name: str):
     keywords_to_select = keywords_over_time_df['key_word'].unique().tolist()
     keywords_to_select.sort()
     return keywords_to_select
+
+
+def generate_target_choices(dataset_name: str):
+    tsc_results_df = pd.read_csv(f"Sentiment/Results/tsc_{dataset_name}.csv")
+    if tsc_results_df['Target'].isna().all():
+        return []
+    target_choices = tsc_results_df['Target'].unique().tolist()
+    target_choices.sort()
+    return target_choices

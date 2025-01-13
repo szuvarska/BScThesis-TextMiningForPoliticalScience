@@ -63,7 +63,8 @@ def setup_plot_outputs(input, output, session):
     @render_widget
     def sentiment_over_time_per_target_plot():
         dataset_name = input.dataset_filter()
-        plot = generate_sentiment_over_time_per_target_plot(dataset_name)
+        target = input.target_filter()
+        plot = generate_sentiment_over_time_per_target_plot(dataset_name, target)
         return plot
 
     @output
