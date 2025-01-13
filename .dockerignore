@@ -17,6 +17,10 @@ App/tests
 BlameAndPraise
 BRAT_Data/*.conf
 **/*.ipynb
-Topics
 thesisenv
 'EDA plots'
+Test_dataset/
+Another_dataset.zip
+Sentiment/Plots
+NER_and_ED/Plots
+App/test.py

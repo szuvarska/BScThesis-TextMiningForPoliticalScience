@@ -112,7 +112,8 @@ def analyze_dataset(file_paths: list, dataset_name: str, progress_callback=None)
         progress_callback(100, message="Sentiment analysis complete.")
 
     if len(articles) < 50:
-        ui.notification_show("Analysis completed. Some plots might not be available due to the small dataset size.", type="warning",
+        ui.notification_show("Analysis completed. Some plots might not be available due to the small dataset size.",
+                             type="warning",
                              close_button=True, duration=None)
     else:
         ui.notification_show("Analysis completed successfully.", type="message", close_button=True, duration=None)
@@ -134,7 +135,8 @@ async def analyze_dataset_reactive(files, dataset_choices, dataset_filter_value,
                 zip_ref.extractall(extracted_files_dir)
 
             # Check if the extracted files are in a subdirectory
-            subdirs = [os.path.join(extracted_files_dir, d) for d in os.listdir(extracted_files_dir) if os.path.isdir(os.path.join(extracted_files_dir, d))]
+            subdirs = [os.path.join(extracted_files_dir, d) for d in os.listdir(extracted_files_dir) if
+                       os.path.isdir(os.path.join(extracted_files_dir, d))]
             if subdirs:
                 extracted_files_dir = subdirs[0]
 
@@ -162,5 +164,7 @@ async def analyze_dataset_reactive(files, dataset_choices, dataset_filter_value,
                 if analyze_dataset(file_paths, dataset_name, progress_callback=p.set):
                     dataset_choices.set(dataset_choices.get() + [dataset_name])
                     dataset_filter_value.set(dataset_name)
+                    ui.update_select("dataset_filter", choices=dataset_choices.get(),
+                                     selected=dataset_filter_value.get())
             except Exception as e:
                 ui.notification_show(str(e), type="error")
