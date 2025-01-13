@@ -289,6 +289,8 @@ def find_most_common_entity_types(df: pd.DataFrame, dataset_name: str, for_shiny
         yaxis_title="Frequency",
         title=dict(x=0.5),  # Center-align the title
         coloraxis_showscale=False,  # Hide the color scale legend
+        width=650,
+        height=400
     )
 
     # add theme

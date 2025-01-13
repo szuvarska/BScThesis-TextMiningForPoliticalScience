@@ -284,7 +284,7 @@ def plot_top_N_common_pos(df_pos: pd.DataFrame, df_name: str, N=10):
         x='Count',
         y='POS',
         orientation='h',
-        title=f'Most common part of speech - dataset: {df_name}',
+        title=f'Most common parts of speech - dataset: {df_name}',
         labels={'Count': 'Count', 'POS': 'Part of speech'},
         color_discrete_sequence=[my_blue]
     )

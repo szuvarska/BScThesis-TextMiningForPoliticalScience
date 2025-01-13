@@ -194,8 +194,8 @@ img.entity-types-plot {
 }
 
 #entity_types_plot {
-    width: 90%;
-    max-width: 650px;
+    width: 100%;
+    max-width: 700px;
 }
 
 #most_common_entities_plot {

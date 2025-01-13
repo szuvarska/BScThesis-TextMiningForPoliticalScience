@@ -246,7 +246,7 @@ def calculate_sentiment_over_time(model_results_df: pd.DataFrame, dataset_name: 
 
     fig.update_layout(
         barmode='stack',
-        title=f'{model_name.upper()} Sentiment proportions over time (monthly) - dataset: {dataset_name}',
+        title=f'{model_name.upper()} sentiment proportions over time (monthly) - dataset: {dataset_name}',
         xaxis=dict(
             title='Month',
             tickmode='array',

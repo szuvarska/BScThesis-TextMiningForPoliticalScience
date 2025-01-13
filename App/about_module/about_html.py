@@ -201,18 +201,21 @@ An escalation of Israeli military operations in Gaza could see the US bogged dow
 <h4>Filters and Selectors</h4>
 <p>The <i>All Mode</i> includes several filters and selectors to help users refine their analysis. After using a filter or selector all plots that are affected by it are reloaded. The filters and selectors are available in the right menu. There is also "Hide Menu"/"Show Menu" button as in the previous modes.</p>
 <ul>
-    <li><strong>Select Dataset:</strong> Choose a dataset for analysis (options: "Gaza before conflict", "Gaza during conflict", "Ukraine before conflict", "Ukraine during conflict"). This selector works for all plots. It states on which dataset the analysis should be conducted. The dataset is also stated in the title of each plot.</li>
-    <li><strong>Select Sentiment:</strong> Choose a sentiment category (options: "Positive", "Neutral", "Negative") to focus on in the visualizations.</li>
-    <li><strong>Select Entity Type:</strong> Choose the type of named entities (options: "Person", "Organisation", "Location", "Miscellaneous").</li>
-    <li><strong>Select Sentiment Model:</strong> Choose the sentiment analysis model (options: "TSC"<a href="#newssentiment">[4]</a>, "VADER"<a href="#vader">[5]</a>).</li>
-    <li><strong>Number of Words in Word Cloud:</strong> Specify the number of words to display in the word cloud (default: 100). Users can enter an integer number greater than or equal to 1.</li>
-    <li><strong>Select Part of Speech:</strong> Choose a part of speech (e.g., Personal Pronouns, Verbs in Non-3rd Person Singular Present Form) for word cloud analysis. Parts of speech can be searched.</li>
-    <li><strong>Filter Words:</strong> Enter a comma-separated list of words to use for concordance analysis.</li>
-    <li><strong>N-gram Number:</strong> Specify the number of grams for concordance analysis (an integer greater than or equal to 2).</li>
+    <li><strong>Select dataset:</strong> Choose a dataset for analysis (options: "Gaza before conflict", "Gaza during conflict", "Ukraine before conflict", "Ukraine during conflict"). This selector works for all plots. It states on which dataset the analysis should be conducted. The dataset is also stated in the title of each plot.</li>
+    <li><strong>Enter number of most common words in word clouds:</strong> Specify the number of words to display in the word cloud (default: 100). Users can enter an integer number greater than or equal to 1.</li>
+    <li><strong>Select part of speech for word cloud:</strong> Choose a part of speech (e.g., Personal Pronouns, Verbs in Non-3rd Person Singular Present Form) for word cloud analysis. Parts of speech can be searched.</li>
+    <li><strong>Select entity type:</strong> Choose the type of named entities (options: "Person", "Organisation", "Location", "Miscellaneous").</li>
+    <li><strong>Select sentiment model:</strong> Choose the sentiment analysis model (options: "TSC"<a href="#newssentiment">[4]</a>, "VADER"<a href="#vader">[5]</a>).</li>
+    <li><strong>Select sentiment type for word cloud and sentiment by target:</strong> Choose a sentiment category (options: "Positive", "Neutral", "Negative") to focus on in the visualizations.</li>
+    <li><strong>Select target for sentiment over time:</strong> Choose a target entity for sentiment analysis over time. The target is selected based on the most common named entities in the dataset.</li>
+    <li><strong>Enter words for concordance (comma-separated):</strong> Enter a comma-separated list of words to use for concordance analysis.</li>
+    <li><strong>Enter N-gram number:</strong> Specify the number of grams for concordance analysis (an integer greater than or equal to 2).</li>
+    <li><strong>Select keywords for trends:</strong> Choose keywords to analyze trends over time.</li>
+    <li><strong>Select date aggregation for keywords trends:</strong> Choose the date aggregation for the trends analysis (options: "daily", "weekly", "monthly").</li>
 </ul>
 
 <h4>Dataset Upload</h4>
-<p>At the end of the right menu, there is a button <strong>Upload Dataset</strong>. This button allows users to upload a new dataset for analysis. The following upload options are available:</p>
+<p>In the right menu, there is a button <strong>Upload Dataset</strong>. This button allows users to upload a new dataset for analysis. The following upload options are available:</p>
 
 <ul>
     <li>Multiple <code>.txt</code> files.</li>
@@ -251,8 +254,12 @@ An escalation of Israeli military operations in Gaza could see the US bogged dow
 <p>After the analysis is completed:</p>
 
 <ul>
+    <li>Information about the analysis status is displayed in the progress window:
+        <ul>If the analysis is successful, a message appears indicating that the process is complete.</ul>
+        <ul>If the dataset is small (less than 50 articles), a warning message appears, indicating that some plots may not be available due to the dataset size.</ul>
+    </li>
     <li>New plots and visualizations are generated based on the dataset.</li>
-    <li>The uploaded dataset appears as a selectable option under <strong>Select Dataset</strong> in the right menu. Users can return to this dataset for further exploration at any time.</li>
+    <li>The uploaded dataset appears as a selectable option under <strong>Select dataset</strong> in the right menu. Users can return to this dataset for further exploration at any time.</li>
 </ul>
 
 <h4>Visualizations</h4>
@@ -263,45 +270,161 @@ An escalation of Israeli military operations in Gaza could see the US bogged dow
     <li><strong>Sentiment:</strong> Visualizes the sentiment analysis of the article, showing the distribution of sentiments (positive, neutral, negative) for different entities and sentences.</li>
     <li><strong>Community Graphs:</strong> Presents graphical representations of how named entities are interconnected.</li>
     <li><strong>N-grams:</strong> Displays frequent word combinations or phrases (n-grams) from the article.</li>
+    <li><strong>Keywords trends:</strong> Shows the frequency of selected keywords over time.</li>
 </ul>
 <p>Users can expand or collapse each section using toggles styled with arrows (⯆/⯈) that change dynamically based on the section's state.</p>
 <h5>Exploratory Data Analysis (EDA)</h5>
 <p>In this section, the following visualizations are generated:</p>
 <ul>
-    <li><strong>Word Count Distribution:</strong> A histogram showing the distribution of word counts across all articles and the mean word count. Corresponding filters: Select Dataset. Interactive: yes.</li>
-    <li><strong>Sentence Count Distribution:</strong> A histogram showing the distribution of sentence counts across all articles and the mean sentence count. Corresponding filters: Select Dataset. Interactive: yes.</li>
-    <li><strong>Top 100 Words Word Cloud:</strong> A word cloud of the 100 most common words across the dataset, excluding stopwords. Corresponding filters: Select Dataset, Number of Words in Word Cloud. Interactive: no.</li>
-    <li><strong>Parts of Speech Distribution:</strong> A bar chart showing the distribution of parts of speech across all articles. Corresponding filters: Select Dataset. Interactive: yes.</li>
-    <li><strong>Top 100 Words for a Part of Speech Word Cloud:</strong> A word cloud of the 100 most common words for a given part of speech. Corresponding filters: Select Dataset, Number of Words in Word Cloud, Select Part of Speech. Interactive: no.</li>
+    <li>
+        <strong>Number of words in articles distribution:</strong> 
+        A histogram showing the distribution of word counts across all articles and the mean word count. <br>
+        <strong>Corresponding filters:</strong> Select dataset. <br>
+        <strong>Interactive:</strong> Yes.
+    </li>
+    <li>
+        <strong>Number of sentences in articles distribution:</strong> 
+        A histogram showing the distribution of sentence counts across all articles and the mean sentence count. <br>
+        <strong>Corresponding filters:</strong> Select dataset. <br>
+        <strong>Interactive:</strong> Yes.
+    </li>
+    <li>
+        <strong>Top 100 most common words:</strong> 
+        A word cloud of the 100 most common words across the dataset, excluding stopwords. <br>
+        <strong>Corresponding filters:</strong> Select dataset, Enter number of most common words in word clouds. <br>
+        <strong>Interactive:</strong> No.
+    </li>
+    <li>
+        <strong>Most common parts of speech:</strong> 
+        A bar chart showing the distribution of parts of speech across all articles. <br>
+        <strong>Corresponding filters:</strong> Select dataset. <br>
+        <strong>Interactive:</strong> Yes.
+    </li>
+    <li>
+        <strong>Top 100 most common words for a part of speech:</strong> 
+        A word cloud of the 100 most common words for a given part of speech. <br>
+        <strong>Corresponding filters:</strong> Select dataset, Enter number of most common words in word clouds, Select part of speech for word cloud. <br>
+        <strong>Interactive:</strong> No.
+    </li>
 </ul>
+
 
 <h5>Named Entity Recognition (NER)</h5>
 <p>For the entire dataset, the following visualizations are available:</p>
 <ul>
-    <li><strong>Named Entity Types Distribution:</strong> A bar chart showing the distribution of different named entity types (Location, Organization, Person, Miscellaneous) across the dataset. Corresponding filters: Select Dataset. Interactive: yes.</li>
-    <li><strong>Top 15 Words of an Entity Type Frequency:</strong> A bar chart displaying the frequency of the 15 most common words of a given named entity type. Corresponding filters: Select Dataset, Select Entity Type. Interactive: yes.</li>
+    <li>
+        <strong>Most frequently mentioned Named Entity types:</strong> 
+        A bar chart showing the distribution of different named entity types (Location, Organization, Person, Miscellaneous) across the dataset. <br>
+        <strong>Corresponding filters:</strong> Select dataset. <br>
+        <strong>Interactive:</strong> Yes.
+    </li>
+    <li>
+        <strong>Top 15 words of a Named Entity type:</strong> 
+        A bar chart displaying the frequency of the 15 most common words of a given named entity type. <br>
+        <strong>Corresponding filters:</strong> Select dataset, Select entity type. <br>
+        <strong>Interactive:</strong> Yes.
+    </li>
 </ul>
+
 
 <h5>Sentiment Analysis</h5>
 <p>For the dataset, sentiment analysis results are displayed as:</p>
 <ul>
-    <li><strong>Overall Sentiment Distribution Comparison:</strong> A histogram comparing the sentiment (positive, neutral, negative) across all articles for TSC<a href="#newssentiment">[4]</a> and VADER<a href="#vader">[5]</a> models. Corresponding filters: Select Dataset. Interactive: yes.</li>
-    <li><strong>Sentiment Distributions Over Time:</strong> A stacked bar chart showing distribution of sentiment (positive, neutral, negative) across all articles over time monthly for a chosen sentiment model. Corresponding filters: Select Dataset, Select Sentiment Model. Interactive: yes.</li>
-    <li><strong>Sentiment-Based Word Cloud:</strong> A word cloud showing the most common words used in sentences with a chosen sentiment (positive, neutral, negative) defined by a chosen model. Corresponding filters: Select Dataset, Select Sentiment Model, Select Sentiment. Interactive: no.</li>
-    <li><strong>Overall Sentiment Distribution Per Target Over Time:</strong> A heatmap displaying the distribution of selected sentiment (positive, neutral, negative) per target over time (monthly). Targets were chosen based on most common named entities for each dataset. Corresponding filters: Select Dataset, Select Sentiment. Interactive: yes.</li>
+    <li>
+        <strong>Comparison of overall sentiment distribution:</strong> 
+        A histogram comparing the sentiment (positive, neutral, negative) across all articles for 
+        TSC<a href="#newssentiment">[4]</a> and VADER<a href="#vader">[5]</a> models. <br>
+        <strong>Corresponding filters:</strong> Select dataset. <br>
+        <strong>Interactive:</strong> Yes.
+    </li>
+    <li>
+        <strong>TSC sentiment proportions over time:</strong> 
+        A stacked bar chart showing the distribution of sentiment (positive, neutral, negative) across all articles over time (monthly) for a chosen sentiment model. <br>
+        <strong>Corresponding filters:</strong> Select dataset, Select sentiment model. <br>
+        <strong>Interactive:</strong> Yes.
+    </li>
+    <li>
+        <strong>Word Cloud for sentences of chosen sentiment:</strong> 
+        A word cloud showing the most common words used in sentences with a chosen sentiment (positive, neutral, negative) defined by a chosen model. <br>
+        <strong>Corresponding filters:</strong> Select dataset, Select sentiment model, Select sentiment type for word cloud and sentiment by target. <br>
+        <strong>Interactive:</strong> No.
+    </li>
+    <li>
+        <strong>Overall sentiment distribution per target:</strong> 
+        A bar chart displaying the distribution of sentiment (positive, neutral, negative) per target. Targets were chosen based on the most common named entities for each dataset. <br>
+        <strong>Corresponding filters:</strong> Select dataset. <br>
+        <strong>Interactive:</strong> Yes.
+    </li>
+    <li>
+        <strong>Sentiment over time for selected target:</strong> 
+        A bar chart showing the sentiment distribution (positive, neutral, negative) over time (monthly) for a selected target. <br>
+        <strong>Corresponding filters:</strong> Select dataset, Select target for sentiment over time. <br>
+        <strong>Interactive:</strong> Yes.
+    </li>
+    <li>
+        <strong>Overall Sentiment Distribution Per Target Over Time:</strong> 
+        A heatmap displaying the distribution of selected sentiment (positive, neutral, negative) per target over time (monthly). Targets were chosen based on the most common named entities for each dataset. <br>
+        <strong>Corresponding filters:</strong> Select dataset, Select sentiment type for word cloud and sentiment by target. <br>
+        <strong>Interactive:</strong> Yes.
+    </li>
 </ul>
+
 <h5>Community Graphs</h5>
 <p>For this category, there is only one graph:</p>
 <ul>
-    <li><strong>Community Graph:</strong> A graph that shows relationships of co-occurrence in the same sentence. Nodes represent entities. Edges represent co-occurrence within the same sentence. Node size indicates the node strength. Edge width indicates the frequency of co-occurrence. Corresponding filters: Select Dataset. Interactive: no.</li>
+    <li>
+        <strong>Co-occurrence in same sentence relationship graph:</strong> 
+        A graph that shows relationships of co-occurrence in the same sentence. <br>
+        <strong>Nodes:</strong> Represent entities. <br>
+        <strong>Edges:</strong> Represent co-occurrence within the same sentence. <br>
+        <strong>Node size:</strong> Indicates the node strength. <br>
+        <strong>Edge width:</strong> Indicates the frequency of co-occurrence. <br>
+        <strong>Corresponding filters:</strong> Select dataset. <br>
+        <strong>Interactive:</strong> No.
+    </li>
 </ul>
+
 
 <h5>N-grams Analysis</h5>
 <p>In this section, the following analyses are provided:</p>
 <ul>
-    <li><strong>N-gram Graph:</strong> A directed graph displaying the relationships between the most common bi-grams in the dataset. The width of the edge states the frequency of the bi-gram in articles from the dataset. Corresponding filters: Select Dataset. Interactive: no.</li>
-    <li><strong>N-gram Concordance Table:</strong> A table listing the occurrences of a selected n-gram within the dataset. In the "Center" column, there is a chosen keyword. In the "Lefts" column, there is the left context of sentences containing the keyword. In the "Rights" column, there is the right context. Contexts are shortened to the N-gram number. There is also a "Count" column that states how many times the found N-gram occurred in the articles from a given dataset. Corresponding filters: Select Dataset, Filter Words, N-gram Number. Interactive: no.</li>
+    <li>
+        <strong>Most common words in bigrams graph:</strong> 
+        A directed graph displaying the relationships between the most common bi-grams in the dataset. <br>
+        <strong>Edge width:</strong> States the frequency of the bi-gram in articles from the dataset. <br>
+        <strong>Corresponding filters:</strong> Select dataset. <br>
+        <strong>Interactive:</strong> No.
+    </li>
+    <li>
+        <strong>N-gram Concordance Table:</strong> 
+        A table listing the occurrences of a selected n-gram within the dataset. <br>
+        <strong>Center column:</strong> Displays the chosen keyword. <br>
+        <strong>Lefts column:</strong> Shows the left context of sentences containing the keyword. <br>
+        <strong>Rights column:</strong> Shows the right context. Contexts are shortened to the Enter N-gram number. <br>
+        <strong>Count column:</strong> States how many times the found N-gram occurred in the articles from a given dataset. <br>
+        <strong>Corresponding filters:</strong> Select dataset, Enter words for concordance (comma-separated), Enter N-gram number. <br>
+        <strong>Interactive:</strong> No.
+    </li>
 </ul>
+
+
+<h5>Keywords Trends</h5>
+<p>For this section, the following visualizations are generated:</p>
+<ul>
+    <li>
+        <strong>Most popular keywords trends:</strong> 
+        A line chart showing the frequency of the most popular keywords over time. <br>
+        <strong>Corresponding filters:</strong> Select dataset. <br>
+        <strong>Interactive:</strong> Yes.
+    </li>
+    <li>
+        <strong>Stacked keywords trends:</strong> 
+        A stacked bar chart showing the frequency of selected keywords over time. <br>
+        <strong>Corresponding filters:</strong> Select dataset, Select keywords for trends, Select date aggregation for keywords trends. <br>
+        <strong>Interactive:</strong> Yes.
+    </li>
+</ul>
+
 
 <h3>About Mode</h3>
 <p>The <i>About Mode</i> provides users with the following information:</p>
