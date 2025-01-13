@@ -162,7 +162,7 @@ def calculate_sentiment_dist(tsc_results_df: pd.DataFrame, vader_results_df: pd.
     # Update layout
     fig.update_layout(
         barmode='group',  # Group bars side by side
-        title=f'Comparison of overall sentiment distribution (TSC vs VADER) - {dataset_name}',
+        title=f'Comparison of overall sentiment distribution (TSC vs VADER) - dataset: {dataset_name}',
         xaxis_title='Model',
         yaxis=dict(
             title='Count',
@@ -245,7 +245,7 @@ def calculate_sentiment_over_time(model_results_df: pd.DataFrame, dataset_name: 
 
     fig.update_layout(
         barmode='stack',
-        title=f'{model_name.upper()} Sentiment proportions over time (monthly) - {dataset_name}',
+        title=f'{model_name.upper()} Sentiment proportions over time (monthly) - dataset: {dataset_name}',
         xaxis=dict(
             title='Month',
             tickmode='array',
@@ -292,7 +292,7 @@ def wc_vader(sentiment_label, df, dataset_name: str):
         wordcloud = WordCloud(width=800, height=400, background_color='white', color_func=lambda *args, **kwargs: my_blue).generate(sentences)
         plt.imshow(wordcloud, interpolation='bilinear')
         plt.axis('off')
-        plt.title(f'Word Cloud for {sentiment_label.capitalize()} Sentences (VADER) - {dataset_name}')
+        plt.title(f'Word cloud for {sentiment_label.capitalize()} Sentences (VADER) - dataset: {dataset_name}')
     return plt
 
 
@@ -303,7 +303,7 @@ def wc_tsc(sentiment_label, df, dataset_name: str) -> plt:
         wordcloud = WordCloud(width=800, height=400, background_color='white', color_func=lambda *args, **kwargs: my_blue).generate(sentences)
         plt.imshow(wordcloud, interpolation='bilinear')
         plt.axis('off')
-        plt.title(f'Word Cloud for {sentiment_label.capitalize()} Sentences (TSC) - {dataset_name}')
+        plt.title(f'Word cloud for {sentiment_label.capitalize()} sentences (TSC) - dataset: {dataset_name}')
     return plt
 
 
@@ -420,8 +420,8 @@ def calculate_sentiment_dist_per_target(tsc_results_df: pd.DataFrame, dataset_na
     # Update layout
     fig.update_layout(
         barmode='stack',  # Stacked bars
-        title=f'Overall sentiment distribution per target (TSC) - {dataset_name}',
-        xaxis_title='Proportion of Sentiment',
+        title=f'Overall sentiment distribution per target (TSC) - dataset: {dataset_name}',
+        xaxis_title='Proportion of sentiment',
         # yaxis_title='Target',
         yaxis=dict(
             title='Target',
@@ -514,7 +514,7 @@ def calculate_sentiment_over_time_per_target(tsc_results_df: pd.DataFrame, datas
         # Update layout for the chart
         fig.update_layout(
             barmode='stack',  # Stacked bars
-            title=f'Sentiment over time for {target} (Monthly) - {dataset_name}',
+            title=f'Sentiment over time for {target} (Monthly) - dataset: {dataset_name}',
             xaxis_title='Month',
             # yaxis_title='Proportion of Sentiment',
             yaxis=dict(
@@ -570,7 +570,7 @@ def calculate_sentiment_dist_over_time_by_target(tsc_results_df: pd.DataFrame, d
     # Update layout to ensure date labels are correctly displayed
     print(heatmap_data_positive.columns)
     fig_positive.update_layout(
-        title=f'Proportion of positive sentiment by target over time (monthly) - {dataset_name}',
+        title=f'Proportion of positive sentiment by target over time (monthly) - dataset: {dataset_name}',
         xaxis_title='Month',
         yaxis_title='Target',
         xaxis=dict(
@@ -597,7 +597,7 @@ def calculate_sentiment_dist_over_time_by_target(tsc_results_df: pd.DataFrame, d
     ))
 
     fig_negative.update_layout(
-        title=f'Proportion of negative sentiment by target over time (monthly) - {dataset_name}',
+        title=f'Proportion of negative sentiment by target over time (monthly) - dataset: {dataset_name}',
         xaxis_title='Month',
         yaxis_title='Target',
         xaxis=dict(
@@ -620,7 +620,7 @@ def calculate_sentiment_dist_over_time_by_target(tsc_results_df: pd.DataFrame, d
 
 
     fig_neutral.update_layout(
-        title=f'Proportion of neutral sentiment by target over time (monthly) - {dataset_name}',
+        title=f'Proportion of neutral sentiment by target over time (monthly) - dataset: {dataset_name}',
         xaxis_title='Month',
         yaxis_title='Target',
         xaxis=dict(
@@ -685,7 +685,7 @@ def calculate_sentiment_dist_over_time_by_target_for_shiny(tsc_results_df: pd.Da
 
     # Update layout to ensure date labels are correctly displayed
     fig.update_layout(
-        title=f'Proportion of {sentiment.capitalize()} sentiment by target over time (monthly) - {dataset_name}',
+        title=f'Proportion of {sentiment.capitalize()} sentiment by target over time (monthly) - dataset: {dataset_name}',
         xaxis_title='Month',
         xaxis=dict(
             tickmode='array',

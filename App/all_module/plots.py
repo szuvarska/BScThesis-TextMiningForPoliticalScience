@@ -128,8 +128,8 @@ def generate_community_graph(dataset_name: str):
     dataset_name, dataset_name_to_display = clean_dataset_name(dataset_name, lower=False)
     df_ner = pd.read_csv(f"Data/Sentances_df/sentences_{dataset_name.lower()}.csv")
     df_entities = pd.read_csv(f"NER_and_ED/Results/{dataset_name}_top_40_entities.csv")
-    df_entities = df_entities[~df_entities.Word.isin(["U", "B", "N", "19", "G", "S"])].head(120)
-    suptitle = f"{dataset_name_to_display}\n Co-occurrence in same sentence relationship graph"
+    df_entities = df_entities[~df_entities.Word.isin(["U", "B", "N", "19", "G", "S", "E"])].head(120)
+    suptitle = f"Dataset: {dataset_name_to_display}\n Co-occurrence in same sentence relationship graph"
     title = ("Nodes represent entities. Edges represent co-occurrence within the same sentence."
              "\nEdge width indicates the frequency of co-occurrence, color represents average sentiment.\n"
              "Nodes size indicates the node strength. Fruchterman-Reingold Layout")

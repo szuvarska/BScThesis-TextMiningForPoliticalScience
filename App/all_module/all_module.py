@@ -120,7 +120,7 @@ def all_module_server(input, output, session):
                 ui.input_action_button("analyze_dataset_button", "Analyze Dataset", class_="btn btn-file"),
                 ui.input_numeric(
                     "word_cloud_n",
-                    "Enter Number of most common words in word clouds",
+                    "Enter number of most common words in word clouds",
                     value=word_cloud_n_value.get(),
                     min=1
                 ),

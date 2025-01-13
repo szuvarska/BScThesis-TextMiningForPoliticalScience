@@ -92,7 +92,7 @@ def plot_topic_over_time(df: pd.DataFrame, top_n: int = 15, dataset_name: str = 
                   y="occurrences",
                   color="key_word",
                   color_discrete_sequence=[my_orange, my_red, my_green, my_blue, my_yellow, my_gray, my_purple, my_lightblue],
-                  title= f"Most popular keywords trends - {dataset_name}",
+                  title= f"Most popular keywords trends - dataset: {dataset_name}",
                   template="plotly_white")
 
     # fig.update_traces(visible="legendonly")  # Initially hide all lines but keep them visible in the legend
@@ -168,7 +168,7 @@ def plot_stacked_topics_over_time(df:pd.DataFrame, my_words: list[str], seleted_
         x=seleted_aggragation,
         y='occurrences',
         color='key_word',
-        title=f"Stacked keywords trend - {dataset_name}",
+        title=f"Stacked keywords trend - dataset: {dataset_name}",
         labels={'occurrences': 'standardized frequency', 'key_word': 'Keyword'},
         barmode='stack',
         template='plotly_white',
