@@ -14,7 +14,7 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 warnings.filterwarnings("ignore", category=FutureWarning, module="huggingface_hub.file_download")
 
 
-def analyze_dataset(file_paths: list, dataset_name: str, not_enough_data: bool, progress_callback=None):
+def analyze_dataset(file_paths: list, dataset_name: str, progress_callback=None):
     print("Reading articles from text files...")
     if progress_callback:
         progress_callback(1, message="Reading articles from text files...")
@@ -107,18 +107,20 @@ def analyze_dataset(file_paths: list, dataset_name: str, not_enough_data: bool, 
                                                    output_directory_path="Sentiment/Results")
     calculate_sentiment_dist_per_target_without_plot(tsc_results_df, original_dataset_name)
 
-    if len(articles) < 50:
-        progress_callback(99, message="Some plots might not be available due to the small dataset size.")
-        not_enough_data.set(True)
-
     print("Sentiment analysis complete.")
     if progress_callback:
         progress_callback(100, message="Sentiment analysis complete.")
 
+    if len(articles) < 50:
+        ui.notification_show("Analysis completed. Some plots might not be available due to the small dataset size.", type="warning",
+                             close_button=True, duration=None)
+    else:
+        ui.notification_show("Analysis completed successfully.", type="message", close_button=True, duration=None)
+
     return True
 
 
-async def analyze_dataset_reactive(files, dataset_choices, dataset_filter_value, dataset_name, not_enough_data):
+async def analyze_dataset_reactive(files, dataset_choices, dataset_filter_value, dataset_name):
     if files:
         # Extract file paths
         file_paths = [file["datapath"] for file in files]
@@ -157,7 +159,7 @@ async def analyze_dataset_reactive(files, dataset_choices, dataset_filter_value,
                 p.set(message="Starting analysis...")
 
                 # Blocking function (ensure progress updates are in the main thread)
-                if analyze_dataset(file_paths, dataset_name, not_enough_data, progress_callback=p.set):
+                if analyze_dataset(file_paths, dataset_name, progress_callback=p.set):
                     dataset_choices.set(dataset_choices.get() + [dataset_name])
                     dataset_filter_value.set(dataset_name)
             except Exception as e:

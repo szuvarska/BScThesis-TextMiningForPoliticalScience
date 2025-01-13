@@ -44,10 +44,6 @@ def all_module_server(input, output, session):
     ngram_number_value = reactive.Value(3)
     selected_keywords_value = reactive.Value(keywords[:2])
     date_range_value = reactive.Value("daily")
-    # not_enough_data = {"Gaza before conflict": False, "Gaza during conflict": False, "Ukraine before conflict": False}
-    # not_enough_data = reactive.Value(not_enough_data[dataset_filter_value.get()])
-    not_enough_data = reactive.Value(False)
-    not_enough_data_error = "Some plots might not be available due to the small dataset size."
 
     @reactive.Effect
     @reactive.event(input.dataset_filter)
@@ -302,12 +298,6 @@ def all_module_server(input, output, session):
     @render.ui
     def community_plots():
         if communities_visible.get():
-            if not_enough_data.get():
-                return ui.div(
-                    ui.div(not_enough_data_error),
-                    ui.output_image("community_graph"),
-                    class_="plots-row"
-                )
             return ui.div(
                 ui.output_image("community_graph"),
                 class_="plots-row"
@@ -318,13 +308,6 @@ def all_module_server(input, output, session):
     @render.ui
     def ngrams_plots():
         if ngrams_visible.get():
-            if not_enough_data.get():
-                return ui.div(
-                    ui.div(not_enough_data_error),
-                    ui.output_image("bigrams_plot"),
-                    ui.output_ui("concordance_table", class_="concordance-table"),
-                    class_="plots-row"
-                )
             return ui.div(
                 ui.output_image("bigrams_plot"),
                 ui.output_ui("concordance_table", class_="concordance-table"),
@@ -336,13 +319,6 @@ def all_module_server(input, output, session):
     @render.ui
     def keywords_trends_plots():
         if keywords_trends_visible.get():
-            if not_enough_data.get():
-                return ui.div(
-                    ui.div(not_enough_data_error),
-                    output_widget("keywords_over_time_plot"),
-                    output_widget("stacked_keywords_over_time_plot"),
-                    class_="plots-row"
-                )
             return ui.div(
                 output_widget("keywords_over_time_plot"),
                 output_widget("stacked_keywords_over_time_plot"),
@@ -387,5 +363,4 @@ def all_module_server(input, output, session):
             dataset_choices=dataset_choices,
             dataset_filter_value=dataset_filter_value,
             dataset_name=input.dataset_name(),
-            not_enough_data=not_enough_data
         )
