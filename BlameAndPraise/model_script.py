@@ -1,5 +1,11 @@
 import pandas as pd
 import spacy
+import os
+from NewsSentiment import TargetSentimentClassifier
+from NewsSentiment.customexceptions import TargetNotFoundException, TooLongTextException
+import warnings
+from tqdm import tqdm
+from Sentiment.sentiment_script import vader_sentiment
 
 
 def read_txt_file(file_path):
@@ -151,3 +157,54 @@ def perform_preprocessing(path):
     ner_df = add_ner_to_sentence(final_df)
     atomized_df = atomize_entities(ner_df)
     return atomized_df
+
+
+def perform_preprocessing_from_dict(directory:str):
+    warnings.filterwarnings("ignore")
+
+    all_sentences = []
+    all_dataframes = []
+
+    for filename in tqdm(os.listdir(directory)):
+        if filename.endswith(".txt"):
+            file_path = os.path.join(directory, filename)
+            df = perform_preprocessing(file_path)
+            sentences_df = read_sentences(read_txt_file(file_path))['text']
+            all_sentences.append(sentences_df)
+            all_dataframes.append(df)
+
+    merged_dataframe = pd.concat(all_dataframes, ignore_index=True)
+    merged_dataframe['sentiment'] = merged_dataframe['sentence'].apply(vader_sentiment)
+
+    # TSC sentiment
+
+    tsc = TargetSentimentClassifier()
+    tsc_labels = []
+
+    for index, row in tqdm(merged_dataframe.iterrows()):
+        target = row['entity_atomized'].lower()
+        sentence = row['sentence'].lower()
+
+        if target.lower() in sentence:
+            entity_start = sentence.find(target.lower())
+            entity_end = entity_start + len(target)
+            left_context = sentence[:entity_start]
+            right_context = sentence[entity_end:]
+
+        try:
+            sentiment_tsc = tsc.infer_from_text(left_context, target, right_context)
+        except TooLongTextException:
+            print(f"TooLongTextException: {target} - Sentence too long for TSC")
+            tsc_labels.append(None)
+            continue  # move on to the next target
+        except TargetNotFoundException:
+            print(f"TargetNotFoundException: {target} not found in {sentence}")
+            tsc_labels.append(None)
+            continue  # move on to the next target
+
+        sentiment_label_tsc = sentiment_tsc[0]['class_label'].lower()
+        tsc_labels.append(sentiment_label_tsc)
+
+    merged_dataframe['tsc_sentiment'] = tsc_labels
+
+    return merged_dataframe, all_sentences
